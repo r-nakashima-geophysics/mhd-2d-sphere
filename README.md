@@ -1,4 +1,4 @@
-# mhd-2d-sphere
+# MHD-2D-sphere
 
 This code support the findings of our study: Nakashima &amp; Yoshida (in prep.).
 
