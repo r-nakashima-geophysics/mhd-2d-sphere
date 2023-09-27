@@ -28,14 +28,15 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import fsolve
+from scipy.special import obl_ang1, pro_ang1
+
 from package.dispersion_rossby import dispersion_rossby
 from package.load_data import load_legendre
 from package.make_eigfunc import (adjust_sign, amp_range, choose_eigfunc,
                                   make_eigfunc)
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
-from scipy.optimize import fsolve
-from scipy.special import obl_ang1, pro_ang1
 
 # ========== parameters ==========
 
@@ -59,8 +60,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] = Path(
-    '.') / 'fig' / '2DMHDsphere_sincos_rossbyeigfunc'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_rossbyeigfunc' \
+    '.') / 'fig' / 'MHD2Dsphere_sincos_rossbyeigfunc'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_rossbyeigfunc' \
     + f'_m{M_ORDER}a{ALPHA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX: Final[str] = '.png'
 FIG_DPI: Final[int] = 600

@@ -34,11 +34,12 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.optimize import fsolve
+
 from package import processing_results as proc
 from package.dispersion_rossby import dispersion_rossby
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
-from scipy.optimize import fsolve
 
 # ========== parameters ==========
 
@@ -69,9 +70,9 @@ ALPHA_LOG_END: Final[float] = 0
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_rossby'
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_rossby'
 NAME_FIG: Final[str] \
-    = f'2DMHDsphere_sincos_rossby_m{M_ORDER}N{N_T}_{SWITCH_EQ}.png'
+    = f'MHD2Dsphere_sincos_rossby_m{M_ORDER}N{N_T}_{SWITCH_EQ}.png'
 FIG_DPI: Final[int] = 600
 
 # ================================

@@ -35,6 +35,7 @@ from typing import Final
 import caffeine
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.input_arg import input_alpha
 from package.load_data import load_legendre
 from package.make_eigfunc import make_eigfunc
@@ -77,8 +78,8 @@ EIG_RE_END: Final[float] = M_ORDER * ALPHA
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_alleigfunc'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_alleigfunc' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_alleigfunc'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_alleigfunc' \
     + f'_m{M_ORDER}a{ALPHA}E{E_ETA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX_1: Final[str] = f'q{CRITERION_Q}'
 NAME_FIG_SUFFIX_2: Final[tuple[str, str]] = ('_R.png', '_I.png')

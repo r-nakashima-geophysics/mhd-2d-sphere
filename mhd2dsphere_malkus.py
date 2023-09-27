@@ -43,6 +43,7 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.input_arg import input_m
 
 # ========== Parameters ==========
@@ -85,10 +86,10 @@ ENERGY_END: Final[float] = 1
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_malkus'
-NAME_FIG_1: Final[str] = f'2DMHDsphere_malkus_m{M_ORDER}_eig.png'
-NAME_FIG_2: Final[str] = f'2DMHDsphere_malkus_m{M_ORDER}_ene.png'
-NAME_FIG_3: Final[str] = f'2DMHDsphere_malkus_m{M_ORDER}_eiglog.png'
+    = Path('.') / 'fig' / 'MHD2Dsphere_malkus'
+NAME_FIG_1: Final[str] = f'MHD2Dsphere_malkus_m{M_ORDER}_eig.png'
+NAME_FIG_2: Final[str] = f'MHD2Dsphere_malkus_m{M_ORDER}_ene.png'
+NAME_FIG_3: Final[str] = f'MHD2Dsphere_malkus_m{M_ORDER}_eiglog.png'
 FIG_DPI: Final[int] = 600
 
 # ================================

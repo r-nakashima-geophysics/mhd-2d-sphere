@@ -50,6 +50,7 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package import processing_results as proc
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
@@ -95,9 +96,9 @@ EIG_IM_LOG_MIN: Final[float] = -6
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_fig'
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_fig'
 NAME_FIG: Final[str] \
-    = f'2DMHDsphere_sincos_fig_m{M_ORDER}E{E_ETA}N{N_T}'
+    = f'MHD2Dsphere_sincos_fig_m{M_ORDER}E{E_ETA}N{N_T}'
 NAME_FIG_SUFFIX_1: Final[str] = f'q{CRITERION_Q}'
 NAME_FIG_SUFFIX_2: Final[tuple[str, str, str]] \
     = ('_eig', '_eigene', '_eigohm')

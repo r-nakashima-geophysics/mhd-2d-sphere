@@ -21,6 +21,7 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.solve_eig import wrapper_solve_eig
 
 # ========== parameters ==========
@@ -60,8 +61,8 @@ EIG_RE_LOG_MIN: Final[float] = -4
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_degree'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_degree' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_degree'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_degree' \
     + f'_m{M_ORDER}a{ALPHA}E{E_ETA}N{N_T_1}vsN{N_T_2}.png'
 FIG_DPI: Final[int] = 600
 

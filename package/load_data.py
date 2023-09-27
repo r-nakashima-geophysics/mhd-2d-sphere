@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+
 from package.make_legendre import make_legendre
 from package.yes_no_else import yes_exe_no_exit
 
@@ -48,7 +49,7 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
 
     """
 
-    name_file: str = f'2DMHDsphere_sincos_m{m_order}E{e_eta}N{n_t}'
+    name_file: str = f'MHD2Dsphere_sincos_m{m_order}E{e_eta}N{n_t}'
     name_file_suffix_1: tuple[str, str, str, str, str, str] \
         = ('_alpha', '_eig', '_mke', '_mme', '_ohm', '_sym')
     name_file_suffix_2: tuple[str, str] = ('.dat', 'log.dat')
@@ -119,7 +120,7 @@ def load_results(name_file: list[str]) \
 
     """
 
-    path_dir: Path = Path('.') / 'output' / '2DMHDsphere_sincos'
+    path_dir: Path = Path('.') / 'output' / 'MHD2Dsphere_sincos'
     path_file: list[Path] = [path_dir / name for name in name_file]
 
     none_ohm: bool = False

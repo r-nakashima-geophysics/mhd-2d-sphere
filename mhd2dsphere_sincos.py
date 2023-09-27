@@ -43,6 +43,7 @@ from typing import Final
 
 import caffeine
 import numpy as np
+
 from package.input_arg import input_m
 from package.make_mat import make_mat, make_submat
 from package.solve_eig import solve_eig
@@ -82,9 +83,9 @@ ALPHA_LOG_END: Final[float] = 2
 
 # The paths and filenames of outputs
 PATH_DIR: Final[Path] \
-    = Path('.') / 'output' / '2DMHDsphere_sincos'
+    = Path('.') / 'output' / 'MHD2Dsphere_sincos'
 NAME_FILE: Final[str] \
-    = f'2DMHDsphere_sincos_m{M_ORDER}E{E_ETA}N{N_T}'
+    = f'MHD2Dsphere_sincos_m{M_ORDER}E{E_ETA}N{N_T}'
 NAME_FILE_SUFFIX_1: Final[tuple[str, str, str, str, str, str]] \
     = ('_alpha', '_eig', '_mke', '_mme', '_ohm', '_sym')
 NAME_FILE_SUFFIX_2: Final[tuple[str, str]] = ('.dat', 'log.dat')

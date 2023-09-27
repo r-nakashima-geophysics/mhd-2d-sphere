@@ -32,6 +32,7 @@ import caffeine
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.gridspec import GridSpec
+
 from package.load_data import load_legendre
 from package.make_eigfunc import choose_eigfunc, make_eigfunc
 from package.make_frobenius import calc_frobenius
@@ -65,8 +66,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_frobenius'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_frobenius' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_frobenius'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_frobenius' \
     + f'_m{M_ORDER}a{ALPHA}N{N_T}th{NUM_THETA}d{NUM_DATA}'
 NAME_FIG_SUFFIX: Final[str] = '.png'
 FIG_DPI: Final[int] = 600

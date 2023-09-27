@@ -28,6 +28,7 @@ from typing import Final
 import caffeine
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.input_arg import input_alpha
 from package.load_data import load_legendre
 from package.make_eigfunc import make_eigfunc
@@ -59,8 +60,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_allfrobenius'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_allfrobenius' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_allfrobenius'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_allfrobenius' \
     + f'_m{M_ORDER}a{ALPHA}N{N_T}th{NUM_THETA}d{NUM_DATA}.png'
 FIG_DPI: Final[int] = 600
 

@@ -22,6 +22,7 @@ from typing import Final
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.load_data import load_legendre
 from package.make_eigfunc import (amp_range, choose_eigfunc, make_eigfunc,
                                   make_eigfunc_grid)
@@ -58,8 +59,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_sincos_eigfunc'
-NAME_FIG: Final[str] = '2DMHDsphere_sincos_eigfunc' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_eigfunc'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_eigfunc' \
     + f'_m{M_ORDER}a{ALPHA}E{E_ETA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('_ns.png', '_map.png')
 FIG_DPI: Final[int] = 600

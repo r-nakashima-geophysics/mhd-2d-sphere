@@ -34,6 +34,7 @@ from typing import Callable, Final
 
 import matplotlib.pyplot as plt
 import numpy as np
+
 from package.input_arg import input_alpha
 
 FUNC_B: Callable[[np.ndarray], np.ndarray]
@@ -100,8 +101,8 @@ LAMBDA_END: Final[float] = M_ORDER * ALPHA * 2
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / '2DMHDsphere_nonmalkus_harmonic'
-NAME_FIG: Final[str] = '2DMHDsphere_nonmalkus_harmonic' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_harmonic'
+NAME_FIG: Final[str] = 'MHD2Dsphere_nonmalkus_harmonic' \
     + f'_{NAME_B}m{M_ORDER}a{ALPHA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
