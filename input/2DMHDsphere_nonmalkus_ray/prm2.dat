@@ -1,0 +1,14 @@
+# THETA_INITIAL
+30
+
+# K_INITIAL
+2
+
+# L_INITIAL
+-2
+
+# TIME_STEP
+0.01
+
+# TIME_END
+30
