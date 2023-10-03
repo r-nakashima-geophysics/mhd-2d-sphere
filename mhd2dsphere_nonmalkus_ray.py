@@ -24,7 +24,7 @@ Parameters other than command line arguments are described below.
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 Examples
 -----
@@ -437,7 +437,7 @@ def dispersion(k_const: float,
 
     Notes
     -----
-    This function is based on eq. (29) in Nakashima & Yoshida (in prep.)
+    This function is based on eq. (29) in Nakashima & Yoshida (submitted)
     [1]_.
 
     """

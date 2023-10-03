@@ -2,13 +2,14 @@
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 """
 
 import math
 
 import numpy as np
+
 from package.make_mat import make_mat, make_submat
 
 
@@ -192,7 +193,7 @@ def calc_ene(m_order: int,
     Notes
     -----
     This function is based on eq. (21) in Nakashima & Yoshida
-    (in prep.)[1]_.
+    (submitted)[1]_.
 
     """
 
@@ -313,7 +314,7 @@ def check_eig(m_order: int,
     Notes
     -----
     This function is based on eq. (20) in Nakashima & Yoshida
-    (in prep.)[1]_.
+    (submitted)[1]_.
 
     """
 

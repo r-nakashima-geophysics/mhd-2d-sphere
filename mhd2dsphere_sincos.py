@@ -23,7 +23,7 @@ Parameters other than command line arguments are described below.
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 Examples
 -----

@@ -3,7 +3,7 @@ under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 """
 
@@ -43,7 +43,7 @@ def calc_frobenius(m_order: int,
     Notes
     -----
     This function is based on eqs. (14) and (15) in Nakashima & Yoshida
-    (in prep.)[1]_.
+    (submitted)[1]_.
 
     """
 

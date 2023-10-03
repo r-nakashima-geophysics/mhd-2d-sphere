@@ -29,7 +29,7 @@ executing this code.
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 Examples
 -----

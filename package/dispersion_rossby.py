@@ -30,8 +30,8 @@ def dispersion_rossby(eig: float,
 
     Notes
     -----
-    This function is based on eqs. (B.2) and (E.9) in Nakashima &
-    Yoshida (in prep.)[1]_.
+    This function is based on eqs. (B.2) and (E.10) in Nakashima &
+    Yoshida (submitted)[1]_.
 
     """
 

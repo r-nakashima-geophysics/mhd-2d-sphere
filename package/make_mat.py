@@ -4,7 +4,7 @@ B_phi = B_0 sin(theta) cos(theta)
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 """
 
@@ -37,7 +37,7 @@ def make_submat(m_order: int,
     Notes
     -----
     This function is based on eq. (19) in Nakashima & Yoshida
-    (in prep.)[1]_.
+    (submitted)[1]_.
 
     """
 
@@ -107,7 +107,7 @@ def make_mat(m_order: int,
     Notes
     -----
     This function is based on eq. (19) in Nakashima & Yoshida
-    (in prep.)[1]_.
+    (submitted)[1]_.
 
     """
 

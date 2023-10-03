@@ -22,7 +22,7 @@ Parameters other than command line arguments are described below.
 
 References
 -----
-[1] Nakashima & Yoshida (in prep.)
+[1] Nakashima & Yoshida (submitted)
 
 Examples
 -----
@@ -197,7 +197,7 @@ def calc_eig(n_degree: int,
     Notes
     -----
     If n_degree = 0, eig is set to 0. This function is based on eq. (1)
-    in Nakashima & Yoshida (in prep.)[1]_.
+    in Nakashima & Yoshida (submitted)[1]_.
 
     """
 
