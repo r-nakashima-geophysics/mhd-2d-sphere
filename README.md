@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8382316.svg)](https://doi.org/10.5281/zenodo.8382316)
 
-This code support the findings of our study: Nakashima &amp; Yoshida (in prep.).
+These code support the findings of our study, Nakashima &amp; Yoshida (submitted to _Geophysical & Astrophysical Fluid Dynamics_ [https://www.tandfonline.com/journals/ggaf20]). The non-peer reviewed preprint is posted on arXiv [https://doi.org/10.48550/arXiv.2310.01341].
 
 ## Setup
 
