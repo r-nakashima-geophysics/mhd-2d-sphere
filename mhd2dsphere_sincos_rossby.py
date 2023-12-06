@@ -245,8 +245,8 @@ def plot_rossby(
                 start = -(1+10**(-5))*M_ORDER*alpha
             #
 
-            root = fsolve(dispersion_rossby, [start],
-                          args=(M_ORDER, n_degree, alpha, SWITCH_EQ))[0]
+            root, _, _, _ = fsolve(dispersion_rossby, [start],
+                                   args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
 
             if ((M_ORDER*alpha)**2)/(root.real**2) < 0.99:
                 if i_n % 2 == 0:
