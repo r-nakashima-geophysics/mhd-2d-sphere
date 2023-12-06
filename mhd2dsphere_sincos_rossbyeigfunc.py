@@ -248,8 +248,9 @@ def calc_rossbyeigfunc(i_mode: int) -> tuple[float, np.ndarray]:
 
     n_degree: int = i_mode + M_ORDER
 
-    root: float = fsolve(dispersion_rossby, [-0.01],
-                         args=(M_ORDER, n_degree, ALPHA, 'sph'))[0]
+    root: float
+    root, _, _, _ = fsolve(dispersion_rossby, [-0.01],
+                           args=(M_ORDER, n_degree, ALPHA, 'sph'))
 
     ma2: float = (M_ORDER**2) * (ALPHA**2)
     c2_spheroidal: float = (ma2/(root**2)) * (7+M_ORDER/root)
@@ -260,12 +261,12 @@ def calc_rossbyeigfunc(i_mode: int) -> tuple[float, np.ndarray]:
     angular: np.ndarray = np.array([])
     if c2_spheroidal.real >= 0:
         sqrt_c2 = math.sqrt(c2_spheroidal.real)
-        angular = pro_ang1(
-            M_ORDER, n_degree, sqrt_c2, np.cos(LIN_THETA))[0]
+        angular, _ = pro_ang1(
+            M_ORDER, n_degree, sqrt_c2, np.cos(LIN_THETA))
     elif c2_spheroidal.real < 0:
         sqrt_c2 = math.sqrt(-c2_spheroidal.real)
-        angular = obl_ang1(
-            M_ORDER, n_degree, sqrt_c2, np.cos(LIN_THETA))[0]
+        angular, _ = obl_ang1(
+            M_ORDER, n_degree, sqrt_c2, np.cos(LIN_THETA))
     #
 
     rossbyeigfunc: np.ndarray = angular / np.sqrt(critical.real)
