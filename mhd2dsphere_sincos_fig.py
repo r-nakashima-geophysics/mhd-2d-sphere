@@ -323,8 +323,7 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     mke: np.ndarray
     ohm: np.ndarray
     sym: np.ndarray
-    lin_alpha, eig, mke, ohm, sym \
-        = bundle[0], bundle[1], bundle[2], bundle[4], bundle[5]
+    lin_alpha, eig, mke, _, ohm, sym = bundle
 
     ax1: np.ndarray
     ax2: np.ndarray
@@ -777,8 +776,7 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     mke: np.ndarray
     ohm: np.ndarray
     sym: np.ndarray
-    lin_alpha, eig, mke, ohm, sym \
-        = bundle[0], bundle[1], bundle[2], bundle[4], bundle[5]
+    lin_alpha, eig, mke, _, ohm, sym = bundle
 
     ax1: np.ndarray
     ax2: np.ndarray
