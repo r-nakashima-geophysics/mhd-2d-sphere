@@ -79,8 +79,8 @@ LIN_THETA_SKIP: Final[np.ndarray] \
     = np.linspace(0, math.pi, NUM_THETA_SKIP)
 LIN_PHI: Final[np.ndarray] = np.linspace(0, 2 * math.pi, NUM_PHI)
 
-GRID_PHI: Final[np.ndarray]
-GRID_THETA: Final[np.ndarray]
+GRID_PHI: np.ndarray
+GRID_THETA: np.ndarray
 GRID_PHI, GRID_THETA \
     = np.meshgrid(LIN_PHI, LIN_THETA_SKIP[1:-1])
 
