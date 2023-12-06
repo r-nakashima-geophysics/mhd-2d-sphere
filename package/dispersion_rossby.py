@@ -35,10 +35,11 @@ def dispersion_rossby(eig: float,
 
     """
 
-    m_order: int = args[0]
-    n_degree: int = args[1]
-    alpha: float = args[2]
-    switch_eq: str = args[3]
+    m_order: int
+    n_degree: int
+    alpha: float
+    switch_eq: str
+    m_order, n_degree, alpha, switch_eq = args
 
     ma2: float = (m_order**2) * (alpha**2)
 
@@ -63,8 +64,8 @@ def dispersion_rossby(eig: float,
             return func
         #
 
-        integral = quad(
-            integrand, 0, math.inf, args=(kappa2, meig))[0]
+        integral, _ = quad(
+            integrand, 0, math.inf, args=(kappa2, meig))
         dispersion_relation = 2*(1+meig) \
             * np.sqrt(-meig/((eig**2)-ma2)) \
             * kappa2*integral - (uc_n+(1/2))*math.pi
