@@ -332,7 +332,7 @@ def calc_jump(psi_vec: np.ndarray,
     psi1: list[np.ndarray] = [np.array([]), ] * 3
     psi2: list[np.ndarray] = [np.array([]), ] * 3
 
-    psi[0] = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)[0]
+    psi[0], _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
     psi1[0], psi2[0] \
         = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
