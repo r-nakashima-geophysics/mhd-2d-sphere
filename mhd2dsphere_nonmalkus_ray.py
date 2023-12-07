@@ -165,8 +165,9 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     results: tuple[float, float, np.ndarray, np.ndarray] \
         = integrate_ray(prms)
 
-    k_const: float = results[0]
-    k_wavenum_init: float = results[1]
+    k_const: float
+    k_wavenum_init: float
+    k_const, k_wavenum_init, _, _ = results
 
     (fig, axis, axin), [min_k, max_k], cond_critical, theta_c_deg \
         = plot_ray(prms, results)
@@ -275,9 +276,10 @@ def plot_ray(prms: list[float],
 
     theta_deg_init: float = prms[0]
 
-    k_const: float = results[0]
-    lin_time: np.ndarray = results[2]
-    sol_vec_y: np.ndarray = results[3]
+    k_const: float
+    lin_time: np.ndarray
+    sol_vec_y: np.ndarray
+    k_const, _, lin_time, sol_vec_y = results
 
     num_time: int = len(lin_time)
 
@@ -395,7 +397,8 @@ def integrate_ray(prms: list[float]) \
     theta_rad_init: float = math.radians(theta_deg_init)
     k_const_init: float = k_init * math.sin(theta_rad_init)
 
-    sol_k: np.ndarray = fsolve(
+    sol_k: np.ndarray
+    sol_k, _, _, _ = fsolve(
         dispersion, k_const_init, args=(theta_rad_init, l_init))
 
     k_const: float = float(sol_k)
@@ -673,7 +676,7 @@ def critical_lat(k_const: float) -> set[float]:
     for init_deg in range(int(THETA_INIT), int(THETA_END), 1):
 
         init_rad = math.radians(init_deg)
-        theta_c_rad = fsolve(critical, init_rad)
+        theta_c_rad, _, _, _ = fsolve(critical, init_rad)
         theta_c_deg = math.degrees(theta_c_rad)
 
         if THETA_INIT < theta_c_deg < THETA_END:
