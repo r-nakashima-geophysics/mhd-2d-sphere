@@ -83,26 +83,27 @@ MASK_Y1: Final[float] = 10**EIG_RE_LOG_MIN
 MASK_Y2: Final[float] = - MASK_Y1
 
 
-def plot_dependdegree(bundle1: tuple[np.ndarray, np.ndarray,
-                                     np.ndarray, np.ndarray, np.ndarray,
-                                     np.ndarray, np.ndarray],
-                      bundle2: tuple[np.ndarray, np.ndarray,
-                                     np.ndarray, np.ndarray, np.ndarray,
-                                     np.ndarray, np.ndarray]) -> None:
+def plot_dependdegree(
+        bundle_with_vec_1: tuple[np.ndarray, np.ndarray,
+                                 np.ndarray, np.ndarray, np.ndarray,
+                                 np.ndarray, np.ndarray],
+        bundle_with_vec_2: tuple[np.ndarray, np.ndarray,
+                                 np.ndarray, np.ndarray, np.ndarray,
+                                 np.ndarray, np.ndarray]) -> None:
     """Plots a figure displaying the dependence of eigenvalues on the
     truncation degree
 
     Parameters
     -----
-    bundle1 : tuple of ndarray
+    bundle_with_vec_1 : tuple of ndarray
         A tuple of results
-    bundle2 : tuple of ndarray
+    bundle_with_vec_2 : tuple of ndarray
         A tuple of results
 
     """
 
-    eig_1: np.ndarray = bundle1[2]
-    eig_2: np.ndarray = bundle2[2]
+    eig_1: np.ndarray = bundle_with_vec_1[2]
+    eig_2: np.ndarray = bundle_with_vec_2[2]
 
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(5, 5))
@@ -161,20 +162,20 @@ def plot_dependdegree(bundle1: tuple[np.ndarray, np.ndarray,
 if __name__ == '__main__':
     TIME_INIT: Final[float] = perf_counter()
 
-    results1: tuple[np.ndarray, np.ndarray,
-                    np.ndarray, np.ndarray, np.ndarray,
-                    np.ndarray, np.ndarray] \
+    results_with_vec_1: tuple[np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray] \
         = wrapper_solve_eig(
         M_ORDER, ALPHA, E_ETA, SIZE_SUBMAT_1, CRITERION_C_1)
-    results2: tuple[np.ndarray, np.ndarray,
-                    np.ndarray, np.ndarray, np.ndarray,
-                    np.ndarray, np.ndarray] \
+    results_with_vec_2: tuple[np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray] \
         = wrapper_solve_eig(
         M_ORDER, ALPHA, E_ETA, SIZE_SUBMAT_2, CRITERION_C_2)
 
     plt.rcParams['text.usetex'] = True
 
-    plot_dependdegree(results1, results2)
+    plot_dependdegree(results_with_vec_1, results_with_vec_2)
 
     TIME_ELAPSED: Final[float] = perf_counter() - TIME_INIT
     print(f'{__name__}: {TIME_ELAPSED:.3f} s')
