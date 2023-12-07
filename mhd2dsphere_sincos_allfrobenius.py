@@ -169,16 +169,16 @@ def wrapper_plot_allfrobenius(
 #
 
 
-def plot_allfrobenius(bundle: tuple[np.ndarray, np.ndarray,
-                                    np.ndarray, np.ndarray, np.ndarray,
-                                    np.ndarray, np.ndarray]) \
+def plot_allfrobenius(bundle_with_vec: tuple[np.ndarray, np.ndarray,
+                                             np.ndarray, np.ndarray, np.ndarray,
+                                             np.ndarray, np.ndarray]) \
         -> tuple[tuple, list[float], list[float]]:
     """Plots a figure of the discontinuity in the coefficient of the
     first Frobenius series solution for all the eigenfunctions
 
     Parameters
     -----
-    bundle : tuple of ndarray
+    bundle_with_vec : tuple of ndarray
         A tuple of results
 
     Returns
@@ -192,10 +192,11 @@ def plot_allfrobenius(bundle: tuple[np.ndarray, np.ndarray,
 
     """
 
-    psi_vec = bundle[0]
-    vpa_vec = bundle[1]
-    eig = bundle[2]
-    sym = bundle[6]
+    psi_vec: np.ndarray
+    vpa_vec: np.ndarray
+    eig: np.ndarray
+    sym: np.ndarray
+    psi_vec, vpa_vec, eig, _, _, _, sym = bundle_with_vec
 
     ax1: np.ndarray
     fig, ax1 = plt.subplots(1, 2, figsize=(10, 5))
@@ -388,15 +389,15 @@ if __name__ == '__main__':
     caffeine.on(display=False)
 
     PNM_NORM: Final[np.ndarray] = load_legendre(M_ORDER, N_T, NUM_THETA)
-    results: tuple[np.ndarray, np.ndarray,
-                   np.ndarray, np.ndarray, np.ndarray,
-                   np.ndarray, np.ndarray] \
+    results_with_vec: tuple[np.ndarray, np.ndarray,
+                            np.ndarray, np.ndarray, np.ndarray,
+                            np.ndarray, np.ndarray] \
         = wrapper_solve_eig(
         M_ORDER, ALPHA, E_ETA, SIZE_SUBMAT, CRITERION_C)
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_plot_allfrobenius(results)
+    wrapper_plot_allfrobenius(results_with_vec)
 
     TIME_ELAPSED: Final[float] = perf_counter() - TIME_INIT
     print(f'{__name__}: {TIME_ELAPSED:.3f} s')
