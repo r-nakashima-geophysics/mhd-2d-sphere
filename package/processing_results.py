@@ -31,11 +31,11 @@ def screening_eig_q(criterion_q: float,
     mme: np.ndarray
     ohm: np.ndarray
     sym: np.ndarray
-    eig, mke, mme, ohm, sym \
-        = bundle[1], bundle[2], bundle[3], bundle[4], bundle[5]
+    _, eig, mke, mme, ohm, sym = bundle
 
     size_mat: int = eig.shape[1]
-    num_alpha: int = extract_param(bundle)[2]
+    num_alpha: int
+    _, _, num_alpha, _ = extract_param(bundle)
 
     check_q: np.ndarray
 
