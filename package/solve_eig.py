@@ -38,7 +38,7 @@ def wrapper_solve_eig(m_order: int,
 
     Returns
     -----
-    bundle : tuple of ndarray
+    bundle_with_vec : tuple of ndarray
         A tuple of results
 
     See Also
@@ -66,13 +66,13 @@ def wrapper_solve_eig(m_order: int,
 
     eig: np.ndarray = eig_vecval[size_mat, :]
 
-    bundle: tuple[np.ndarray, np.ndarray,
-                  np.ndarray, np.ndarray, np.ndarray,
-                  np.ndarray, np.ndarray] \
+    bundle_with_vec: tuple[np.ndarray, np.ndarray,
+                           np.ndarray, np.ndarray, np.ndarray,
+                           np.ndarray, np.ndarray] \
         = (psi_vec, vpa_vec, eig,
            phys_qtys[0], phys_qtys[1], phys_qtys[2], phys_qtys[3])
 
-    return bundle
+    return bundle_with_vec
 #
 
 
