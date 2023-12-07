@@ -4,6 +4,7 @@ import logging
 import math
 
 import numpy as np
+
 from package.input_arg import input_int
 
 logging.basicConfig(level=logging.INFO)
@@ -36,11 +37,12 @@ def choose_eigfunc(bundle: tuple[np.ndarray, np.ndarray,
 
     """
 
-    psi_vec: np.ndarray = bundle[0]
-    vpa_vec: np.ndarray = bundle[1]
-    eig: np.ndarray = bundle[2]
-    mke: np.ndarray = bundle[3]
-    sym: np.ndarray = bundle[6]
+    psi_vec: np.ndarray
+    vpa_vec: np.ndarray
+    eig: np.ndarray
+    mke: np.ndarray
+    sym: np.ndarray
+    psi_vec, vpa_vec, eig, mke, _, _, sym = bundle
 
     mode_list: list = []
     q_value: float
