@@ -374,13 +374,7 @@ def wrapper_screening_eig_q(
                      np.ndarray, np.ndarray, np.ndarray] \
         = (np.array(ALPHA), eig, mke, mme, ohm, sym)
 
-    subbundle = screening_eig_q(CRITERION_Q, subbundle)
-
-    eig = subbundle[1]
-    mke = subbundle[2]
-    mme = subbundle[3]
-    ohm = subbundle[4]
-    sym = subbundle[5]
+    _, eig, mke, mme, ohm, sym = screening_eig_q(CRITERION_Q, subbundle)
 
     bundle = (psi_vec, vpa_vec, eig, mke, mme, ohm, sym)
 
