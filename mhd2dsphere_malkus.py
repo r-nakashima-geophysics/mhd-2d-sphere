@@ -127,7 +127,6 @@ def wrapper_eigene() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     -----
     calc_eig
     calc_ene
-    calc_eig
 
     """
 
@@ -244,6 +243,10 @@ def calc_ene(n_degree: int,
     -----
     ene : float
         Energy partitioning
+
+    See Also
+    -----
+    calc_eig
 
     Notes
     -----
