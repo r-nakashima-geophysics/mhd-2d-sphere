@@ -24,6 +24,10 @@ def screening_eig_q(criterion_q: float,
     bundle : tuple of ndarray
         A tuple of results
 
+    See Also
+    -----
+    pickup_param
+
     """
 
     eig: np.ndarray
@@ -35,7 +39,7 @@ def screening_eig_q(criterion_q: float,
 
     size_mat: int = eig.shape[1]
     num_alpha: int
-    _, _, num_alpha, _ = extract_param(bundle)
+    _, _, num_alpha, _ = pickup_param(bundle)
 
     check_q: np.ndarray
 
@@ -61,10 +65,10 @@ def screening_eig_q(criterion_q: float,
 #
 
 
-def extract_param(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
-                                np.ndarray, np.ndarray, np.ndarray]) \
+def pickup_param(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
+                               np.ndarray, np.ndarray, np.ndarray]) \
         -> tuple[float, float, int, float]:
-    """Extracts some parameters from results
+    """Picks up some parameters from results
 
     Parameters
     -----
@@ -80,24 +84,20 @@ def extract_param(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     num_alpha : int
         The number of alpha
     ohm_max : float
-        The maximum value of ohmic dissipation
+        The maximum value of the ohmic dissipation
 
     """
 
-    lin_alpha: np.ndarray = bundle[0]
-    ohm: np.ndarray = bundle[4]
+    lin_alpha: np.ndarray
+    ohm: np.ndarray
+    lin_alpha, _, _, _, ohm, _ = bundle
 
     alpha_init: float = lin_alpha[0]
     alpha_end: float = lin_alpha[-1]
 
     num_alpha: int = len(lin_alpha)
 
-    ohm_max: float
-    if ohm:
-        ohm_max = np.nanmax(ohm)
-    else:
-        ohm_max = 0
-    #
+    ohm_max: float = np.nanmax(ohm)
 
     return alpha_init, alpha_end, num_alpha, ohm_max
 #
@@ -114,9 +114,9 @@ def sort_sv(sym_alpha: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     Returns
     -----
     sinuous : ndarray
-        The trace of sinuous modes
+        The identifier of sinuous modes
     varicose : ndarray
-        The trace of varicose modes
+        The identifier of varicose modes
 
     """
 

@@ -19,7 +19,8 @@ No plotted figures
 Invalid value for 'SWITCH_COLOR'
     If 'SWITCH_COLOR' is not either 'blk', 'ene', or 'ohm'.
 Meaningless figures are plotted
-    If figures of ohmic dissipation are plotted in the ideal MHD case.
+    If figures of the ohmic dissipation are plotted in the ideal MHD
+    case.
 
 Notes
 -----
@@ -1079,7 +1080,7 @@ if __name__ == '__main__':
         NUM_ALPHA: int
         OHM_MAX: float
         ALPHA_INIT, ALPHA_END, NUM_ALPHA, OHM_MAX \
-            = proc.extract_param(results)
+            = proc.pickup_param(results)
 
         wrapper_plot_eig(results)
     #
@@ -1094,7 +1095,7 @@ if __name__ == '__main__':
         NUM_ALPHA_LOG: int
         OHM_LOG_MAX: float
         ALPHA_LOG_INIT, ALPHA_LOG_END, NUM_ALPHA_LOG, OHM_LOG_MAX \
-            = proc.extract_param(results_log)
+            = proc.pickup_param(results_log)
 
         wrapper_plot_eig_log(results_log)
     #
