@@ -98,10 +98,6 @@ def wrapper_plot_rossby(
     bundle : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    plot_rossby
-
     """
 
     axes: np.ndarray

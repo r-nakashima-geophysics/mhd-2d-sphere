@@ -123,11 +123,6 @@ def wrapper_eigene() -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     eig_log : ndarray
         Eigenvalues (log-log)
 
-    See Also
-    -----
-    calc_eig
-    calc_ene
-
     """
 
     eig: np.ndarray = np.zeros((NUM_N, NUM_ALPHA, NUM_MODE))
@@ -243,10 +238,6 @@ def calc_ene(n_degree: int,
     -----
     ene : float
         Energy partitioning
-
-    See Also
-    -----
-    calc_eig
 
     Notes
     -----

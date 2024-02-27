@@ -120,12 +120,6 @@ def wrapper_solve_eig_foralpha() \
     bundle_log : tuple of ndarray
         A tuple of results (log-log)
 
-    See Also
-    -----
-    package.make_mat.make_submat
-    package.make_mat.make_mat
-    package.solve_eig.solve_eig
-
     """
 
     submatrices: tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray] \

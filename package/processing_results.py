@@ -24,10 +24,6 @@ def screening_eig_q(criterion_q: float,
     bundle : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    pickup_param
-
     """
 
     eig: np.ndarray

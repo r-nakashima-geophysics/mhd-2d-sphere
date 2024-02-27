@@ -152,11 +152,6 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     prms : list of float
         A list of parameters
 
-    See Also
-    -----
-    integrate_ray
-    plot_ray
-
     """
 
     l_init: float = prms[2]

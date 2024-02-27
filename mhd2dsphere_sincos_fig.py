@@ -144,10 +144,6 @@ def wrapper_plot_eig(
     bundle : tuple of ndarray
         A tuple of results (linear-linear)
 
-    See Also
-    -----
-    plot_eig
-
     """
 
     save_fig: set[int]
@@ -506,10 +502,6 @@ def wrapper_plot_eig_log(
     -----
     bundle_log : tuple of ndarray
         A tuple of results (log-log)
-
-    See Also
-    -----
-    plot_eig_log
 
     """
 

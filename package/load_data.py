@@ -43,10 +43,6 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
     bundle_all_log : tuple of ndarray
         A tuple of results (log-log)
 
-    See Also
-    -----
-    load_results
-
     """
 
     name_file: str = f'MHD2Dsphere_sincos_m{m_order}E{e_eta}N{n_t}'

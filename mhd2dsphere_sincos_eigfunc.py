@@ -102,11 +102,6 @@ def wrapper_choose_eigfunc(
     bundle : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    make_eigfunc.choose_eigfunc
-    wrapper_plot_eigfunc
-
     """
 
     psi_vec: np.ndarray
@@ -136,13 +131,6 @@ def wrapper_plot_eigfunc(psi_vec: np.ndarray,
         An eigenvalue
     i_mode : int
         The index of a mode that you chose
-
-    See Also
-    -----
-    make_eigfunc.make_eigfunc
-    make_eigfunc.make_eigfunc_grid
-    plot_ns
-    plot_map
 
     """
 

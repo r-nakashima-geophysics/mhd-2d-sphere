@@ -99,11 +99,6 @@ def wrapper_choose_eigfunc(
     bundle : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    make_eigfunc.choose_eigfunc
-    wrapper_plot_frobenius
-
     """
 
     psi_vec: np.ndarray
@@ -135,10 +130,6 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
         An eigenvalue
     i_mode : int
         The index of a mode that you chose
-
-    See Also
-    -----
-    plot_frobenius
 
     """
 

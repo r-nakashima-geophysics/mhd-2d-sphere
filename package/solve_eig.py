@@ -41,12 +41,6 @@ def wrapper_solve_eig(m_order: int,
     bundle_with_vec : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    package.make_mat.make_submat
-    package.make_mat.make_mat
-    solve_eig
-
     """
 
     size_mat: int = 2 * size_submat
@@ -105,13 +99,6 @@ def solve_eig(m_order: int,
     phys_qtys : tuple of ndarray
         mke, mme, ohm, sym
 
-    See Also
-    -----
-    arrange_eig
-    calc_qty
-    check_eig
-    screening_eig
-
     """
 
     eig_val: np.ndarray
@@ -148,10 +135,6 @@ def arrange_eig(m_order: int,
     -----
     eig_vecval : ndarray
         Eigenvalues and normalized eigenvectors
-
-    See Also
-    -----
-    calc_ene
 
     """
 
@@ -253,10 +236,6 @@ def calc_qty(m_order: int,
         The ohmic dissipation
     sym : ndarray
         The symmetry of eigenmodes
-
-    See Also
-    -----
-    calc_ene
 
     Notes
     -----

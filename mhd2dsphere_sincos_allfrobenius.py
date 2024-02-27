@@ -92,10 +92,6 @@ def wrapper_plot_allfrobenius(
     bundle : tuple of ndarray
         A tuple of results
 
-    See Also
-    -----
-    plot_allfrobenius
-
     """
 
     ax1: np.ndarray
