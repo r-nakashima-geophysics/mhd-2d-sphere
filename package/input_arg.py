@@ -165,7 +165,7 @@ def input_int(min_int: int,
     Invalid integer
         If the inputted integer is not within the appropriate range.
     Invalid input
-        If the inputted characters is not an integer.
+        If the inputted character is not an integer.
 
     Examples
     -----
