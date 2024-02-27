@@ -15,7 +15,7 @@ def choose_eigfunc(bundle: tuple[np.ndarray, np.ndarray,
                                  np.ndarray, np.ndarray, np.ndarray,
                                  np.ndarray, np.ndarray],
                    size_mat: int) \
-        -> tuple[np.ndarray, np.ndarray, float, int]:
+        -> tuple[np.ndarray, np.ndarray, complex, int]:
     """Chooses eigenmodes which you want to plot
 
     Parameters
@@ -27,7 +27,7 @@ def choose_eigfunc(bundle: tuple[np.ndarray, np.ndarray,
 
     Returns
     -----
-    subbundle : tuple of ndarray and float and int
+    subbundle : tuple of ndarray and complex and int
         A tuple of results that you want to plot
 
     Raises
@@ -113,7 +113,7 @@ def make_eigfunc(psi_vec: np.ndarray,
     m_order : int
         The zonal wavenumber (order)
     legendre_norm : ndarray
-        Values of associated Legendre polynomials on grid points
+        Values of associated Legendre polynomials at grid points
 
     Returns
     -----
@@ -166,7 +166,7 @@ def make_eigfunc_grid(psi_vec: np.ndarray,
     num_phi : int
         The resolution in the phi direction
     legendre_norm : ndarray
-        Values of associated Legendre polynomials on gird points
+        Values of associated Legendre polynomials at grid points
 
     Returns
     -----
@@ -256,7 +256,7 @@ def adjust_sign(psi: np.ndarray,
     psi : ndarray
         An eigenfunction of the stream function (psi)
     num_theta : int
-        The resolution in the theta direction
+        The number of a grid in the theta direction
 
     Returns
     -----

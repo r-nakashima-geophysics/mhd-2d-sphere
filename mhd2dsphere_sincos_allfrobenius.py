@@ -169,9 +169,10 @@ def wrapper_plot_allfrobenius(
 #
 
 
-def plot_allfrobenius(bundle_with_vec: tuple[np.ndarray, np.ndarray,
-                                             np.ndarray, np.ndarray, np.ndarray,
-                                             np.ndarray, np.ndarray]) \
+def plot_allfrobenius(
+        bundle_with_vec: tuple[np.ndarray, np.ndarray,
+                               np.ndarray, np.ndarray, np.ndarray,
+                               np.ndarray, np.ndarray]) \
         -> tuple[tuple, list[float], list[float]]:
     """Plots a figure of the discontinuity in the coefficient of the
     first Frobenius series solution for all the eigenfunctions
