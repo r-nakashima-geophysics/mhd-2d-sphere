@@ -26,13 +26,13 @@ def make_submat(m_order: int,
     Returns
     -----
     submat_r : ndarray
-        The submatrix R
+        The (1,1)th submatrix
     submat_k1 : ndarray
-        The submatrix K1
+        The (1,2)th submatrix
     submat_k2 : ndarray
-        The submatrix K2
+        The (2,1)th submatrix
     submat_d : ndarray
-        The submatrix D
+        The (2,2)th submatrix
 
     Notes
     -----
@@ -86,7 +86,7 @@ def make_mat(m_order: int,
              submatrices: tuple[
                  np.ndarray, np.ndarray, np.ndarray, np.ndarray],
              alpha: float) -> np.ndarray:
-    """Makes the main matrix
+    """Makes the total matrix
 
     Parameters
     -----
@@ -102,7 +102,7 @@ def make_mat(m_order: int,
     Returns
     -----
     mat: np.ndarray
-        The main matrix
+        The total matrix
 
     Notes
     -----

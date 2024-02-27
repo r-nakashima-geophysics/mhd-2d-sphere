@@ -33,7 +33,7 @@ def chebyshev(n_degree: int,
 @njit
 def chebyshev_d(n_degree: int,
                 s_complex: complex) -> complex:
-    """Calculates the value of the first derivative of a Chebyshev 
+    """Calculates the value of the first derivative of a Chebyshev
     polynomial at a point
 
     Parameters
