@@ -41,7 +41,7 @@ from package.dispersion_rossby import dispersion_rossby
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The variable to switch approximate equations
 # spheroidal wave function ('sph')
@@ -182,7 +182,7 @@ def plot_rossby(
     lin_alpha: np.ndarray
     eig: np.ndarray
     sym: np.ndarray
-    lin_alpha, eig, sym = bundle[0], bundle[1], bundle[5]
+    lin_alpha, eig, _, _, _, sym = bundle
 
     num_alpha: int = len(lin_alpha)
 
@@ -241,8 +241,9 @@ def plot_rossby(
                 start = -(1+10**(-5))*M_ORDER*alpha
             #
 
-            root, _, _, _ = fsolve(dispersion_rossby, [start],
-                                   args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
+            root, _, _, _ = fsolve(
+                dispersion_rossby, [start],
+                args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
 
             if ((M_ORDER*alpha)**2)/(root.real**2) < 0.99:
                 if i_n % 2 == 0:

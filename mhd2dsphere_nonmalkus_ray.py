@@ -59,7 +59,7 @@ FUNC_DB: Callable[[float], float]
 TEXT_B: str
 NAME_B: str
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The boolean value to switch whether to use the magnetostrophic
 # approximation
@@ -154,8 +154,9 @@ def wrapper_plot_ray(prms: list[float]) -> None:
 
     """
 
-    l_init: float = prms[2]
-    t_end: float = prms[4]
+    l_init: float
+    t_end: float
+    _, _, l_init, _, t_end = prms
 
     results: tuple[float, float, np.ndarray, np.ndarray] \
         = integrate_ray(prms)

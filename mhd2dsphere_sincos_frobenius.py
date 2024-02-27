@@ -42,7 +42,7 @@ from package.yes_no_else import exe_yes_continue
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -103,7 +103,7 @@ def wrapper_choose_eigfunc(
 
     psi_vec: np.ndarray
     vpa_vec: np.ndarray
-    eig: float
+    eig: complex
     i_chosen: int
     psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
 
@@ -115,7 +115,7 @@ def wrapper_choose_eigfunc(
 
 def wrapper_plot_frobenius(psi_vec: np.ndarray,
                            vpa_vec: np.ndarray,
-                           eig: float,
+                           eig: complex,
                            i_mode: int) -> None:
     """A wrapper of a function to plot a figure of the comparison
     between the Frobenius series solutions and a numerical solution
@@ -126,7 +126,7 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
         An eigenvector of the stream function (psi)
     vpa_vec : ndarray
         An eigenvector of the vector potential (a)
-    eig : float
+    eig : complex
         An eigenvalue
     i_mode : int
         The index of a mode that you chose
@@ -232,7 +232,7 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
 
 def plot_frobenius(psi_vec: np.ndarray,
                    vpa_vec: np.ndarray,
-                   eig: float) -> tuple[tuple, float, list[float]]:
+                   eig: complex) -> tuple[tuple, float, list[float]]:
     """Plots a figure of the comparison between a Frobenius series
     solution and a numerical solution
 
@@ -242,7 +242,7 @@ def plot_frobenius(psi_vec: np.ndarray,
         An eigenvector of the stream function (psi)
     vpa_vec : ndarray
         An eigenvector of the vector potential (a)
-    eig : float
+    eig : complex
         An eigenvalue
 
     Returns
@@ -256,12 +256,12 @@ def plot_frobenius(psi_vec: np.ndarray,
 
     """
 
-    mu_c_tmp: float = eig / (M_ORDER * ALPHA)
+    mu_c_tmp: complex = eig / (M_ORDER * ALPHA)
     mu_c: float
     if 0 <= np.arccos(mu_c_tmp).real < math.pi/2:
-        mu_c = mu_c_tmp
+        mu_c = mu_c_tmp.real
     else:
-        mu_c = -mu_c_tmp
+        mu_c = -mu_c_tmp.real
     #
     theta_c: float = np.arccos(mu_c)
     i_theta_c: int = int(np.argmin(np.abs(LIN_THETA-theta_c)))
@@ -280,7 +280,7 @@ def plot_frobenius(psi_vec: np.ndarray,
     psi[0], _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
     psi1[0], psi2[0] \
-        = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
+        = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig.real, mu_c)
 
     # equatorial side
     psi[1] = psi[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real

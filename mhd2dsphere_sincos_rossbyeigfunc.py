@@ -38,7 +38,7 @@ from package.make_eigfunc import (adjust_sign, amp_range, choose_eigfunc,
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -96,7 +96,7 @@ def wrapper_choose_eigfunc(
 
     psi_vec: np.ndarray
     vpa_vec: np.ndarray
-    eig: float
+    eig: complex
     i_chosen: int
     psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
 
@@ -106,7 +106,7 @@ def wrapper_choose_eigfunc(
 
 def wrapper_plot_rossbyeigfunc(psi_vec: np.ndarray,
                                vpa_vec: np.ndarray,
-                               eig: float,
+                               eig: complex,
                                i_mode: int) -> None:
     """A wrapper of functions to plot a figure of the eigenfunction of a
     fast magnetic Rossby wave.
@@ -117,7 +117,7 @@ def wrapper_plot_rossbyeigfunc(psi_vec: np.ndarray,
         An eigenvector of the stream function (psi)
     vpa_vec : ndarray
         An eigenvector of the vector potential (a)
-    eig : float
+    eig : complex
         An eigenvalue
     i_mode : int
         The index of a mode that you chose
@@ -136,7 +136,7 @@ def wrapper_plot_rossbyeigfunc(psi_vec: np.ndarray,
 
 def plot_ns_rossbyeigfunc(psi: np.ndarray,
                           vpa: np.ndarray,
-                          eig: float,
+                          eig: complex,
                           i_mode: int) -> None:
     """Plots a figure of the eigenfunction of a fast magnetic Rossby
     wave.
@@ -147,7 +147,7 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
         An eigenfunction of the stream function (psi)
     vpa : ndarray
         An eigenfunction of the vector potential (a)
-    eig : float
+    eig : complex
         An eigenvalue
     i_mode : int
         The index of a mode that you chose
@@ -169,33 +169,32 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
         axis.plot(LIN_THETA, vpa.imag, color='blue', linestyle=':')
     #
 
-    rossbyeig: float
-    rossbyeigfunc: np.ndarray
-    rossbyeig, rossbyeigfunc = calc_rossbyeigfunc(i_mode)
+    eig_rossby: float
+    eigfunc_rossby: np.ndarray
+    eig_rossby, eigfunc_rossby = calc_rossbyeigfunc(i_mode)
 
     psi_max: float = np.nanmax(np.abs(psi.real))
-    rossbyeigfunc_max: float = np.nanmax(np.abs(rossbyeigfunc))
-    rossbyeigfunc_norm: np.ndarray \
-        = rossbyeigfunc * (psi_max/rossbyeigfunc_max)
+    max_eigfunc_rossby: float = np.nanmax(np.abs(eigfunc_rossby))
+    eigfunc_rossby = eigfunc_rossby * (psi_max/max_eigfunc_rossby)
 
-    axis.plot(LIN_THETA, rossbyeigfunc_norm, color='black',
+    axis.plot(LIN_THETA, eigfunc_rossby, color='black',
               linestyle=':', linewidth=2.5,
               label=r'$\mathrm{S}_{mn}(c,\mu)/\sqrt{\Lambda}$')
 
-    amp_max, amp_min = amp_range(psi, vpa)
+    max_amp, min_amp = amp_range(psi, vpa)
 
     axis.grid()
     axis.set_xlim(0, math.pi)
     axis.set_xticks([0, math.pi/4, math.pi/2, 3*math.pi/4, math.pi])
     axis.set_xticklabels(['$0$', '$45$', '$90$', '$135$', '$180$'])
-    axis.set_ylim(amp_min, amp_max)
+    axis.set_ylim(min_amp, max_amp)
 
     axis.set_xlabel('colatitude [degree]', fontsize=16)
     axis.set_ylabel('amplitude', fontsize=16)
     axis.set_title(
         r'$\lambda=$' + f' {eig.real:8.5f}, '
         + r'$\lambda_\mathrm{approx}=$'
-        + f' {rossbyeig.real:8.5f}', color='magenta', fontsize=16)
+        + f' {eig_rossby.real:8.5f}', color='magenta', fontsize=16)
 
     fig.suptitle(
         r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
