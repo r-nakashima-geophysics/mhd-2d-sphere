@@ -13,8 +13,8 @@ from scipy.special import lpmv
 def make_legendre(m_order: int,
                   n_t: int,
                   num_theta: int) -> None:
-    """Makes data of values of the associated Legendre polynomials on
-    grid points
+    """Makes data of values of associated Legendre polynomials at grid
+    points
 
     Parameters
     -----
@@ -32,7 +32,7 @@ def make_legendre(m_order: int,
     caffeine.on(display=False)
 
     path_dir: Path = Path('.') / 'output' / 'make_legendre'
-    name_file: str = f'make_legendre_m{m_order}N{n_t}th{num_theta}.dat'
+    name_file: str = f'make_legendre_m{m_order}N{n_t}th{num_theta}.npy'
     path_file: Path = path_dir / name_file
 
     lin_theta: np.ndarray = np.linspace(0, math.pi, num_theta)
@@ -55,7 +55,7 @@ def make_legendre(m_order: int,
 
     os.makedirs(path_dir, exist_ok=True)
 
-    np.savetxt(path_file, legendre_norm)
+    np.save(path_file, legendre_norm)
 
     time_elapsed: float = perf_counter() - time_init
     print(f'{__name__}: {time_elapsed:.3f} s')

@@ -1,8 +1,8 @@
 """A code for 2D MHD waves on a rotating sphere under the non-Malkus
 field B_phi = B_0 sin(theta) cos(theta)
 
-Outputs 5-12 files (alpha, eigenvalue, mean kinetic energy, mean
-magnetic energy, ohmic dissipation, and symmetry of eigenmodes)
+Outputs .npz files of results (alpha, eigenvalue, mean kinetic energy,
+mean magnetic energy, ohmic dissipation, and symmetry of eigenmodes)
 concerning the dispersion relation for 2D MHD waves on a rotating
 sphere under the non-Malkus field B_phi = B_0 sin(theta) cos(theta).
 
@@ -86,9 +86,7 @@ PATH_DIR: Final[Path] \
     = Path('.') / 'output' / 'MHD2Dsphere_sincos'
 NAME_FILE: Final[str] \
     = f'MHD2Dsphere_sincos_m{M_ORDER}E{E_ETA}N{N_T}'
-NAME_FILE_SUFFIX_1: Final[tuple[str, str, str, str, str, str]] \
-    = ('_alpha', '_eig', '_mke', '_mme', '_ohm', '_sym')
-NAME_FILE_SUFFIX_2: Final[tuple[str, str]] = ('.dat', 'log.dat')
+NAME_FILE_SUFFIX: Final[tuple[str, str]] = ('.npz', '_log.npz')
 
 # ================================
 
@@ -231,48 +229,35 @@ def save_results(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     mme: np.ndarray
     ohm: np.ndarray
     sym: np.ndarray
-
-    name_file_full: list[str]
-    path_file: list[Path]
+    name_file_full: str
+    path_file: Path
 
     if SWITCH_CALC[0]:
 
         eig, mke, mme, ohm, sym = bundle
 
+        name_file_full = NAME_FILE + NAME_FILE_SUFFIX[0]
+        path_file = PATH_DIR / name_file_full
+
         os.makedirs(PATH_DIR, exist_ok=True)
 
-        name_file_full = [NAME_FILE + suffix + NAME_FILE_SUFFIX_2[0]
-                          for suffix in NAME_FILE_SUFFIX_1]
-        path_file = [PATH_DIR / name for name in name_file_full]
-
-        np.savetxt(str(path_file[0]), LIN_ALPHA)
-        np.savetxt(str(path_file[1]), eig)
-        np.savetxt(str(path_file[2]), mke)
-        np.savetxt(str(path_file[3]), mme)
-        if E_ETA != 0:
-            np.savetxt(str(path_file[4]), ohm)
-        #
-        np.savetxt(str(path_file[5]), sym, fmt='%s')
+        np.savez(path_file,
+                 lin_alpha=LIN_ALPHA, eig=eig, mke=mke,
+                 mme=mme, ohm=ohm, sym=sym)
     #
 
     if SWITCH_CALC[1]:
 
         eig, mke, mme, ohm, sym = bundle_log
 
+        name_file_full = NAME_FILE + NAME_FILE_SUFFIX[1]
+        path_file = PATH_DIR / name_file_full
+
         os.makedirs(PATH_DIR, exist_ok=True)
 
-        name_file_full = [NAME_FILE + suffix + NAME_FILE_SUFFIX_2[1]
-                          for suffix in NAME_FILE_SUFFIX_1]
-        path_file = [PATH_DIR / name for name in name_file_full]
-
-        np.savetxt(str(path_file[0]), 10**LIN_ALPHA_LOG)
-        np.savetxt(str(path_file[1]), eig)
-        np.savetxt(str(path_file[2]), mke)
-        np.savetxt(str(path_file[3]), mme)
-        if E_ETA != 0:
-            np.savetxt(str(path_file[4]), ohm)
-        #
-        np.savetxt(str(path_file[5]), sym, fmt='%s')
+        np.savez(path_file,
+                 lin_alpha=10**LIN_ALPHA_LOG, eig=eig, mke=mke,
+                 mme=mme, ohm=ohm, sym=sym)
     #
 #
 

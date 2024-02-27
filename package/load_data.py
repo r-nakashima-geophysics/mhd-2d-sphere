@@ -21,7 +21,7 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
                    np.ndarray, np.ndarray, np.ndarray],
              tuple[np.ndarray, np.ndarray, np.ndarray,
                    np.ndarray, np.ndarray, np.ndarray]]:
-    """A wrapper of a function to load files of results
+    """A wrapper of a function to load .npz files of results
 
     Parameters
     -----
@@ -50,9 +50,7 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
     """
 
     name_file: str = f'MHD2Dsphere_sincos_m{m_order}E{e_eta}N{n_t}'
-    name_file_suffix_1: tuple[str, str, str, str, str, str] \
-        = ('_alpha', '_eig', '_mke', '_mme', '_ohm', '_sym')
-    name_file_suffix_2: tuple[str, str] = ('.dat', 'log.dat')
+    name_file_suffix: tuple[str, str] = ('.npz', '_log.npz')
 
     bundle_all: tuple[np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray] \
@@ -61,15 +59,14 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
                           np.ndarray, np.ndarray, np.ndarray] \
         = (np.array([]), ) * 6
 
+    name_file_full: str
     lin_alpha: np.ndarray
     bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                   np.ndarray, np.ndarray]
 
     if switch_plot[0]:
 
-        name_file_full: list[str] \
-            = [name_file + suffix + name_file_suffix_2[0]
-               for suffix in name_file_suffix_1]
+        name_file_full = name_file + name_file_suffix[0]
 
         lin_alpha, bundle = load_results(name_file_full)
 
@@ -79,9 +76,7 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
 
     if switch_plot[1]:
 
-        name_file_full: list[str] \
-            = [name_file + suffix + name_file_suffix_2[1]
-               for suffix in name_file_suffix_1]
+        name_file_full = name_file + name_file_suffix[1]
 
         lin_alpha, bundle = load_results(name_file_full)
 
@@ -95,14 +90,14 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
 #
 
 
-def load_results(name_file: list[str]) \
+def load_results(name_file: str) \
     -> tuple[np.ndarray, tuple[np.ndarray, np.ndarray, np.ndarray,
                                np.ndarray, np.ndarray]]:
-    """Loads files of results
+    """Loads .npz files of results
 
     Parameters
     -----
-    name_file : list of str
+    name_file : str
         The name of a loaded file
 
     Returns
@@ -121,13 +116,7 @@ def load_results(name_file: list[str]) \
     """
 
     path_dir: Path = Path('.') / 'output' / 'MHD2Dsphere_sincos'
-    path_file: list[Path] = [path_dir / name for name in name_file]
-
-    none_ohm: bool = False
-    if not path_file[4].exists():
-        none_ohm = True
-        path_file[4] = Path('.')
-    #
+    path_file: Path = path_dir / name_file
 
     lin_alpha: np.ndarray
     eig: np.ndarray
@@ -136,22 +125,19 @@ def load_results(name_file: list[str]) \
     ohm: np.ndarray
     sym: np.ndarray
 
-    if False in [path.exists() for path in path_file]:
+    if not path_file.exists():
         logger.error('File not found')
         sys.exit()
     else:
-        lin_alpha = np.loadtxt(path_file[0])
-        eig = np.loadtxt(path_file[1], dtype=np.complex128)
-        mke = np.loadtxt(path_file[2])
-        mme = np.loadtxt(path_file[3])
-        if none_ohm:
-            ohm = np.array([])
-        else:
-            ohm = np.loadtxt(path_file[4])
-        #
-        sym = np.loadtxt(path_file[5], dtype=object)
-    #
+        npz_kw = np.load(path_file, allow_pickle=True)
 
+        lin_alpha = npz_kw['lin_alpha']
+        eig = npz_kw['eig']
+        mke = npz_kw['mke']
+        mme = npz_kw['mme']
+        ohm = npz_kw['ohm']
+        sym = npz_kw['sym']
+    #
     bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                   np.ndarray, np.ndarray] \
         = (eig, mke, mme, ohm, sym)
@@ -163,7 +149,8 @@ def load_results(name_file: list[str]) \
 def load_legendre(m_order: int,
                   n_t: int,
                   num_theta: int) -> np.ndarray:
-    """Loads data of associated Legendre polynomials
+    """Loads data of values of associated Legendre polynomials at grid
+    points
 
     Parameters
     -----
@@ -177,7 +164,7 @@ def load_legendre(m_order: int,
     Returns
     -----
     legendre_norm : ndarray
-        Values of associated Legendre polynomials on gird points
+        Values of associated Legendre polynomials at grid points
 
     Raises
     -----
@@ -193,18 +180,18 @@ def load_legendre(m_order: int,
     #
 
     path_dir: Path = Path('.') / 'output' / 'make_legendre'
-    name_file: str = f'make_legendre_m{m_order}N{n_t}th{num_theta}.dat'
+    name_file: str = f'make_legendre_m{m_order}N{n_t}th{num_theta}.npy'
     path_file: Path = path_dir / name_file
 
     legendre_norm: np.ndarray
     if path_file.exists():
-        legendre_norm = np.loadtxt(path_file)
+        legendre_norm = np.load(path_file)
     else:
         logger.info(
             'File not found. '
             + 'Do you want to run package/make_legendre.py?')
         wrapper_make_legendre(m_order, n_t, num_theta)
-        legendre_norm = np.loadtxt(path_file)
+        legendre_norm = np.load(path_file)
     #
 
     return legendre_norm
