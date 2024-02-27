@@ -49,11 +49,9 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
     name_file_suffix: tuple[str, str] = ('.npz', '_log.npz')
 
     bundle_all: tuple[np.ndarray, np.ndarray, np.ndarray,
-                      np.ndarray, np.ndarray, np.ndarray] \
-        = (np.array([]), ) * 6
+                      np.ndarray, np.ndarray, np.ndarray]
     bundle_all_log: tuple[np.ndarray, np.ndarray, np.ndarray,
-                          np.ndarray, np.ndarray, np.ndarray] \
-        = (np.array([]), ) * 6
+                          np.ndarray, np.ndarray, np.ndarray]
 
     name_file_full: str
     lin_alpha: np.ndarray
