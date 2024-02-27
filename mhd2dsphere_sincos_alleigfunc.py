@@ -42,7 +42,7 @@ from package.make_eigfunc import make_eigfunc
 from package.processing_results import screening_eig_q
 from package.solve_eig import wrapper_solve_eig
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0

@@ -26,7 +26,7 @@ FUNC_B: Callable[[float], float]
 TEXT_B: str
 NAME_B: str
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The boolean value to switch whether to use the magnetostrophic
 # approximation

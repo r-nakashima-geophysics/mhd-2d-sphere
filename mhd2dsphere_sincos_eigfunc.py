@@ -29,7 +29,7 @@ from package.make_eigfunc import (amp_range, choose_eigfunc, make_eigfunc,
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0

@@ -56,7 +56,7 @@ from package import processing_results as proc
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # Boolean values to switch whether to plot figures
 # 0: dispersion relation (linear-linear)

@@ -43,7 +43,7 @@ FUNC_DDB: Callable[[np.ndarray], np.ndarray]
 TEXT_B: str
 NAME_B: str
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The boolean value to switch whether to use the magnetostrophic
 # approximation
@@ -232,7 +232,7 @@ def calc_l2() -> np.ndarray:
 
 
 def cmap_range(grid_l2: np.ndarray) -> float:
-    """A function to determine the range of the color map
+    """Determines the range of the color map
 
     Parameters
     -----
@@ -243,6 +243,7 @@ def cmap_range(grid_l2: np.ndarray) -> float:
     -----
     cmap_max : float
         The maximum value of the color map
+
     """
 
     i_almost_max: int = int(NUM_LAMBDA * NUM_THETA * 0.9)

@@ -36,7 +36,7 @@ from package.make_frobenius import calc_frobenius
 from package.processing_results import sort_sv
 from package.solve_eig import wrapper_solve_eig
 
-# ========== parameters ==========
+# ========== Parameters ==========
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -280,8 +280,8 @@ def plot_allfrobenius(
 def calc_jump(psi_vec: np.ndarray,
               vpa_vec: np.ndarray,
               eig: float) -> tuple[float, float, float]:
-    """A function to calculate the discontinuity
-        in the coefficient of the first Frobenius series solution
+    """Calculates the discontinuity in the coefficient of the first
+    Frobenius series solution
 
     Parameters
     -----
