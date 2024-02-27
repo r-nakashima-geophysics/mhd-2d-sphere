@@ -15,12 +15,12 @@ def yes_exe_no_exit(func) -> Callable[..., None]:
     Parameters
     -----
     func : Callable
-        An executed function when you input 'yes'
+        A function executed when you input 'yes'
 
     Returns
     -----
     new_function : Callable
-        An executed function when you input 'yes'
+        A function executed when you input 'yes'
 
     Raises
     -----
@@ -77,12 +77,12 @@ def exe_yes_continue(func) -> Callable[..., None]:
     Parameters
     -----
     func :
-        An executed function when you input 'yes'
+        A function executed when you input 'yes'
 
     Returns
     -----
     new_function : Callable
-        An executed function when you input 'yes'
+        A function executed when you input 'yes'
 
     Raises
     -----

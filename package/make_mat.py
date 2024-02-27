@@ -36,7 +36,7 @@ def make_submat(m_order: int,
 
     Notes
     -----
-    This function is based on eq. (19) in Nakashima & Yoshida
+    This function is based on eq. (22) in Nakashima & Yoshida
     (submitted)[1]_.
 
     """
@@ -106,7 +106,7 @@ def make_mat(m_order: int,
 
     Notes
     -----
-    This function is based on eq. (19) in Nakashima & Yoshida
+    This function is based on eq. (22) in Nakashima & Yoshida
     (submitted)[1]_.
 
     """

@@ -270,7 +270,7 @@ def calc_lambda(theta_rad: float) -> np.ndarray:
 
     Notes
     -----
-    This function is based on eq. (32a) in Nakashima & Yoshida (in
+    This function is based on eq. (33a) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """
@@ -310,7 +310,7 @@ def calc_l2(theta_rad: float) -> np.ndarray:
 
     Notes
     -----
-    This function is based on eq. (32b) in Nakashima & Yoshida (in
+    This function is based on eq. (33b) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """

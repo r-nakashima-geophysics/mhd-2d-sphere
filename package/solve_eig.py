@@ -192,7 +192,7 @@ def calc_ene(m_order: int,
 
     Notes
     -----
-    This function is based on eq. (21) in Nakashima & Yoshida
+    This function is based on eq. (24) in Nakashima & Yoshida
     (submitted)[1]_.
 
     """
@@ -313,7 +313,7 @@ def check_eig(m_order: int,
 
     Notes
     -----
-    This function is based on eq. (20) in Nakashima & Yoshida
+    This function is based on eq. (23) in Nakashima & Yoshida
     (submitted)[1]_.
 
     """

@@ -252,7 +252,7 @@ def calc_ene(n_degree: int,
     -----
     If n_degree = 0, ene is set to 0. If alpha = 0, ene is set to 0 for
     fast MR waves and 1 for slow MR waves. This function is based on
-    the equation in the caption of Fig. 2 in Nakashima & Yoshida (in
+    the equation in the caption of Fig. 3 in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """

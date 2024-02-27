@@ -440,7 +440,7 @@ def dispersion(k_const: float,
 
     Notes
     -----
-    This function is based on eq. (29) in Nakashima & Yoshida (submitted)
+    This function is based on eq. (30) in Nakashima & Yoshida (submitted)
     [1]_.
 
     """
@@ -519,7 +519,7 @@ def d_phi(theta_rad: float,
 
     Notes
     -----
-    This function is based on eq. (30a) in Nakashima & Yoshida (in
+    This function is based on eq. (31a) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """
@@ -570,7 +570,7 @@ def d_theta(theta_rad: float,
 
     Notes
     -----
-    This function is based on eq. (30b) in Nakashima & Yoshida (in
+    This function is based on eq. (31b) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """
@@ -616,7 +616,7 @@ def d_l(theta_rad: float,
 
     Notes
     -----
-    This function is based on eq. (31c) in Nakashima & Yoshida (in
+    This function is based on eq. (32c) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """

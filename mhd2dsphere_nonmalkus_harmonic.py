@@ -197,7 +197,7 @@ def calc_l2() -> np.ndarray:
 
     Notes
     -----
-    This function is based on eq. (32b) in Nakashima & Yoshida (in
+    This function is based on eq. (25a) in Nakashima & Yoshida (in
     prep.)[1]_.
 
     """

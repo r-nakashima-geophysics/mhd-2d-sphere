@@ -42,7 +42,7 @@ def calc_frobenius(m_order: int,
 
     Notes
     -----
-    This function is based on eqs. (14) and (15) in Nakashima & Yoshida
+    This function is based on eqs. (17) and (18) in Nakashima & Yoshida
     (submitted)[1]_.
 
     """
