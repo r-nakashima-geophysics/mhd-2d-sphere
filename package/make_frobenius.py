@@ -1,5 +1,5 @@
-"""Makes the Frobenius solutions of 2D MHD waves on a rotating sphere
-under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
+"""Makes the Frobenius solutions of 2D ideal MHD waves on a rotating
+sphere under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
 References
 -----

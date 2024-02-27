@@ -48,6 +48,10 @@ def chebyshev_d(n_degree: int,
     value_chebyshev_d : complex
         The value of the first derivative of the Chebyshev polynomial
 
+    See Also
+    -----
+    chebyshev
+
     """
 
     value_chebyshev_d: complex = 0
@@ -83,6 +87,10 @@ def chebyshev_d2(n_degree: int,
     -----
     value_chebyshev_d2 : complex
         The value of the second derivative of the Chebyshev polynomial
+
+    See Also
+    -----
+    chebyshev
 
     """
 

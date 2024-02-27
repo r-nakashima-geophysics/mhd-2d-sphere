@@ -96,14 +96,21 @@ def solve_eig(m_order: int,
     alpha : float
         The Lehnert number
     mat: ndarray
-        The main matrix
+        The total matrix
 
     Returns
     -----
     eig_vecval : ndarray
-        Eigenvalues & normalized eigenvectors
+        Eigenvalues and normalized eigenvectors
     phys_qtys : tuple of ndarray
         mke, mme, ohm, sym
+
+    See Also
+    -----
+    arrange_eig
+    calc_qty
+    check_eig
+    screening_eig
 
     """
 
@@ -140,7 +147,11 @@ def arrange_eig(m_order: int,
     Returns
     -----
     eig_vecval : ndarray
-        Eigenvalues & normalized eigenvectors
+        Eigenvalues and normalized eigenvectors
+
+    See Also
+    -----
+    calc_ene
 
     """
 
@@ -229,8 +240,8 @@ def calc_qty(m_order: int,
         The zonal wavenumber (order)
     e_eta : float
         The magnetic Ekman number
-    eig_vecval: np.ndarray
-        Eigenvalues & normalized eigenvectors
+    eig_vecval: ndarray
+        Eigenvalues and normalized eigenvectors
 
     Returns
     -----
@@ -239,9 +250,13 @@ def calc_qty(m_order: int,
     mme : ndarray
         The mean magnetic energy
     ohm : ndarray
-        Ohmic dissipation
+        The ohmic dissipation
     sym : ndarray
         The symmetry of eigenmodes
+
+    See Also
+    -----
+    calc_ene
 
     Notes
     -----
@@ -304,7 +319,7 @@ def check_eig(m_order: int,
     alpha : float
         The Lehnert number
     eig_vecval : ndarray
-        Eigenvalues & normalized eigenvectors
+        Eigenvalues and normalized eigenvectors
 
     Returns
     -----
@@ -365,7 +380,7 @@ def screening_eig(eig_vecval: np.ndarray,
     Parameters
     -----
     eig_vecval : ndarray
-        Eigenvalues & normalized eigenvectors
+        Eigenvalues and normalized eigenvectors
     phys_qtys : tuple of ndarray
         mke, mme, ohm, sym
     check : ndarray
@@ -374,7 +389,7 @@ def screening_eig(eig_vecval: np.ndarray,
     Returns
     -----
     eig_vecval : ndarray
-        Eigenvalues & normalized eigenvectors
+        Eigenvalues and normalized eigenvectors
     phys_qtys : tuple of ndarray
         mke, mme, ohm, sym
 
