@@ -52,22 +52,22 @@ def dispersion_rossby(eig: float,
             * (ma2/(eig**2))*(7+m_order/eig)
     elif switch_eq == 'wkb':
         kappa2: float = (-(eig/m_order)-ma2) / ((eig**2)-ma2)
-        meig: float = m_order * eig
+        m_eig: float = m_order * eig
         uc_n: int = n_degree - m_order
 
         def integrand(var: float,
                       kappa2: float,
-                      meig: float) -> float:
+                      m_eig: float) -> float:
             func: float = 1 / (
                 ((var**2)+kappa2)
-                * np.sqrt(((var**2)+1)*((var**2)-meig*kappa2)))
+                * np.sqrt(((var**2)+1)*((var**2)-m_eig*kappa2)))
             return func
         #
 
         integral, _ = quad(
-            integrand, 0, math.inf, args=(kappa2, meig))
-        dispersion_relation = 2*(1+meig) \
-            * np.sqrt(-meig/((eig**2)-ma2)) \
+            integrand, 0, math.inf, args=(kappa2, m_eig))
+        dispersion_relation = 2*(1+m_eig) \
+            * np.sqrt(-m_eig/((eig**2)-ma2)) \
             * kappa2*integral - (uc_n+(1/2))*math.pi
     #
 
