@@ -22,8 +22,10 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-FUNC_B: Callable[[float], float]
-TEXT_B: str
+from package.func_b import b_malkus, b_sin2cos, b_sincos
+
+FUNC_B: Callable[[complex], complex]
+TEX_B: str
 NAME_B: str
 
 # ========== Parameters ==========
@@ -33,16 +35,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-B_MALKUS: Final[tuple[Callable[[float], float], str, str]] = (
-    lambda theta_rad: 1,
-    r'\sin\theta', 'malkus')
-B_SINCOS: Final[tuple[Callable[[float], float], str, str]] = (
-    lambda theta_rad: math.cos(theta_rad),
-    r'\sin\theta\cos\theta', 'sincos')
-B_SIN2COS: Final[tuple[Callable[[float], float], str, str]] = (
-    lambda theta_rad: math.sin(theta_rad)*math.cos(theta_rad),
-    r'\sin^2\theta\cos\theta', 'sin2cos')
-FUNC_B, TEXT_B, NAME_B = B_MALKUS
+FUNC_B, _, _, TEX_B, NAME_B = b_malkus('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = b_sincos('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = b_sin2cos('theta')
 
 # The range of the colatitude
 THETA_INIT: Final[float] = 30
@@ -116,9 +111,9 @@ EPS: Final[float] = 10**(-10)
 def plot_kl() -> None:
     """Plots a figure of the local dispersion relation (k-l)"""
 
-    fig = plt.figure(figsize=(5*NUM_COL, 5*NUM_ROW))
-
+    fig: plt.Figure = plt.figure(figsize=(5*NUM_COL, 5*NUM_ROW))
     axis: plt.Axes
+
     theta_deg: float
     theta_rad: float
     g_lambda: np.ndarray
@@ -156,7 +151,7 @@ def plot_kl() -> None:
     #
 
     fig.suptitle(
-        r'Local dispersion relation [$B_{0\phi}=B_0' + TEXT_B + r'$]',
+        r'Local dispersion relation [$B_{0\phi}=B_0' + TEX_B + r'$]',
         color='magenta', fontsize=18)
 
     fig.tight_layout()
@@ -187,9 +182,9 @@ def plot_kl() -> None:
 def plot_klambda() -> None:
     """Plots a figure of the local dispersion relation (k-lambda)"""
 
-    fig = plt.figure(figsize=(5*NUM_COL, 7*NUM_ROW))
-
+    fig: plt.Figure = plt.figure(figsize=(5*NUM_COL, 7*NUM_ROW))
     axis: plt.Axes
+
     theta_deg: float
     theta_rad: float
     g_l2: np.ndarray
@@ -227,7 +222,7 @@ def plot_klambda() -> None:
     #
 
     fig.suptitle(
-        r'Local dispersion relation [$B_{0\phi}=B_0' + TEXT_B + r'$]',
+        r'Local dispersion relation [$B_{0\phi}=B_0' + TEX_B + r'$]',
         color='magenta', fontsize=18)
 
     fig.tight_layout()
@@ -277,6 +272,7 @@ def calc_lambda(theta_rad: float) -> np.ndarray:
 
     sin: float = math.sin(theta_rad)
     wavenum2: np.ndarray = (GRID_K_1**2) + (GRID_L**2)
+    value_b: float = FUNC_B(theta_rad).real
 
     rossby: np.ndarray
     sq_rt: np.ndarray
@@ -284,11 +280,10 @@ def calc_lambda(theta_rad: float) -> np.ndarray:
     if not SWITCH_MS:
         rossby = -sin * GRID_K_1 / (wavenum2+EPS)
         sq_rt = np.sqrt(
-            (rossby**2)
-            + 4*(GRID_K_1**2)*(FUNC_B(theta_rad)**2)*(sin**2))
+            (rossby**2) + 4*(GRID_K_1**2)*(value_b**2)*(sin**2))
         g_lambda = (rossby+sq_rt) / 2
     else:
-        g_lambda = GRID_K_1 * (FUNC_B(theta_rad)**2) * sin * wavenum2
+        g_lambda = GRID_K_1 * (value_b**2) * sin * wavenum2
     #
 
     return g_lambda
@@ -316,8 +311,9 @@ def calc_l2(theta_rad: float) -> np.ndarray:
     """
 
     sin: float = math.sin(theta_rad)
+    value_b: float = FUNC_B(theta_rad).real
     critical: np.ndarray \
-        = -(GRID_K_2**2) * (FUNC_B(theta_rad)**2) * (sin**2)
+        = -(GRID_K_2**2) * (value_b**2) * (sin**2)
 
     if not SWITCH_MS:
         critical += (GRID_LAMBDA**2)

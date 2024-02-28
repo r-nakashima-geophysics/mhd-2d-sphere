@@ -33,15 +33,18 @@ def b_malkus(switch_theta: str = 'mu') \
     """
 
     def malkus_mu(mu_complex: complex) -> complex:
-        return 1 + 0*mu_complex
+        _ = mu_complex
+        return 1
     #
 
     def malkus_d_mu(mu_complex: complex) -> complex:
-        return 0 * mu_complex
+        _ = mu_complex
+        return 0
     #
 
     def malkus_d2_mu(mu_complex: complex) -> complex:
-        return 0 * mu_complex
+        _ = mu_complex
+        return 0
     #
 
     malkus: Callable[[complex], complex] = malkus_mu
@@ -50,15 +53,18 @@ def b_malkus(switch_theta: str = 'mu') \
 
     if switch_theta == 'theta':
         def malkus_theta(theta_complex: complex) -> complex:
-            return 1 + 0*theta_complex
+            _ = theta_complex
+            return 1
         #
 
         def malkus_d_theta(theta_complex: complex) -> complex:
-            return 0 * theta_complex
+            _ = theta_complex
+            return 0
         #
 
         def malkus_d2_theta(theta_complex: complex) -> complex:
-            return 0 * theta_complex
+            _ = theta_complex
+            return 0
         #
 
         malkus = malkus_theta
@@ -103,11 +109,13 @@ def b_sincos(switch_theta: str = 'mu') \
     #
 
     def sincos_d_mu(mu_complex: complex) -> complex:
-        return 1 + 0 * mu_complex
+        _ = mu_complex
+        return 1
     #
 
     def sincos_d2_mu(mu_complex: complex) -> complex:
-        return 0 * mu_complex
+        _ = mu_complex
+        return 0
     #
 
     sincos: Callable[[complex], complex] = sincos_mu

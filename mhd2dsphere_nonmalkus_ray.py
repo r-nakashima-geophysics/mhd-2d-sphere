@@ -51,12 +51,14 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 
+from package.func_b import b_malkus, b_sin2cos, b_sincos
+
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
 
-FUNC_B: Callable[[float], float]
-FUNC_DB: Callable[[float], float]
-TEXT_B: str
+FUNC_B: Callable[[complex], complex]
+FUNC_DB: Callable[[complex], complex]
+TEX_B: str
 NAME_B: str
 
 # ========== Parameters ==========
@@ -65,26 +67,13 @@ NAME_B: str
 # approximation
 SWITCH_MS: Final[bool] = False
 
-# The function B and its derivative with respect to theta
-B_MALKUS: Final[tuple[Callable[[float], float],
-                Callable[[float], float], str, str]] = (
-    lambda theta_rad: 1,
-    lambda theta_rad: 0,
-    r'\sin\theta', 'malkus')
-B_SINCOS: Final[tuple[Callable[[float], float],
-                Callable[[float], float], str, str]] = (
-    lambda theta_rad: math.cos(theta_rad),
-    lambda theta_rad: -math.sin(theta_rad),
-    r'\sin\theta\cos\theta', 'sincos')
-B_SIN2COS: Final[tuple[Callable[[float], float],
-                 Callable[[float], float], str, str]] = (
-    lambda theta_rad: math.sin(theta_rad)*math.cos(theta_rad),
-    lambda theta_rad: math.cos(2*theta_rad),
-    r'\sin^2\theta\cos\theta', 'sin2cos')
-FUNC_B, FUNC_DB, TEXT_B, NAME_B = B_SINCOS
+# The function B
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_malkus('theta')
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sincos('theta')
+FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sin2cos('theta')
 
 # The scaled angular frequency
-LAMBDA: Final[float] = 0.01
+LAMBDA: Final[float] = 1
 
 # Initial values of the time integration calculating the ray trajectory
 THETA_INITIAL: Final[float] = 45
@@ -99,7 +88,8 @@ TIME_END: Final[float] = 30
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
     = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_ray'
-NAME_FIG: Final[str] = f'MHD2Dsphere_nonmalkus_ray_{NAME_B}L{LAMBDA}'
+NAME_FIG: Final[str] \
+    = f'MHD2Dsphere_nonmalkus_ray_{NAME_B}_lambda{LAMBDA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
 
@@ -218,7 +208,7 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     #
 
     fig.suptitle(
-        r'Ray trajectory [$B_{0\phi}=B_0' + TEXT_B + r'$] : '
+        r'Ray trajectory [$B_{0\phi}=B_0' + TEX_B + r'$] : '
         + r'$k\sin\theta=$' + f' {k_const:8.5f}, '
         + r'$|\alpha|^{-1/2}\lambda=$' + f' {LAMBDA}',
         color='magenta', fontsize=16)
@@ -279,6 +269,7 @@ def plot_ray(prms: list[float],
 
     num_time: int = len(lin_time)
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(
         figsize=(7, 6),
@@ -351,7 +342,7 @@ def plot_ray(prms: list[float],
                     vmin=0, vmax=360)
 
     tmp_theta: np.ndarray = np.linspace(THETA_INIT, THETA_END, 18001)
-    list_b2: list[float] = [(FUNC_B(tmp)**2) for tmp in tmp_theta]
+    list_b2: list[float] = [(FUNC_B(tmp)**2).real for tmp in tmp_theta]
     max_b2: float = max(list_b2)
     min_b2: float = min(list_b2)
     cond_critical: bool = \
@@ -394,8 +385,8 @@ def integrate_ray(prms: list[float]) \
     k_const_init: float = k_init * math.sin(theta_rad_init)
 
     sol_k: np.ndarray
-    sol_k, _, _, _ = fsolve(
-        dispersion, k_const_init, args=(theta_rad_init, l_init))
+    sol_k = fsolve(
+        dispersion, k_const_init, args=(theta_rad_init, l_init))[0]
 
     k_const: float = float(sol_k)
     k_wavenum_init: float = k_const / math.sin(theta_rad_init)
@@ -445,15 +436,17 @@ def dispersion(k_const: float,
     l_wavenum: float
     theta_rad, l_wavenum = args
 
+    value_b: float = FUNC_B(theta_rad).real
+
     dispersion_relation: float
     if not SWITCH_MS:
         dispersion_relation \
-            = ((LAMBDA**2)-(k_const**2)*(FUNC_B(theta_rad)**2)) \
+            = ((LAMBDA**2)-(k_const**2)*(value_b**2)) \
             * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2)) \
             + k_const*LAMBDA
     else:
         dispersion_relation \
-            = -k_const*(FUNC_B(theta_rad)**2) \
+            = -k_const*(value_b**2) \
             * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2)) \
             + LAMBDA
     #
@@ -483,6 +476,7 @@ def main_func(time: np.ndarray,
 
     """
 
+    _ = time
     theta_rad: float = vec[1]
     l_wavenum: float = vec[2]
 
@@ -520,14 +514,16 @@ def d_phi(theta_rad: float,
 
     """
 
+    value_b: float = FUNC_B(theta_rad).real
+
     cg_phi: float
     if not SWITCH_MS:
         numerator_1: float \
-            = 2*k_const*(FUNC_B(theta_rad)**2)*math.sin(theta_rad) \
+            = 2*k_const*(value_b**2)*math.sin(theta_rad) \
             * (2*(k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2))
         numerator_2: float \
-            = (2*k_const*LAMBDA/math.sin(theta_rad)+math.sin(theta_rad)) \
-            * LAMBDA
+            = (2*k_const*LAMBDA/math.sin(theta_rad)
+               + math.sin(theta_rad)) * LAMBDA
         denominator: float \
             = 2*LAMBDA \
             * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2)) \
@@ -535,7 +531,7 @@ def d_phi(theta_rad: float,
         cg_phi = (numerator_1-numerator_2) / denominator
     else:
         cg_phi \
-            = (FUNC_B(theta_rad)**2)*math.sin(theta_rad) \
+            = (value_b**2)*math.sin(theta_rad) \
             * (3*(k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2))
     #
 
@@ -571,18 +567,19 @@ def d_theta(theta_rad: float,
 
     """
 
+    value_b: float = FUNC_B(theta_rad).real
+
     cg_theta: float
     if not SWITCH_MS:
         numerator: float \
-            = -2*l_wavenum \
-            * ((LAMBDA**2)-(k_const**2)*(FUNC_B(theta_rad)**2))
+            = -2*l_wavenum * ((LAMBDA**2)-(k_const**2)*(value_b**2))
         denominator: float \
             = 2*LAMBDA \
             * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2)) \
             + k_const
         cg_theta = numerator / denominator
     else:
-        cg_theta = 2*k_const*l_wavenum*(FUNC_B(theta_rad)**2)
+        cg_theta = 2*k_const*l_wavenum*(value_b**2)
     #
 
     dtheta_dt: float = -cg_theta
@@ -617,11 +614,14 @@ def d_l(theta_rad: float,
 
     """
 
+    value_b: float = FUNC_B(theta_rad).real
+    value_db: float = FUNC_DB(theta_rad).real
+
     dlambda_dtheta: float
     if not SWITCH_MS:
         numerator: float = -k_const*LAMBDA/math.tan(theta_rad) + (
-            2*(k_const**2)*FUNC_B(theta_rad)*FUNC_DB(theta_rad)
-            + 2*(k_const**2)*(FUNC_B(theta_rad)**2)/math.tan(theta_rad)
+            2*(k_const**2)*value_b*value_db
+            + 2*(k_const**2)*(value_b**2)/math.tan(theta_rad)
         ) * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2))
         denominator: float \
             = 2*LAMBDA \
@@ -630,8 +630,7 @@ def d_l(theta_rad: float,
         dlambda_dtheta = numerator / denominator
     else:
         dlambda_dtheta = k_const*(
-            2*FUNC_B(theta_rad)*FUNC_DB(theta_rad)
-            + (FUNC_B(theta_rad)**2)/math.tan(theta_rad)
+            2*value_b*value_db + (value_b**2)/math.tan(theta_rad)
         ) * ((k_const**2)/(math.sin(theta_rad)**2)+(l_wavenum**2))
     #
 
@@ -658,8 +657,8 @@ def critical_lat(k_const: float) -> set[float]:
     """
 
     def critical(theta_rad: float) -> float:
-        critical: float \
-            = (LAMBDA**2) - (k_const**2)*(FUNC_B(theta_rad)**2)
+        value_b: float = FUNC_B(theta_rad).real
+        critical: float = (LAMBDA**2) - (k_const**2)*(value_b**2)
 
         return critical
     #
@@ -672,7 +671,7 @@ def critical_lat(k_const: float) -> set[float]:
     for init_deg in range(int(THETA_INIT), int(THETA_END), 1):
 
         init_rad = math.radians(init_deg)
-        theta_c_rad, _, _, _ = fsolve(critical, init_rad)
+        theta_c_rad = fsolve(critical, init_rad)[0]
         theta_c_deg = math.degrees(theta_c_rad)
 
         if THETA_INIT < theta_c_deg < THETA_END:

@@ -2,7 +2,7 @@
 non-Malkus field B_phi = B_0 B(theta) sin(theta)
 
 Plots a figure of the values of L^2 in the differential equation
-y''+L^2y=0 of the harmonic oscillation.
+y''+L^2y=0.
 
 Parameters
 -----
@@ -35,12 +35,13 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
+from package.func_b import b_malkus, b_sin2cos, b_sincos
 from package.input_arg import input_alpha
 
-FUNC_B: Callable[[np.ndarray], np.ndarray]
-FUNC_DB: Callable[[np.ndarray], np.ndarray]
-FUNC_DDB: Callable[[np.ndarray], np.ndarray]
-TEXT_B: str
+FUNC_B: Callable[[complex], complex]
+FUNC_DB: Callable[[complex], complex]
+FUNC_D2B: Callable[[complex], complex]
+TEX_B: str
 NAME_B: str
 
 # ========== Parameters ==========
@@ -49,32 +50,10 @@ NAME_B: str
 # approximation
 SWITCH_MS: Final[bool] = False
 
-# The function B and its derivatives with respect to theta
-B_MALKUS: Final[tuple[Callable[[np.ndarray], np.ndarray],
-                Callable[[np.ndarray], np.ndarray],
-                Callable[[np.ndarray], np.ndarray],
-                str, str]] = (
-    lambda theta_rad: np.full_like(theta_rad, 1),
-    lambda theta_rad: np.full_like(theta_rad, 0),
-    lambda theta_rad: np.full_like(theta_rad, 0),
-    r'\sin\theta', 'malkus')
-B_SINCOS: Final[tuple[Callable[[np.ndarray], np.ndarray],
-                Callable[[np.ndarray], np.ndarray],
-                Callable[[np.ndarray], np.ndarray],
-                str, str]] = (
-    lambda theta_rad: np.cos(theta_rad),
-    lambda theta_rad: -np.sin(theta_rad),
-    lambda theta_rad: -np.cos(theta_rad),
-    r'\sin\theta\cos\theta', 'sincos')
-B_SIN2COS: Final[tuple[Callable[[np.ndarray], np.ndarray],
-                 Callable[[np.ndarray], np.ndarray],
-                 Callable[[np.ndarray], np.ndarray],
-                 str, str]] = (
-    lambda theta_rad: np.sin(theta_rad)*np.cos(theta_rad),
-    lambda theta_rad: np.cos(2*theta_rad),
-    lambda theta_rad: -2*np.sin(2*theta_rad),
-    r'\sin^2\theta\cos\theta', 'sin2cos')
-FUNC_B, FUNC_DB, FUNC_DDB, TEXT_B, NAME_B = B_MALKUS
+# The function B
+FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_malkus('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sincos('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sin2cos('theta')
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -89,13 +68,13 @@ THETA_END: Final[float] = math.pi
 
 # The range of the angular frequency
 LAMBDA_STEP: Final[float] = ALPHA * 0.01
-# for B_MALKUS
+# for b_malkus
 LAMBDA_INIT: Final[float] = -M_ORDER * ALPHA * 2
 LAMBDA_END: Final[float] = M_ORDER * ALPHA * 2
-# for B_SINCOS
+# for b_sincos
 # LAMBDA_INIT: Final[float] = -M_ORDER * ALPHA
 # LAMBDA_END: Final[float] = M_ORDER * ALPHA
-# for B_SIN2COS
+# for b_sin2cos
 # LAMBDA_INIT: Final[float] = -M_ORDER * ALPHA / 2
 # LAMBDA_END: Final[float] = M_ORDER * ALPHA / 2
 
@@ -103,7 +82,7 @@ LAMBDA_END: Final[float] = M_ORDER * ALPHA * 2
 PATH_DIR_FIG: Final[Path] \
     = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_harmonic'
 NAME_FIG: Final[str] = 'MHD2Dsphere_nonmalkus_harmonic' \
-    + f'_{NAME_B}m{M_ORDER}a{ALPHA}'
+    + f'_{NAME_B}_m{M_ORDER}a{ALPHA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
 
@@ -117,9 +96,22 @@ LIN_LAMBDA: Final[np.ndarray] \
 LIN_THETA: Final[np.ndarray] \
     = np.linspace(THETA_INIT, THETA_END, NUM_THETA)
 
+LIN_B: Final[np.ndarray] = np.array(
+    [FUNC_B(LIN_THETA[i_theta]).real for i_theta in range(NUM_THETA)])
+LIN_DB: Final[np.ndarray] = np.array(
+    [FUNC_DB(LIN_THETA[i_theta]).real for i_theta in range(NUM_THETA)])
+LIN_D2B: Final[np.ndarray] = np.array(
+    [FUNC_D2B(LIN_THETA[i_theta]).real for i_theta in range(NUM_THETA)])
+
 GRID_LAMBDA: np.ndarray
 GRID_THETA: np.ndarray
+GRID_B: np.ndarray
+GRID_DB: np.ndarray
+GRID_D2B: np.ndarray
 GRID_LAMBDA, GRID_THETA = np.meshgrid(LIN_LAMBDA, LIN_THETA)
+_, GRID_B = np.meshgrid(LIN_LAMBDA, LIN_B)
+_, GRID_DB = np.meshgrid(LIN_LAMBDA, LIN_DB)
+_, GRID_D2B = np.meshgrid(LIN_LAMBDA, LIN_D2B)
 
 EPS: Final[float] = 10**(-10)
 
@@ -127,6 +119,7 @@ EPS: Final[float] = 10**(-10)
 def plot_l2() -> None:
     """Plots a figure of the values of L^2"""
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(5, 5))
 
@@ -159,7 +152,7 @@ def plot_l2() -> None:
     axis.minorticks_on()
 
     fig.suptitle(
-        r'[$B_{0\phi}=B_0' + TEXT_B + r'$] : '
+        r'[$B_{0\phi}=B_0' + TEX_B + r'$] : '
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
         color='magenta', fontsize=16)
 
@@ -204,28 +197,29 @@ def calc_l2() -> np.ndarray:
 
     sin: np.ndarray = np.sin(GRID_THETA)
     cos: np.ndarray = np.cos(GRID_THETA)
-    critical: np.ndarray \
-        = -(M_ORDER**2) * (ALPHA**2) * (FUNC_B(GRID_THETA)**2)
+    critical: np.ndarray = -(M_ORDER**2) * (ALPHA**2) * (GRID_B**2)
 
     if not SWITCH_MS:
         critical += (GRID_LAMBDA**2)
     #
 
     d_critical: np.ndarray = (M_ORDER**2) * (ALPHA**2) \
-        * 2 * FUNC_B(GRID_THETA) * FUNC_DB(GRID_THETA) / (sin+EPS)
-    dd_critical: np.ndarray = 2 * (M_ORDER**2) * (ALPHA**2) * (
-        cos*FUNC_B(GRID_THETA)*FUNC_DB(GRID_THETA)/(sin+EPS)
-        - FUNC_B(GRID_THETA)*FUNC_DDB(GRID_THETA)
-        - (FUNC_DB(GRID_THETA)**2)) / ((sin**2)+EPS)
+        * 2 * GRID_B * GRID_DB / (sin+EPS)
+    dd_critical: np.ndarray \
+        = 2 * (M_ORDER**2) * (ALPHA**2) * (
+            cos*GRID_B*GRID_DB/(sin+EPS)
+            - GRID_B*GRID_D2B - (GRID_DB**2)
+        ) / ((sin**2)+EPS)
 
-    grid_l2: np.ndarray = -(M_ORDER**2) - M_ORDER*(sin**2)*(
-        GRID_LAMBDA+2*M_ORDER*(ALPHA**2)*(
-            (FUNC_B(GRID_THETA)**2)
-            - cos*FUNC_B(GRID_THETA)*FUNC_DB(GRID_THETA)/(sin+EPS))) \
-        / (critical+EPS) + (sin**2)*(
-        cos*d_critical/(critical+EPS)
-        + (sin**2)*(d_critical**2)/(4*(critical**2)+EPS)
-        - (sin**2)*dd_critical/(2*critical+EPS))
+    grid_l2: np.ndarray \
+        = -(M_ORDER**2) - M_ORDER*(sin**2)*(
+            GRID_LAMBDA + 2*M_ORDER*(ALPHA**2)
+            * ((GRID_B**2)-cos*GRID_B*GRID_DB/(sin+EPS))
+        ) / (critical+EPS) + (sin**2)*(
+            cos*d_critical/(critical+EPS)
+            + (sin**2)*(d_critical**2)/(4*(critical**2)+EPS)
+            - (sin**2)*dd_critical/(2*critical+EPS)
+        )
 
     return grid_l2
 #
