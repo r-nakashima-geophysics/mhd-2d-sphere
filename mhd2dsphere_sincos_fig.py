@@ -214,8 +214,8 @@ def wrapper_plot_eig(
     fig1.tight_layout()
     fig2.tight_layout()
 
-    cbar_ax_1: plt.Axes = plt.axis()
-    cbar_ax_2: plt.Axes = plt.axis()
+    cbar_ax_1: plt.Axes
+    cbar_ax_2: plt.Axes
 
     if SWITCH_COLOR in ('ene', 'ohm'):
         fig1.subplots_adjust(right=0.85)
@@ -637,8 +637,8 @@ def wrapper_plot_eig_log(
     fig1.tight_layout()
     fig2.tight_layout()
 
-    cbar_ax_1: plt.Axes = plt.axis()
-    cbar_ax_2: plt.Axes = plt.axis()
+    cbar_ax_1: plt.Axes
+    cbar_ax_2: plt.Axes
 
     if SWITCH_COLOR in ('ene', 'ohm'):
         fig1.subplots_adjust(right=0.85)

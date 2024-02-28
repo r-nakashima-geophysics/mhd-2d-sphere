@@ -283,6 +283,7 @@ def plot_eig(eig: np.ndarray) -> None:
 
     """
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(5, 7))
 
@@ -359,6 +360,7 @@ def plot_ene(ene: np.ndarray) -> None:
 
     i_n: int
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(5, 5))
 
@@ -438,6 +440,7 @@ def plot_eig_log(eig_log: np.ndarray) -> None:
 
     i_n: int
 
+    fig: plt.Figure
     axes: np.ndarray
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
