@@ -11,6 +11,7 @@ def b_malkus(switch_theta: str = 'mu') \
     -> tuple[Callable[[complex], complex], Callable[[complex], complex],
              Callable[[complex], complex], str, str]:
     """The Malkus field (B=1)
+
     Parameters
     -----
     switch_theta : str, default 'mu'

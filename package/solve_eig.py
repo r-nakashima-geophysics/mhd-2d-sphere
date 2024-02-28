@@ -175,7 +175,7 @@ def calc_ene(m_order: int,
     m_order : int
         The zonal wavenumber (order)
     eig_vecval: ndarray
-        Eigenvalues & eigenvectors
+        Eigenvalues and eigenvectors
 
     Returns
     -----
@@ -303,7 +303,7 @@ def check_eig(m_order: int,
     Returns
     -----
     check : ndarray
-        validity
+        The validity of eigenmodes
 
     Notes
     -----
@@ -363,7 +363,7 @@ def screening_eig(eig_vecval: np.ndarray,
     phys_qtys : tuple of ndarray
         mke, mme, ohm, sym
     check : ndarray
-        Validity
+        The validity of eigenmodes
 
     Returns
     -----

@@ -143,9 +143,9 @@ def sort_pr(eig_alpha: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     Returns
     -----
     prograde : ndarray
-        The trace of prograde modes
+        The identifier of prograde modes
     retrograde : ndarray
-        The trace of retrograde modes
+        The identifier of retrograde modes
 
     """
 
@@ -176,7 +176,7 @@ def pickup_unstable(eig_alpha: np.ndarray) -> np.ndarray:
     Returns
     -----
     unstable : ndarray
-        The trace of unstable modes
+        The identifier of unstable modes
 
     """
 
@@ -205,9 +205,9 @@ def sort_alfvenic(mke_alpha: np.ndarray) \
     Returns
     -----
     alfvenic : ndarray
-        The trace of alfvenic modes
+        The identifier of alfvenic modes
     non_alfvenic : ndarray
-        The trace of non-alfvenic modes
+        The identifier of non-alfvenic modes
 
     """
 

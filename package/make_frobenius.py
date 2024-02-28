@@ -27,7 +27,7 @@ def calc_frobenius(m_order: int,
     alpha : float
         The Lehnert number
     num_theta : int
-        The number of a grid in the theta direction
+        The number of the grid in the theta direction
     eig : float
         An eigenvalue
     mu_c : float

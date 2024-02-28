@@ -23,7 +23,7 @@ def make_legendre(m_order: int,
     n_t : int
         The truncation degree
     num_theta : int
-        The number of a grid in the theta direction
+        The number of the grid in the theta direction
 
     """
 

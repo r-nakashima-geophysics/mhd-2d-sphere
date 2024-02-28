@@ -118,9 +118,9 @@ def make_eigfunc(psi_vec: np.ndarray,
     Returns
     -----
     psi : ndarray
-        An eigenvector of the stream function (psi)
+        An eigenfunction of the stream function (psi)
     vpa : ndarray
-        An eigenvector of the vector potential (a)
+        An eigenfunction of the vector potential (a)
 
     """
 
@@ -164,7 +164,7 @@ def make_eigfunc_grid(psi_vec: np.ndarray,
     m_order : int
         The zonal wavenumber (order)
     num_phi : int
-        The resolution in the phi direction
+        The number of the grid in the phi direction
     legendre_norm : ndarray
         Values of associated Legendre polynomials at grid points
 
@@ -256,12 +256,12 @@ def adjust_sign(psi: np.ndarray,
     psi : ndarray
         An eigenfunction of the stream function (psi)
     num_theta : int
-        The number of a grid in the theta direction
+        The number of the grid in the theta direction
 
     Returns
     -----
     sign : int
-        The sign of an eigenfunction
+        The sign of the eigenfunction
 
     """
 
