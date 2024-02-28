@@ -28,7 +28,7 @@ from package.solve_eig import wrapper_solve_eig
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0
-SWITCH_ETA: Final[bool] = False
+SWITCH_DISP_ETA: Final[bool] = False
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -132,7 +132,7 @@ def plot_dependdegree(
         r'$\mathrm{Re}(\lambda)=\mathrm{Re}(\omega)/2\Omega_0$',
         fontsize=16)
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         axis.set_title(
             r'Eigenvalues [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$'

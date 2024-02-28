@@ -33,7 +33,7 @@ from package.yes_no_else import exe_yes_continue
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0
-SWITCH_ETA: Final[bool] = False
+SWITCH_DISP_ETA: Final[bool] = False
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -210,7 +210,7 @@ def plot_ns(psi: np.ndarray,
             color='magenta', fontsize=16)
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
@@ -303,7 +303,7 @@ def plot_map(psi_grid: np.ndarray,
         r'vector potential $\mathrm{sgn}(\alpha)a_1'
         + r'/\sqrt{\rho_0\mu_\mathrm{m}}$', fontsize=16)
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}\n\n'

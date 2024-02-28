@@ -46,7 +46,7 @@ from package.solve_eig import wrapper_solve_eig
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0
-SWITCH_ETA: Final[bool] = False
+SWITCH_DISP_ETA: Final[bool] = False
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -109,13 +109,17 @@ def wrapper_plot_alleigfunc(
 
     """
 
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
     save_fig2: bool
     (fig1, ax1, fig2, ax2), save_fig2 = plot_alleigfunc(bundle)
 
-    ax_all: tuple = (ax1[0, 0], ax1[0, 1], ax1[1, 0], ax1[1, 1],
-                     ax2[0, 0], ax2[0, 1], ax2[1, 0], ax2[1, 1])
+    ax_all: tuple[plt.Axes, plt.Axes, plt.Axes, plt.Axes,
+                  plt.Axes, plt.Axes, plt.Axes, plt.Axes,] \
+        = (ax1[0, 0], ax1[0, 1], ax1[1, 0], ax1[1, 1],
+           ax2[0, 0], ax2[0, 1], ax2[1, 0], ax2[1, 1])
 
     for axis in ax_all:
         axis.grid()
@@ -184,7 +188,7 @@ def wrapper_plot_alleigfunc(
                             color='magenta', fontsize=16)
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Eigenfunctions [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
@@ -260,8 +264,7 @@ def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
     vpa_vec: np.ndarray
     eig: np.ndarray
     sym: np.ndarray
-    psi_vec, vpa_vec, eig, sym \
-        = bundle[0], bundle[1], bundle[2], bundle[6]
+    psi_vec, vpa_vec, eig, _, _, _, sym = bundle
 
     psi_all: np.ndarray
     vpa_all: np.ndarray
@@ -270,6 +273,8 @@ def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
     cmap_max: float = cmap_range(psi_all, vpa_all)
     cmap_min: float = 0
 
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
     # real part

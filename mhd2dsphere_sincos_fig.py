@@ -71,7 +71,7 @@ SWITCH_COLOR: Final[str] = 'ene'
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0
-SWITCH_ETA: Final[bool] = False
+SWITCH_DISP_ETA: Final[bool] = False
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = input_m(1)
@@ -189,7 +189,7 @@ def wrapper_plot_eig(
         axis.minorticks_on()
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -612,7 +612,7 @@ def wrapper_plot_eig_log(
         axis.tick_params(labelsize=12)
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
