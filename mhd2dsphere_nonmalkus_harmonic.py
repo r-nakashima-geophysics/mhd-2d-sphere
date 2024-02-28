@@ -161,7 +161,7 @@ def plot_l2() -> None:
     fig.subplots_adjust(right=0.79, wspace=0.25)
     axpos = axis.get_position()
     cbar_ax: plt.Axes \
-        = fig.add_axes([0.81, axpos.y0, 0.01, axpos.height])
+        = fig.add_axes((0.81, axpos.y0, 0.01, axpos.height))
 
     cbar = fig.colorbar(cfs, cax=cbar_ax)
     cbar.ax.tick_params(labelsize=14)
