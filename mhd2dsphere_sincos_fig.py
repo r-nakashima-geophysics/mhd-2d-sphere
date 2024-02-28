@@ -112,14 +112,13 @@ FIG_DPI: Final[int] = 600
 SIZE_SUBMAT: Final[int] = N_T - M_ORDER + 1
 SIZE_MAT: Final[int] = 2 * SIZE_SUBMAT
 
-if SWITCH_COLOR == 'ene':
-    STRETCH_ATAN: Final[float] = 10
-    COLOR_TICKS: Final[list[float]] = [
-        -0.5, -0.2, -0.1, -0.05, -0.02, 0,
-        0.02, 0.05, 0.1, 0.2, 0.5]
-    COLOR_TICKS_ATAN: Final[np.ndarray] \
-        = np.arctan([i_ticks*STRETCH_ATAN for i_ticks in COLOR_TICKS])
-#
+# if SWITCH_COLOR == 'ene':
+STRETCH_ATAN: Final[float] = 10
+COLOR_TICKS: Final[list[float]] = [
+    -0.5, -0.2, -0.1, -0.05, -0.02, 0,
+    0.02, 0.05, 0.1, 0.2, 0.5]
+COLOR_TICKS_ATAN: Final[np.ndarray] \
+    = np.arctan([i_ticks*STRETCH_ATAN for i_ticks in COLOR_TICKS])
 
 CBAR_LABEL: str = str()
 if SWITCH_COLOR == 'ene':
