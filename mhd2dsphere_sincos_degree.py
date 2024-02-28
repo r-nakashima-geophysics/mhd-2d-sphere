@@ -105,6 +105,7 @@ def plot_dependdegree(
     eig_1: np.ndarray = bundle_with_vec_1[2]
     eig_2: np.ndarray = bundle_with_vec_2[2]
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(5, 5))
 
