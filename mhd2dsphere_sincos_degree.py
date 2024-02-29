@@ -147,7 +147,7 @@ def plot_dependdegree(
             color='magenta', fontsize=12)
     #
 
-    leg = axis.legend(loc='best', fontsize=14)
+    leg: plt.Legend = axis.legend(loc='best', fontsize=14)
     leg.get_frame().set_alpha(1)
 
     axis.tick_params(labelsize=14)

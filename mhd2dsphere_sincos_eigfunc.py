@@ -47,7 +47,7 @@ E_ETA: Final[float] = 0
 # The truncation degree
 N_T: Final[int] = 2000
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 NUM_THETA: Final[int] = 3601
 NUM_THETA_SKIP: Final[int] = 181
 
@@ -171,6 +171,7 @@ def plot_ns(psi: np.ndarray,
 
     """
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(7, 4))
 
@@ -222,7 +223,7 @@ def plot_ns(psi: np.ndarray,
             + r'$E_\eta=$' + f' {E_ETA}', color='magenta', fontsize=16)
     #
 
-    leg = axis.legend(loc='best', fontsize=13)
+    leg: plt.Legend = axis.legend(loc='best', fontsize=13)
     leg.get_frame().set_alpha(1)
 
     axis.tick_params(labelsize=14)
@@ -258,6 +259,7 @@ def plot_map(psi_grid: np.ndarray,
 
     """
 
+    fig: plt.Figure
     axes: np.ndarray
     fig, axes = plt.subplots(
         1, 2, figsize=(10, 5),

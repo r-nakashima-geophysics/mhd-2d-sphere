@@ -140,8 +140,8 @@ def wrapper_plot_rossby(
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
         + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
 
-    leg1 = axes[0].legend(loc='lower right', fontsize=14)
-    leg2 = axes[1].legend(loc='lower right', fontsize=14)
+    leg1: plt.Legend = axes[0].legend(loc='lower right', fontsize=14)
+    leg2: plt.Legend = axes[1].legend(loc='lower right', fontsize=14)
     leg1.get_frame().set_alpha(1)
     leg2.get_frame().set_alpha(1)
 

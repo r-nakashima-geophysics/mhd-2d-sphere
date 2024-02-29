@@ -797,8 +797,6 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
-    sc1: list
-    sc2: list
     # real part
     fig1, ax1 = plt.subplots(2, 2, figsize=(10, 10))
     # imaginary part

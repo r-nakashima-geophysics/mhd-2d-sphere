@@ -49,7 +49,7 @@ ALPHA: Final[float] = 0.1
 # The truncation degree
 N_T: Final[int] = 2000
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 NUM_THETA: Final[int] = 3601
 
 # A criterion for convergence
@@ -201,7 +201,7 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
         color='magenta', fontsize=16)
 
-    leg = axis.legend(loc='best', fontsize=12)
+    leg: plt.Legend = axis.legend(loc='best', fontsize=12)
     leg.get_frame().set_alpha(1)
 
     axis.tick_params(labelsize=14)

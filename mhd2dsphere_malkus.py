@@ -320,6 +320,7 @@ def plot_eig(eig: np.ndarray) -> None:
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta$] : $m=$'
         + f' {M_ORDER}\n', color='magenta', fontsize=16)
 
+    leg: plt.Legend
     handle: list
     label: list
     [handle, label] = axis.get_legend_handles_labels()
@@ -406,6 +407,7 @@ def plot_ene(ene: np.ndarray) -> None:
         r'Energy partitioning [$B_{0\phi}=B_0\sin\theta$] : $m=$'
         + f' {M_ORDER}\n', color='magenta', fontsize=16)
 
+    leg: plt.Legend
     handle: list
     label: list
     [handle, label] = axis.get_legend_handles_labels()
@@ -501,20 +503,20 @@ def plot_eig_log(eig_log: np.ndarray) -> None:
     axes[1].set_title(
         r'Prograde ($\lambda>0$)', color='magenta', fontsize=16)
 
-    handle: list
-    label: list
+    handle: list[list] = [[None, ], ] * 2
+    label: list[list] = [[None, ], ] * 2
 
-    [handle, label] = axes[0].get_legend_handles_labels()
-    leg = axes[0].legend(
-        handles=handle[::-1], labels=label[::-1],
+    [handle[0], label[0]] = axes[0].get_legend_handles_labels()
+    leg1: plt.Legend = axes[0].legend(
+        handles=handle[0][::-1], labels=label[0][::-1],
         loc='lower right', fontsize=14)
-    leg.get_frame().set_alpha(1)
+    leg1.get_frame().set_alpha(1)
 
-    [handle, label] = axes[1].get_legend_handles_labels()
-    leg = axes[1].legend(
-        handles=handle[::-1], labels=label[::-1],
+    [handle[1], label[1]] = axes[1].get_legend_handles_labels()
+    leg2: plt.Legend = axes[1].legend(
+        handles=handle[1][::-1], labels=label[1][::-1],
         loc='lower right', fontsize=14)
-    leg.get_frame().set_alpha(1)
+    leg2.get_frame().set_alpha(1)
 
     axes[0].tick_params(labelsize=13)
     axes[1].tick_params(labelsize=13)
