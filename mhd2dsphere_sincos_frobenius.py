@@ -34,8 +34,8 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 
 from package.load_data import load_legendre
-from package.make_eigfunc import choose_eigfunc, make_eigfunc
-from package.make_frobenius import calc_frobenius
+from package.make_eigf import choose_eigf, make_eigf
+from package.make_frobenius import calc_frobenius, make_fitting_data
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
 
@@ -53,7 +53,7 @@ ALPHA: Final[float] = 0.1
 # The truncation degree
 N_T: Final[int] = 2000
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 NUM_THETA: Final[int] = 7201
 # The number of data points to which we will fit
 NUM_DATA: Final[int] = 200
@@ -87,7 +87,7 @@ LIN_MU: Final[np.ndarray] = np.cos(LIN_THETA)
 
 
 @exe_yes_continue
-def wrapper_choose_eigfunc(
+def wrapper_choose_eigf(
         bundle: tuple[np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray]) -> None:
@@ -105,7 +105,7 @@ def wrapper_choose_eigfunc(
     vpa_vec: np.ndarray
     eig: complex
     i_chosen: int
-    psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
+    psi_vec, vpa_vec, eig, i_chosen = choose_eigf(bundle, SIZE_MAT)
 
     wrapper_plot_frobenius(psi_vec, vpa_vec, eig, i_chosen)
 
@@ -177,7 +177,7 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
         r'$\tilde{\psi}_\mathrm{num}'
         + r'/\tilde{\psi}_\mathrm{I\!I}^{(\mathrm{c})}$', fontsize=16)
     axes[2].set_xlabel(
-        'colatitude [degree] (north hemisphere)', fontsize=16)
+        'colatitude [degree] (northern hemisphere)', fontsize=16)
     axes[2].set_ylabel('amplitude', fontsize=16)
 
     axes[0].set_title(
@@ -206,9 +206,9 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
         color='magenta', fontsize=16)
 
-    leg: list = [axes[0].legend(loc='best', fontsize=13),
-                 axes[1].legend(loc='best', fontsize=13),
-                 axes[2].legend(loc='best', fontsize=13)]
+    leg: list[plt.Legend] = [axes[0].legend(loc='best', fontsize=13),
+                             axes[1].legend(loc='best', fontsize=13),
+                             axes[2].legend(loc='best', fontsize=13)]
     leg[0].get_frame().set_alpha(1)
     leg[1].get_frame().set_alpha(1)
     leg[2].get_frame().set_alpha(1)
@@ -226,7 +226,7 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -257,13 +257,13 @@ def plot_frobenius(psi_vec: np.ndarray,
     """
 
     mu_c_tmp: complex = eig / (M_ORDER * ALPHA)
-    mu_c: float
+    mu_c: complex
     if 0 <= np.arccos(mu_c_tmp).real < math.pi/2:
-        mu_c = mu_c_tmp.real
+        mu_c = mu_c_tmp
     else:
-        mu_c = -mu_c_tmp.real
+        mu_c = -mu_c_tmp
     #
-    theta_c: float = np.arccos(mu_c)
+    theta_c: float = np.arccos(mu_c).real
     i_theta_c: int = int(np.argmin(np.abs(LIN_THETA-theta_c)))
 
     if (i_theta_c < NUM_DATA) or (NUM_THETA < i_theta_c):
@@ -273,23 +273,12 @@ def plot_frobenius(psi_vec: np.ndarray,
         sys.exit()
     #
 
-    psi: list[np.ndarray] = [np.array([]), ] * 3
-    psi1: list[np.ndarray] = [np.array([]), ] * 3
-    psi2: list[np.ndarray] = [np.array([]), ] * 3
+    psi: np.ndarray = np.array([])
+    psi1: np.ndarray = np.array([])
+    psi2: np.ndarray = np.array([])
 
-    psi[0], _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
-
-    psi1[0], psi2[0] \
-        = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig.real, mu_c)
-
-    # equatorial side
-    psi[1] = psi[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    psi1[1] = psi1[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    psi2[1] = psi2[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    # polar side
-    psi[2] = psi[0][i_theta_c-NUM_DATA:i_theta_c].real
-    psi1[2] = psi1[0][i_theta_c-NUM_DATA:i_theta_c].real
-    psi2[2] = psi2[0][i_theta_c-NUM_DATA:i_theta_c].real
+    psi, _ = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi1, psi2 = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
 
     fig = plt.figure(figsize=(10, 10))
     gspec = GridSpec(5, 2)
@@ -313,11 +302,15 @@ def plot_frobenius(psi_vec: np.ndarray,
     a2_pole: float
     b2_pole: float
 
-    y_eq: np.ndarray = psi[1] / psi1[1]
-    x_eq: np.ndarray = psi2[1] / psi1[1]
+    y_eq: np.ndarray \
+        = make_fitting_data(psi, psi1, NUM_DATA, i_theta_c, 'eq')
+    x_eq: np.ndarray \
+        = make_fitting_data(psi2, psi1, NUM_DATA, i_theta_c, 'eq')
     [a1_eq, b1_eq] = np.polyfit(x_eq, y_eq, 1)
-    y_pole: np.ndarray = psi[2] / psi1[2]
-    x_pole: np.ndarray = psi2[2] / psi1[2]
+    y_pole: np.ndarray \
+        = make_fitting_data(psi, psi1, NUM_DATA, i_theta_c, 'pole')
+    x_pole: np.ndarray \
+        = make_fitting_data(psi2, psi1, NUM_DATA, i_theta_c, 'pole')
     [a1_pole, b1_pole] = np.polyfit(x_pole, y_pole, 1)
 
     axes[0].scatter(x_pole, y_pole, s=10, color='blue',
@@ -325,11 +318,11 @@ def plot_frobenius(psi_vec: np.ndarray,
     axes[0].scatter(x_eq, y_eq, s=10, color='red',
                     label=r'$\mu<\mu_\mathrm{c}$')
 
-    y_eq = psi[1] / psi2[1]
-    x_eq = psi1[1] / psi2[1]
+    y_eq = make_fitting_data(psi, psi2, NUM_DATA, i_theta_c, 'eq')
+    x_eq = make_fitting_data(psi1, psi2, NUM_DATA, i_theta_c, 'eq')
     [a2_eq, b2_eq] = np.polyfit(x_eq, y_eq, 1)
-    y_pole = psi[2] / psi2[2]
-    x_pole = psi1[2] / psi2[2]
+    y_pole = make_fitting_data(psi, psi2, NUM_DATA, i_theta_c, 'pole')
+    x_pole = make_fitting_data(psi1, psi2, NUM_DATA, i_theta_c, 'pole')
     [a2_pole, b2_pole] = np.polyfit(x_pole, y_pole, 1)
 
     axes[1].scatter(x_pole, y_pole, s=10, color='blue',
@@ -363,7 +356,7 @@ def plot_frobenius(psi_vec: np.ndarray,
         linestyle='-', label=r'$y=$' + f' {a2_eq:>8.5f} '
         + r'$x$' + f' {b2_eq:>+8.5f}')
 
-    amp_max: float = 1.1 * np.nanmax(np.abs(psi[0].real))
+    amp_max: float = 1.1 * np.nanmax(np.abs(psi.real))
     amp_min: float = -amp_max
 
     fit_range: np.ndarray = np.linspace(
@@ -377,9 +370,9 @@ def plot_frobenius(psi_vec: np.ndarray,
     c_2: float = (a1_pole + a1_eq + b2_pole + b2_eq) / 4
 
     psi_sum_eq: np.ndarray \
-        = c_1_eq * psi1[0].real + c_2 * psi2[0].real
+        = c_1_eq * psi1.real + c_2 * psi2.real
     psi_sum_pole: np.ndarray \
-        = c_1_pole * psi1[0].real + c_2 * psi2[0].real
+        = c_1_pole * psi1.real + c_2 * psi2.real
 
     lin_mu_eq: np.ndarray = np.full(NUM_THETA, np.nan)
     lin_mu_pole: np.ndarray = np.full(NUM_THETA, np.nan)
@@ -392,7 +385,7 @@ def plot_frobenius(psi_vec: np.ndarray,
     #
 
     axes[2].plot(
-        LIN_THETA, psi[0].real, color='black',
+        LIN_THETA, psi.real, color='black',
         label='stream function ' + r'$\tilde{\psi}_\mathrm{num}$')
     axes[2].plot(
         LIN_THETA, psi_sum_pole * lin_mu_pole, color='blue',
@@ -427,5 +420,5 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_choose_eigfunc(results)
+    wrapper_choose_eigf(results)
 #

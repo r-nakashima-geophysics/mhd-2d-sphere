@@ -11,10 +11,10 @@ logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-def choose_eigfunc(bundle: tuple[np.ndarray, np.ndarray,
-                                 np.ndarray, np.ndarray, np.ndarray,
-                                 np.ndarray, np.ndarray],
-                   size_mat: int) \
+def choose_eigf(bundle: tuple[np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray, np.ndarray,
+                              np.ndarray, np.ndarray],
+                size_mat: int) \
         -> tuple[np.ndarray, np.ndarray, complex, int]:
     """Chooses eigenmodes which you want to plot
 
@@ -97,10 +97,10 @@ def choose_eigfunc(bundle: tuple[np.ndarray, np.ndarray,
 #
 
 
-def make_eigfunc(psi_vec: np.ndarray,
-                 vpa_vec: np.ndarray,
-                 m_order: int,
-                 legendre_norm: np.ndarray) \
+def make_eigf(psi_vec: np.ndarray,
+              vpa_vec: np.ndarray,
+              m_order: int,
+              legendre_norm: np.ndarray) \
         -> tuple[np.ndarray, np.ndarray]:
     """Makes an eigenfunction from an eigenvector
 
@@ -147,11 +147,11 @@ def make_eigfunc(psi_vec: np.ndarray,
 #
 
 
-def make_eigfunc_grid(psi_vec: np.ndarray,
-                      vpa_vec: np.ndarray,
-                      m_order: int,
-                      num_phi: int,
-                      legendre_norm: np.ndarray) \
+def make_eigf_grid(psi_vec: np.ndarray,
+                   vpa_vec: np.ndarray,
+                   m_order: int,
+                   num_phi: int,
+                   legendre_norm: np.ndarray) \
         -> tuple[np.ndarray, np.ndarray]:
     """Makes a meshgrid of an eigenfunction from an eigenvector
 
@@ -194,7 +194,7 @@ def make_eigfunc_grid(psi_vec: np.ndarray,
 
     psi: np.ndarray
     vpa: np.ndarray
-    psi, vpa = make_eigfunc(psi_vec, vpa_vec, m_order, legendre_norm)
+    psi, vpa = make_eigf(psi_vec, vpa_vec, m_order, legendre_norm)
 
     psi_grid = np.meshgrid(lin_phi, psi[1:-1])[1]
     vpa_grid = np.meshgrid(lin_phi, vpa[1:-1])[1]

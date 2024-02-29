@@ -20,9 +20,9 @@ References
 Examples
 -----
 In the below example, ALPHA will be set to the default value.
-    python3 mhd2dsphere_nonmalkus_harmonic.py
+    python3 mhd2dsphere_harmonic.py
 In the below example, ALPHA will be set to 1.
-    python3 mhd2dsphere_nonmalkus_harmonic.py 1
+    python3 mhd2dsphere_harmonic.py 1
 
 """
 
@@ -35,7 +35,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 from package.input_arg import input_alpha
 
 FUNC_B: Callable[[complex], complex]
@@ -44,6 +44,7 @@ FUNC_D2B: Callable[[complex], complex]
 TEX_B: str
 NAME_B: str
 
+
 # ========== Parameters ==========
 
 # The boolean value to switch whether to use the magnetostrophic
@@ -51,9 +52,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_malkus('theta')
-# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sincos('theta')
-# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sin2cos('theta')
+FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_malkus('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -61,7 +62,7 @@ M_ORDER: Final[int] = 1
 # The Lehnert number
 ALPHA: Final[float] = input_alpha(0.1)
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 THETA_INIT: Final[float] = 0
 THETA_STEP: Final[float] = 0.01
 THETA_END: Final[float] = math.pi
@@ -80,8 +81,8 @@ LAMBDA_END: Final[float] = M_ORDER * ALPHA * 2
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_harmonic'
-NAME_FIG: Final[str] = 'MHD2Dsphere_nonmalkus_harmonic' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_harmonic'
+NAME_FIG: Final[str] = 'MHD2Dsphere_harmonic' \
     + f'_{NAME_B}_m{M_ORDER}a{ALPHA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
@@ -161,7 +162,7 @@ def plot_l2() -> None:
     fig.subplots_adjust(right=0.79, wspace=0.25)
     axpos = axis.get_position()
     cbar_ax: plt.Axes \
-        = fig.add_axes([0.81, axpos.y0, 0.01, axpos.height])
+        = fig.add_axes((0.81, axpos.y0, 0.01, axpos.height))
 
     cbar = fig.colorbar(cfs, cax=cbar_ax)
     cbar.ax.tick_params(labelsize=14)
@@ -176,7 +177,7 @@ def plot_l2() -> None:
     #
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

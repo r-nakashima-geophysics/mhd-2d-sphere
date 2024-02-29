@@ -19,7 +19,7 @@ Too many input arguments
 
 Notes
 -----
-You may save the parameter file in ./input/MHD2Dsphere_nonmalkus_ray/.
+You may save the parameter file in ./input/MHD2Dsphere_ray/.
 Parameters other than command line arguments are described below.
 
 References
@@ -29,11 +29,11 @@ References
 Examples
 -----
 In the below example, the parameters will be set to the default values.
-    python3 mhd2dsphere_nonmalkus_ray.py
+    python3 mhd2dsphere_ray.py
 In the below example, the parameter file will be
-./input/MHD2Dsphere_nonmalkus_ray/prm.dat. (You need not type
-'./input/MHD2Dsphere_nonmalkus_ray/'.)
-    python3 mhd2dsphere_nonmalkus_ray prm.dat
+./input/MHD2Dsphere_ray/prm.dat. (You need not type
+'./input/MHD2Dsphere_ray/'.)
+    python3 mhd2dsphere_ray prm.dat
 
 """
 
@@ -51,7 +51,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
@@ -68,9 +68,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_malkus('theta')
-# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sincos('theta')
-FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sin2cos('theta')
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_malkus('theta')
+FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The scaled angular frequency
 LAMBDA: Final[float] = 1
@@ -87,9 +87,9 @@ TIME_END: Final[float] = 30
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_ray'
+    = Path('.') / 'fig' / 'MHD2Dsphere_ray'
 NAME_FIG: Final[str] \
-    = f'MHD2Dsphere_nonmalkus_ray_{NAME_B}_lambda{LAMBDA}'
+    = f'MHD2Dsphere_ray_{NAME_B}_L{LAMBDA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
 
@@ -116,7 +116,7 @@ def load_prm(name_file: str) -> list[float]:
     """
 
     path_file: Path = Path('.') / 'input' \
-        / 'MHD2Dsphere_nonmalkus_ray' / name_file
+        / 'MHD2Dsphere_ray' / name_file
     array_prm: np.ndarray = np.loadtxt(path_file, comments='#')
 
     prms: list[float]
@@ -155,6 +155,14 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     k_wavenum_init: float
     k_const, k_wavenum_init, _, _ = results
 
+    fig: plt.Figure
+    axis: plt.Axes
+    axin: list[plt.Axes]
+    min_k: float
+    max_k: float
+    cond_critical: bool
+    theta_c_deg: set[float]
+
     (fig, axis, axin), [min_k, max_k], cond_critical, theta_c_deg \
         = plot_ray(prms, results)
 
@@ -175,8 +183,8 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     axin[0].set_xlabel(r'$k$', fontsize=16)
     axin[0].set_ylabel(r'$l$', fontsize=16)
     axin[1].set_xlabel(
-        r'$\mathrm{sgn}(\Omega_0)T=(|B_0|/R_0\sqrt{\rho_0\mu_\mathrm{m}})t$',
-        fontsize=16)
+        r'$\mathrm{sgn}(\Omega_0)T=$'
+        + r'$(|B_0|/R_0\sqrt{\rho_0\mu_\mathrm{m}})t$', fontsize=16)
     axin[1].set_ylabel(
         r'$\mathrm{sgn}(\Omega_0)\phi\,\mathrm{[deg]}$', fontsize=16)
 
@@ -231,13 +239,14 @@ def wrapper_plot_ray(prms: list[float]) -> None:
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
 
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
 def plot_ray(prms: list[float],
              results: tuple[float, float, np.ndarray, np.ndarray]) \
-        -> tuple[tuple, list[float], bool, set[float]]:
+        -> tuple[tuple[plt.Figure, plt.Axes, list[plt.Axes]],
+                 list[float], bool, set[float]]:
     """Plots a figure of the ray trajectory
 
     Parameters
@@ -277,8 +286,8 @@ def plot_ray(prms: list[float],
                     ccrs.Mollweide(central_longitude=0.0)})
 
     axin: list[plt.Axes] = [
-        axis.inset_axes([0.12, -0.357, 0.24, 0.32]),
-        axis.inset_axes([0.35, -0.37, 0.5, 0.35])
+        axis.inset_axes((0.12, -0.357, 0.24, 0.32)),
+        axis.inset_axes((0.35, -0.37, 0.5, 0.35))
     ]
 
     phi_deg: np.ndarray = np.rad2deg(sol_vec_y[0])
@@ -352,7 +361,8 @@ def plot_ray(prms: list[float],
         theta_c_deg = critical_lat(k_const)
     #
 
-    fig_bundle: tuple = (fig, axis, axin)
+    fig_bundle: tuple[plt.Figure, plt.Axes, list[plt.Axes]] \
+        = (fig, axis, axin)
 
     return fig_bundle, [min_k, max_k], cond_critical, theta_c_deg
 #
@@ -696,7 +706,7 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         FILE_PRM = sys.argv[1]
         path_file_prm = Path('.') / 'input' \
-            / 'MHD2Dsphere_nonmalkus_ray' / FILE_PRM
+            / 'MHD2Dsphere_ray' / FILE_PRM
         if not os.path.exists(path_file_prm):
             logger.error('File not found')
             sys.exit()

@@ -2,7 +2,7 @@
 non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
 Plots a figure of the approximate dispersion relation for fast magnetic
-Rossby waves.
+Rossby (MR) waves.
 
 Parameters
 -----
@@ -20,9 +20,9 @@ References
 Examples
 -----
 In the below example, M_ORDER will be set to the default value.
-    python3 mhd2dsphere_sincos_rossby.py
+    python3 mhd2dsphere_sincos_fmr.py
 In the below example, M_ORDER will be set to 2.
-    python3 mhd2dsphere_sincos_rossby.py 2
+    python3 mhd2dsphere_sincos_fmr.py 2
 
 """
 
@@ -37,13 +37,13 @@ import numpy as np
 from scipy.optimize import fsolve
 
 from package import processing_results as proc
-from package.dispersion_rossby import dispersion_rossby
+from package.dispersion_fmr import dispersion_fmr
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
 
 # ========== Parameters ==========
 
-# The variable to switch approximate equations
+# The variable to switch approximate dispersion relations
 # spheroidal wave function ('sph')
 # wkbj quantization ('wkb')
 SWITCH_EQ: Final[str] = 'wkb'
@@ -70,9 +70,9 @@ ALPHA_LOG_END: Final[float] = 0
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_rossby'
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_fmr'
 NAME_FIG: Final[str] \
-    = f'MHD2Dsphere_sincos_rossby_m{M_ORDER}N{N_T}_{SWITCH_EQ}.png'
+    = f'MHD2Dsphere_sincos_fmr_m{M_ORDER}N{N_T}_{SWITCH_EQ}.png'
 FIG_DPI: Final[int] = 600
 
 # ================================
@@ -87,11 +87,11 @@ NUM_N: Final[int] = 1 + int((N_END-N_INIT)/N_STEP)
 LIN_N: Final[np.ndarray] = np.linspace(N_INIT, N_END, NUM_N)
 
 
-def wrapper_plot_rossby(
+def wrapper_plot_fmr(
         bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray]) -> None:
     """A wrapper of a function to plot a figure of the approximate
-    dispersion relation for fast magnetic Rossby waves
+    dispersion relation for fast magnetic Rossby (MR) waves
 
     Parameters
     -----
@@ -100,8 +100,9 @@ def wrapper_plot_rossby(
 
     """
 
+    fig: plt.Figure
     axes: np.ndarray
-    fig, axes = plot_rossby(bundle)
+    fig, axes = plot_fmr(bundle)
 
     axes[0].grid()
     axes[1].grid()
@@ -140,8 +141,8 @@ def wrapper_plot_rossby(
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
         + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
 
-    leg1 = axes[0].legend(loc='lower right', fontsize=14)
-    leg2 = axes[1].legend(loc='lower right', fontsize=14)
+    leg1: plt.Legend = axes[0].legend(loc='lower right', fontsize=14)
+    leg2: plt.Legend = axes[1].legend(loc='lower right', fontsize=14)
     leg1.get_frame().set_alpha(1)
     leg2.get_frame().set_alpha(1)
 
@@ -154,15 +155,16 @@ def wrapper_plot_rossby(
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
-def plot_rossby(
-        bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
-                      np.ndarray, np.ndarray, np.ndarray]) -> tuple:
+def plot_fmr(
+    bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
+                  np.ndarray, np.ndarray, np.ndarray]) \
+        -> tuple[plt.Figure, np.ndarray]:
     """Plots a figure of the approximate dispersion relation for fast
-    magnetic Rossby waves
+    magnetic Rossby (MR) waves
 
     Parameters
     -----
@@ -176,6 +178,7 @@ def plot_rossby(
 
     """
 
+    fig: plt.Figure
     axes: np.ndarray
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
@@ -242,7 +245,7 @@ def plot_rossby(
             #
 
             root, _, _, _ = fsolve(
-                dispersion_rossby, [start],
+                dispersion_fmr, [start],
                 args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
 
             if ((M_ORDER*alpha)**2)/(root.real**2) < 0.99:
@@ -262,7 +265,7 @@ def plot_rossby(
     axes[1].scatter(ones_alpha_skip, root_v, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
 
-    fig_bundle: tuple = (fig, axes)
+    fig_bundle: tuple[plt.Figure, np.ndarray] = (fig, axes)
 
     return fig_bundle
 #
@@ -276,7 +279,7 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_plot_rossby(results_log)
+    wrapper_plot_fmr(results_log)
 
     TIME_ELAPSED: Final[float] = perf_counter() - TIME_INIT
     print(f'{__name__}: {TIME_ELAPSED:.3f} s')

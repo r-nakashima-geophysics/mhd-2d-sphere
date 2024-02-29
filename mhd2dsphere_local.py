@@ -22,7 +22,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 
 FUNC_B: Callable[[complex], complex]
 TEX_B: str
@@ -35,9 +35,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-FUNC_B, _, _, TEX_B, NAME_B = b_malkus('theta')
-# FUNC_B, _, _, TEX_B, NAME_B = b_sincos('theta')
-# FUNC_B, _, _, TEX_B, NAME_B = b_sin2cos('theta')
+FUNC_B, _, _, TEX_B, NAME_B = func_b.b_malkus('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The range of the colatitude
 THETA_INIT: Final[float] = 30
@@ -65,8 +65,8 @@ LAMBDA_END: Final[float] = 3
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_local'
-NAME_FIG: Final[str] = f'MHD2Dsphere_nonmalkus_local_{NAME_B}'
+    = Path('.') / 'fig' / 'MHD2Dsphere_local'
+NAME_FIG: Final[str] = f'MHD2Dsphere_local_{NAME_B}'
 NAME_FIG_SUFFIX_1: Final[tuple[str, str]] = ('_kl.png', '_kl_ms.png')
 NAME_FIG_SUFFIX_2: Final[tuple[str, str]] \
     = ('_klambda.png', '_klambda_ms.png')
@@ -159,7 +159,7 @@ def plot_kl() -> None:
     fig.subplots_adjust(right=0.91, wspace=0.25)
     axpos = axis.get_position()
     cbar_ax: plt.Axes \
-        = fig.add_axes([0.93, axpos.y0, 0.01, axpos.height])
+        = fig.add_axes((0.93, axpos.y0, 0.01, axpos.height))
 
     cbar = fig.colorbar(cfs, cax=cbar_ax)
     cbar.ax.tick_params(labelsize=14)
@@ -175,7 +175,7 @@ def plot_kl() -> None:
     #
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -230,7 +230,7 @@ def plot_klambda() -> None:
     fig.subplots_adjust(right=0.91, wspace=0.25)
     axpos = axis.get_position()
     cbar_ax: plt.Axes \
-        = fig.add_axes([0.93, axpos.y0, 0.01, axpos.height])
+        = fig.add_axes((0.93, axpos.y0, 0.01, axpos.height))
 
     cbar = fig.colorbar(cfs, cax=cbar_ax)
     cbar.ax.tick_params(labelsize=16)
@@ -246,7 +246,7 @@ def plot_klambda() -> None:
     #
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

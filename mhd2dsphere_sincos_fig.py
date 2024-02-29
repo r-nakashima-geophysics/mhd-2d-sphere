@@ -71,7 +71,7 @@ SWITCH_COLOR: Final[str] = 'ene'
 
 # The boolean value to switch whether to display the value of the
 # magnetic Ekman number when E_ETA = 0
-SWITCH_ETA: Final[bool] = False
+SWITCH_DISP_ETA: Final[bool] = False
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = input_m(1)
@@ -145,10 +145,14 @@ def wrapper_plot_eig(
 
     """
 
-    save_fig: set[int]
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
-    (fig1, ax1, fig2, ax2, sc1, sc2), save_fig = plot_eig(bundle)
+    sc1: list
+    sc2: list
+    save_fig: set[int]
+    (fig1, fig2, ax1, ax2, sc1, sc2), save_fig = plot_eig(bundle)
 
     for axis in (ax1[0], ax1[1], ax2[0], ax2[1]):
         axis.grid()
@@ -189,7 +193,7 @@ def wrapper_plot_eig(
         axis.minorticks_on()
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -220,12 +224,12 @@ def wrapper_plot_eig(
     if SWITCH_COLOR in ('ene', 'ohm'):
         fig1.subplots_adjust(right=0.85)
         axpos = ax1[0].get_position()
-        cbar_ax_1 = fig1.add_axes([0.88, axpos.y0, 0.01, axpos.height])
+        cbar_ax_1 = fig1.add_axes((0.88, axpos.y0, 0.01, axpos.height))
         if save_fig & {1, 2}:
             fig2.subplots_adjust(right=0.85)
             axpos = ax2[0].get_position()
             cbar_ax_2 = fig2.add_axes(
-                [0.88, axpos.y0, 0.01, axpos.height])
+                (0.88, axpos.y0, 0.01, axpos.height))
         #
     #
 
@@ -233,7 +237,7 @@ def wrapper_plot_eig(
         cbar = fig1.colorbar(
             sc1[0], cax=cbar_ax_1, ticks=COLOR_TICKS_ATAN)
         cbar.ax.set_yticklabels(
-            [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+            [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
         cbar.ax.tick_params(labelsize=14)
         cbar.set_label(label=CBAR_LABEL, size=16)
 
@@ -241,14 +245,14 @@ def wrapper_plot_eig(
             cbar = fig2.colorbar(sc2[0], cax=cbar_ax_2,
                                  ticks=COLOR_TICKS_ATAN)
             cbar.ax.set_yticklabels(
-                [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar.ax.tick_params(labelsize=14)
             cbar.set_label(label=CBAR_LABEL, size=16)
         elif 2 in save_fig:
             cbar = fig2.colorbar(sc2[1], cax=cbar_ax_2,
                                  ticks=COLOR_TICKS_ATAN)
             cbar.ax.set_yticklabels(
-                [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar.ax.tick_params(labelsize=14)
             cbar.set_label(label=CBAR_LABEL, size=16)
         #
@@ -288,16 +292,18 @@ def wrapper_plot_eig(
     path_fig: list[Path] \
         = [PATH_DIR_FIG / name for name in name_fig_full_list]
 
-    fig1.savefig(str(path_fig[0]), dpi=FIG_DPI)
+    fig1.savefig(path_fig[0], dpi=FIG_DPI)
     if save_fig & {1, 2}:
-        fig2.savefig(str(path_fig[1]), dpi=FIG_DPI)
+        fig2.savefig(path_fig[1], dpi=FIG_DPI)
     #
 #
 
 
 def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                            np.ndarray, np.ndarray, np.ndarray]) \
-        -> tuple[tuple, set[int]]:
+        -> tuple[tuple[plt.Figure, plt.Figure,
+                       np.ndarray, np.ndarray, list, list],
+                 set[int]]:
     """Plots a figure of the dispersion relation (linear-linear)
 
     Parameters
@@ -321,6 +327,8 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     sym: np.ndarray
     lin_alpha, eig, mke, _, ohm, sym = bundle
 
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
     # real part
@@ -346,39 +354,40 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     alpha: float
     ones_alpha: np.ndarray
 
+    dict_pickup: dict[str, np.ndarray] = {
+        'sinuous': np.array([]),
+        'varicose': np.array([]),
+        'unstable': np.array([]),
+        'alfvenic': np.array([]),
+        'non_alfvenic': np.array([]),
+    }
+
     dict_eig: dict[str, np.ndarray] = {
         's': np.array([]),
         'v': np.array([]),
         's_u': np.array([]),
         'v_u': np.array([]),
-        's_na': np.array([]),
-        'v_na': np.array([]),
         's_a': np.array([]),
         'v_a': np.array([]),
+        's_na': np.array([]),
+        'v_na': np.array([]),
     }
 
-    sinuous: np.ndarray
-    varicose: np.ndarray
-
-    unstable: np.ndarray
-
     scatter_color: np.ndarray
-
-    alfvenic: np.ndarray
-    non_alfvenic: np.ndarray
 
     for i_alpha in range(NUM_ALPHA):
         alpha = lin_alpha[i_alpha]
 
         ones_alpha = np.full(SIZE_MAT, alpha)
 
-        sinuous, varicose = proc.sort_sv(sym[i_alpha, :])
-        dict_eig['s'] = eig[i_alpha, :] * sinuous
-        dict_eig['v'] = eig[i_alpha, :] * varicose
+        dict_pickup['sinuous'], dict_pickup['varicose'] \
+            = proc.sort_sv(sym[i_alpha, :])
+        dict_eig['s'] = eig[i_alpha, :] * dict_pickup['sinuous']
+        dict_eig['v'] = eig[i_alpha, :] * dict_pickup['varicose']
 
-        unstable = proc.pickup_unstable(eig[i_alpha, :])
-        dict_eig['s_u'] = dict_eig['s'] * unstable
-        dict_eig['s_v'] = dict_eig['v'] * unstable
+        dict_pickup['unstable'] = proc.pickup_unstable(eig[i_alpha, :])
+        dict_eig['s_u'] = dict_eig['s'] * dict_pickup['unstable']
+        dict_eig['v_u'] = dict_eig['v'] * dict_pickup['unstable']
 
         if SWITCH_COLOR == 'blk':
 
@@ -395,10 +404,10 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                                    s=0.2, c='red')
                     save_fig.add(1)
                 #
-                if False in np.isnan(dict_eig['s_v']):
-                    ax1[1].scatter(ones_alpha, dict_eig['s_v'].real,
+                if False in np.isnan(dict_eig['v_u']):
+                    ax1[1].scatter(ones_alpha, dict_eig['v_u'].real,
                                    s=0.2, c='red')
-                    ax2[1].scatter(ones_alpha, dict_eig['s_v'].imag,
+                    ax2[1].scatter(ones_alpha, dict_eig['v_u'].imag,
                                    s=0.2, c='red')
                     save_fig.add(2)
                 #
@@ -422,12 +431,16 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
 
             if E_ETA == 0:  # ene
 
-                alfvenic, non_alfvenic \
+                dict_pickup['alfvenic'], dict_pickup['non_alfvenic'] \
                     = proc.sort_alfvenic(mke[i_alpha, :])
-                dict_eig['s_na'] = dict_eig['s'] * non_alfvenic
-                dict_eig['v_na'] = dict_eig['v'] * non_alfvenic
-                dict_eig['s_a'] = dict_eig['s'] * alfvenic
-                dict_eig['v_a'] = dict_eig['v'] * alfvenic
+                dict_eig['s_a'] \
+                    = dict_eig['s'] * dict_pickup['alfvenic']
+                dict_eig['v_a'] \
+                    = dict_eig['v'] * dict_pickup['alfvenic']
+                dict_eig['s_na'] \
+                    = dict_eig['s'] * dict_pickup['non_alfvenic']
+                dict_eig['v_na'] \
+                    = dict_eig['v'] * dict_pickup['non_alfvenic']
 
                 ax1[0].scatter(
                     ones_alpha, dict_eig['s_a'].real, s=0.05,
@@ -454,9 +467,9 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                         vmin=cmap_min, vmax=cmap_max)
                     save_fig.add(1)
                 #
-                if False in np.isnan(dict_eig['s_v']):
+                if False in np.isnan(dict_eig['v_u']):
                     sc2[1] = ax2[1].scatter(
-                        ones_alpha, dict_eig['s_v'].imag, s=0.1,
+                        ones_alpha, dict_eig['v_u'].imag, s=0.1,
                         c=scatter_color, cmap='jet',
                         vmin=cmap_min, vmax=cmap_max)
                     save_fig.add(2)
@@ -484,7 +497,9 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
         #
     #
 
-    fig_bundle: tuple = (fig1, ax1, fig2, ax2, sc1, sc2)
+    fig_bundle: tuple[
+        plt.Figure, plt.Figure, np.ndarray, np.ndarray, list, list] \
+        = (fig1, fig2, ax1, ax2, sc1, sc2)
 
     return fig_bundle, save_fig
 #
@@ -504,13 +519,19 @@ def wrapper_plot_eig_log(
 
     """
 
-    save_fig: set[int]
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
-    (fig1, ax1, fig2, ax2, sc1, sc2), save_fig = plot_eig_log(bundle)
+    sc1: list
+    sc2: list
+    save_fig: set[int]
+    (fig1, fig2, ax1, ax2, sc1, sc2), save_fig = plot_eig_log(bundle)
 
-    ax_all: tuple = (ax1[0, 0], ax1[0, 1], ax1[1, 0], ax1[1, 1],
-                     ax2[0, 0], ax2[0, 1], ax2[1, 0], ax2[1, 1])
+    ax_all: tuple[plt.Axes, plt.Axes, plt.Axes, plt.Axes,
+                  plt.Axes, plt.Axes, plt.Axes, plt.Axes] \
+        = (ax1[0, 0], ax1[0, 1], ax1[1, 0], ax1[1, 1],
+           ax2[0, 0], ax2[0, 1], ax2[1, 0], ax2[1, 1])
 
     for axis in ax_all:
         axis.grid()
@@ -612,7 +633,7 @@ def wrapper_plot_eig_log(
         axis.tick_params(labelsize=12)
     #
 
-    if (not SWITCH_ETA) and (E_ETA == 0):
+    if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -644,12 +665,12 @@ def wrapper_plot_eig_log(
         fig1.subplots_adjust(right=0.85)
         expos1 = ax1[0, 0].get_position()
         cbar_ax_1 = fig1.add_axes(
-            [0.88, expos1.y0, 0.01, expos1.height])
+            (0.88, expos1.y0, 0.01, expos1.height))
         if save_fig & {1, 2, 3, 4}:
             fig2.subplots_adjust(right=0.85)
             expos2 = ax2[0, 0].get_position()
             cbar_ax_2 = fig2.add_axes(
-                [0.88, expos2.y0, 0.01, expos2.height])
+                (0.88, expos2.y0, 0.01, expos2.height))
         #
     #
 
@@ -658,7 +679,7 @@ def wrapper_plot_eig_log(
         cbar1 = fig1.colorbar(
             sc1[0], cax=cbar_ax_1, ticks=COLOR_TICKS_ATAN)
         cbar1.ax.set_yticklabels(
-            [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+            [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
         cbar1.ax.tick_params(labelsize=14)
         cbar1.set_label(label=CBAR_LABEL, size=16)
 
@@ -666,28 +687,28 @@ def wrapper_plot_eig_log(
             cbar2 = fig2.colorbar(sc2[0], cax=cbar_ax_2,
                                   ticks=COLOR_TICKS_ATAN)
             cbar2.ax.set_yticklabels(
-                [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar2.ax.tick_params(labelsize=14)
             cbar2.set_label(label=CBAR_LABEL, size=16)
         elif 2 in save_fig:
             cbar2 = fig2.colorbar(sc2[1], cax=cbar_ax_2,
                                   ticks=COLOR_TICKS_ATAN)
             cbar2.ax.set_yticklabels(
-                [i_ticks+0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar2.ax.tick_params(labelsize=14)
             cbar2.set_label(label=CBAR_LABEL, size=16)
         elif 3 in save_fig:
             cbar2 = fig2.colorbar(sc2[2], cax=cbar_ax_2,
                                   ticks=COLOR_TICKS_ATAN)
             cbar2.ax.set_yticklabels(
-                [i_ticks + 0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar2.ax.tick_params(labelsize=14)
             cbar2.set_label(label=CBAR_LABEL, size=16)
         elif 4 in save_fig:
             cbar2 = fig2.colorbar(sc2[3], cax=cbar_ax_2,
                                   ticks=COLOR_TICKS_ATAN)
             cbar2.ax.set_yticklabels(
-                [i_ticks + 0.5 for i_ticks in COLOR_TICKS])
+                [f'${i_ticks+0.5}$' for i_ticks in COLOR_TICKS])
             cbar2.ax.tick_params(labelsize=14)
             cbar2.set_label(label=CBAR_LABEL, size=16)
         #
@@ -737,16 +758,18 @@ def wrapper_plot_eig_log(
     path_fig: list[Path] \
         = [PATH_DIR_FIG / name for name in name_fig_full_list]
 
-    fig1.savefig(str(path_fig[0]), dpi=FIG_DPI)
+    fig1.savefig(path_fig[0], dpi=FIG_DPI)
     if save_fig & {1, 2, 3, 4}:
-        fig2.savefig(str(path_fig[1]), dpi=FIG_DPI)
+        fig2.savefig(path_fig[1], dpi=FIG_DPI)
     #
 #
 
 
 def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
                                np.ndarray, np.ndarray, np.ndarray]) \
-        -> tuple[tuple, set[int]]:
+        -> tuple[tuple[plt.Figure, plt.Figure,
+                       np.ndarray, np.ndarray, list, list],
+                 set[int]]:
     """Plots a figure of the dispersion relation (log-log)
 
     Parameters
@@ -770,6 +793,8 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     sym: np.ndarray
     lin_alpha, eig, mke, _, ohm, sym = bundle
 
+    fig1: plt.Figure
+    fig2: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
     # real part
@@ -795,6 +820,16 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     alpha: float
     ones_alpha: np.ndarray
 
+    dict_pickup: dict[str, np.ndarray] = {
+        'sinuous': np.array([]),
+        'varicose': np.array([]),
+        'retrograde': np.array([]),
+        'prograde': np.array([]),
+        'unstable': np.array([]),
+        'alfvenic': np.array([]),
+        'non_alfvenic': np.array([]),
+    }
+
     dict_eig: dict[str, np.ndarray] = {
         'sr': np.array([]),
         'sp': np.array([]),
@@ -804,46 +839,44 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
         'sp_u': np.array([]),
         'vr_u': np.array([]),
         'vp_u': np.array([]),
-        'sr_na': np.array([]),
-        'sp_na': np.array([]),
-        'vr_na': np.array([]),
-        'vp_na': np.array([]),
         'sr_a': np.array([]),
         'sp_a': np.array([]),
         'vr_a': np.array([]),
         'vp_a': np.array([]),
+        'sr_na': np.array([]),
+        'sp_na': np.array([]),
+        'vr_na': np.array([]),
+        'vp_na': np.array([]),
     }
 
-    sinuous: np.ndarray
-    varicose: np.ndarray
-
-    unstable: np.ndarray
-
     scatter_color: np.ndarray
-
-    alfvenic: np.ndarray
-    non_alfvenic: np.ndarray
 
     for i_alpha in range(NUM_ALPHA_LOG):
         alpha = 10**lin_alpha[i_alpha]
 
         ones_alpha = np.full(SIZE_MAT, alpha)
 
-        sinuous, varicose = proc.sort_sv(sym[i_alpha, :])
-        prograde, retrograde = proc.sort_pr(eig[i_alpha, :])
-        dict_eig['sr'] = eig[i_alpha, :] * sinuous * retrograde
-        dict_eig['sp'] = eig[i_alpha, :] * sinuous * prograde
-        dict_eig['vr'] = eig[i_alpha, :] * varicose * retrograde
-        dict_eig['vp'] = eig[i_alpha, :] * varicose * prograde
+        dict_pickup['sinuous'], dict_pickup['varicose'] \
+            = proc.sort_sv(sym[i_alpha, :])
+        dict_pickup['prograde'], dict_pickup['retrograde'] \
+            = proc.sort_pr(eig[i_alpha, :])
+        dict_eig['sr'] = eig[i_alpha, :] \
+            * dict_pickup['sinuous'] * dict_pickup['retrograde']
+        dict_eig['sp'] = eig[i_alpha, :] \
+            * dict_pickup['sinuous'] * dict_pickup['prograde']
+        dict_eig['vr'] = eig[i_alpha, :] \
+            * dict_pickup['varicose'] * dict_pickup['retrograde']
+        dict_eig['vp'] = eig[i_alpha, :] \
+            * dict_pickup['varicose'] * dict_pickup['sinuous']
 
         dict_eig['sr'] = -np.conjugate(dict_eig['sr'])
         dict_eig['vr'] = -np.conjugate(dict_eig['vr'])
 
-        unstable = proc.pickup_unstable(eig[i_alpha, :])
-        dict_eig['sr_u'] = dict_eig['sr'] * unstable
-        dict_eig['sp_u'] = dict_eig['sp'] * unstable
-        dict_eig['vr_u'] = dict_eig['vr'] * unstable
-        dict_eig['vp_u'] = dict_eig['vp'] * unstable
+        dict_pickup['unstable'] = proc.pickup_unstable(eig[i_alpha, :])
+        dict_eig['sr_u'] = dict_eig['sr'] * dict_pickup['unstable']
+        dict_eig['sp_u'] = dict_eig['sp'] * dict_pickup['unstable']
+        dict_eig['vr_u'] = dict_eig['vr'] * dict_pickup['unstable']
+        dict_eig['vp_u'] = dict_eig['vp'] * dict_pickup['unstable']
 
         if SWITCH_COLOR == 'blk':
 
@@ -908,16 +941,24 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
             #
 
             if E_ETA == 0:  # ene
-                alfvenic, non_alfvenic \
+                dict_pickup['alfvenic'], dict_pickup['non_alfvenic'] \
                     = proc.sort_alfvenic(mke[i_alpha, :])
-                dict_eig['sr_na'] = dict_eig['sr'] * non_alfvenic
-                dict_eig['sp_na'] = dict_eig['sp'] * non_alfvenic
-                dict_eig['vr_na'] = dict_eig['vr'] * non_alfvenic
-                dict_eig['vp_na'] = dict_eig['vp'] * non_alfvenic
-                dict_eig['sr_a'] = dict_eig['sr'] * alfvenic
-                dict_eig['sp_a'] = dict_eig['sp'] * alfvenic
-                dict_eig['vr_a'] = dict_eig['vr'] * alfvenic
-                dict_eig['vp_a'] = dict_eig['vp'] * alfvenic
+                dict_eig['sr_a'] \
+                    = dict_eig['sr'] * dict_pickup['alfvenic']
+                dict_eig['sp_a'] \
+                    = dict_eig['sp'] * dict_pickup['alfvenic']
+                dict_eig['vr_a'] \
+                    = dict_eig['vr'] * dict_pickup['alfvenic']
+                dict_eig['vp_a'] \
+                    = dict_eig['vp'] * dict_pickup['alfvenic']
+                dict_eig['sr_na'] \
+                    = dict_eig['sr'] * dict_pickup['non_alfvenic']
+                dict_eig['sp_na'] \
+                    = dict_eig['sp'] * dict_pickup['non_alfvenic']
+                dict_eig['vr_na'] \
+                    = dict_eig['vr'] * dict_pickup['non_alfvenic']
+                dict_eig['vp_na'] \
+                    = dict_eig['vp'] * dict_pickup['non_alfvenic']
 
                 ax1[0, 0].scatter(
                     ones_alpha, dict_eig['sr_a'].real, s=0.05,
@@ -1026,7 +1067,9 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     ax2[1, 0].fill_between(mask_x, MASK_Y1, MASK_Y2, facecolor='grey')
     ax2[1, 1].fill_between(mask_x, MASK_Y1, MASK_Y2, facecolor='grey')
 
-    fig_bundle: tuple = (fig1, ax1, fig2, ax2, sc1, sc2)
+    fig_bundle: tuple[
+        plt.Figure, plt.Figure, np.ndarray, np.ndarray, list, list] \
+        = (fig1, fig2, ax1, ax2, sc1, sc2)
 
     return fig_bundle, save_fig
 #
