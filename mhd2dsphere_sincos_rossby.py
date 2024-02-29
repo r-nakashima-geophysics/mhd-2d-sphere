@@ -154,7 +154,7 @@ def wrapper_plot_rossby(
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

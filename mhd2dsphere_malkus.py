@@ -344,7 +344,7 @@ def plot_eig(eig: np.ndarray) -> None:
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG_1
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -424,7 +424,7 @@ def plot_ene(ene: np.ndarray) -> None:
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG_2
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -527,7 +527,7 @@ def plot_eig_log(eig_log: np.ndarray) -> None:
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG_3
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

@@ -175,7 +175,7 @@ def plot_kl() -> None:
     #
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -246,7 +246,7 @@ def plot_klambda() -> None:
     #
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

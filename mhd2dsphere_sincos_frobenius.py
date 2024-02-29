@@ -226,7 +226,7 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

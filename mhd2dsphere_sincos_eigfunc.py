@@ -234,7 +234,7 @@ def plot_ns(psi: np.ndarray,
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -331,7 +331,7 @@ def plot_map(psi_grid: np.ndarray,
     name_fig_full: str = NAME_FIG + f'_{i_mode+1}' + NAME_FIG_SUFFIX[1]
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 

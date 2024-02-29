@@ -239,7 +239,7 @@ def wrapper_plot_ray(prms: list[float]) -> None:
 
     path_fig: Path = PATH_DIR_FIG / name_fig_full
 
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
