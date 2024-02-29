@@ -284,7 +284,7 @@ def plot_allfrobenius(
 
 def calc_jump(psi_vec: np.ndarray,
               vpa_vec: np.ndarray,
-              eig: float) -> tuple[float, float, float]:
+              eig: complex) -> tuple[float, float, float]:
     """Calculates the discontinuity in the coefficient of the first
     Frobenius series solution
 
@@ -294,7 +294,7 @@ def calc_jump(psi_vec: np.ndarray,
         An eigenvector of the stream function (psi)
     vpa_vec : ndarray
         An eigenvector of the vector potential (a)
-    eig : float
+    eig : complex
         An eigenvalue
 
     Returns
@@ -310,13 +310,14 @@ def calc_jump(psi_vec: np.ndarray,
 
     """
 
-    mu_c_tmp: float = eig / (M_ORDER * ALPHA)
+    mu_c_tmp: complex = eig / (M_ORDER * ALPHA)
+    mu_c: complex
     if 0 <= np.arccos(mu_c_tmp).real < math.pi/2:
         mu_c = mu_c_tmp
     else:
         mu_c = -mu_c_tmp
     #
-    theta_c: float = np.arccos(mu_c)
+    theta_c: float = np.arccos(mu_c).real
     i_theta_c: int = int(np.argmin(np.abs(LIN_THETA-theta_c)))
 
     c_1_jump: float
@@ -336,7 +337,6 @@ def calc_jump(psi_vec: np.ndarray,
     psi2: np.ndarray = np.array([])
 
     psi, _ = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
-
     psi1, psi2 = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
 
     a1_eq: float

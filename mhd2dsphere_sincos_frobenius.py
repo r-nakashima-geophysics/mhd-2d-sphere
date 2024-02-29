@@ -257,13 +257,13 @@ def plot_frobenius(psi_vec: np.ndarray,
     """
 
     mu_c_tmp: complex = eig / (M_ORDER * ALPHA)
-    mu_c: float
+    mu_c: complex
     if 0 <= np.arccos(mu_c_tmp).real < math.pi/2:
-        mu_c = mu_c_tmp.real
+        mu_c = mu_c_tmp
     else:
-        mu_c = -mu_c_tmp.real
+        mu_c = -mu_c_tmp
     #
-    theta_c: float = np.arccos(mu_c)
+    theta_c: float = np.arccos(mu_c).real
     i_theta_c: int = int(np.argmin(np.abs(LIN_THETA-theta_c)))
 
     if (i_theta_c < NUM_DATA) or (NUM_THETA < i_theta_c):
@@ -278,9 +278,7 @@ def plot_frobenius(psi_vec: np.ndarray,
     psi2: np.ndarray = np.array([])
 
     psi, _ = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
-
-    psi1, psi2 \
-        = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig.real, mu_c)
+    psi1, psi2 = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
 
     fig = plt.figure(figsize=(10, 10))
     gspec = GridSpec(5, 2)

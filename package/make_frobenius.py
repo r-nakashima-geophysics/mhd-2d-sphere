@@ -15,8 +15,8 @@ import numpy as np
 def calc_frobenius(m_order: int,
                    alpha: float,
                    num_theta: int,
-                   eig: float,
-                   mu_c: float) -> tuple[np.ndarray, np.ndarray]:
+                   eig: complex,
+                   mu_c: complex) -> tuple[np.ndarray, np.ndarray]:
     """Calculates some coefficients of the Frobenius solutions for
     the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
@@ -28,9 +28,9 @@ def calc_frobenius(m_order: int,
         The Lehnert number
     num_theta : int
         The number of the grid in the theta direction
-    eig : float
+    eig : complex
         An eigenvalue
-    mu_c : float
+    mu_c : complex
         A critical latitude
 
     Returns
@@ -47,16 +47,16 @@ def calc_frobenius(m_order: int,
 
     """
 
-    bc2_d: list[float] = [float(), ] * 4
+    bc2_d: list[complex] = [complex(), ] * 4
     bc2_d[0] = mu_c ** 2
     bc2_d[1] = 2 * mu_c
     bc2_d[2] = 2
     bc2_d[3] = 0
 
-    sin2: float = 1 - (mu_c**2)
-    denominator: float = bc2_d[1] * sin2
+    sin2: complex = 1 - (mu_c**2)
+    denominator: complex = bc2_d[1] * sin2
 
-    const_d: list[float] = [float(), ] * 4
+    const_d: list[complex] = [complex(), ] * 4
     const_d[0] = -(eig/(m_order*(alpha**2))+bc2_d[1]*mu_c+2*bc2_d[0]) \
         / denominator
     const_d[1] = (2*bc2_d[1]*mu_c-bc2_d[2]*sin2/2) / denominator
@@ -65,21 +65,21 @@ def calc_frobenius(m_order: int,
         / denominator
     const_d[3] = (bc2_d[1]+bc2_d[2]*mu_c-bc2_d[3]*sin2/6) / denominator
 
-    coeff_a: list[float] = [float(), ] * 4
-    coeff_b: list[float] = [float(), ] * 4
-    coeff_a[0] = const_d[0]
-    coeff_a[1] \
+    coef_a: list[complex] = [complex(), ] * 4
+    coef_b: list[complex] = [complex(), ] * 4
+    coef_a[0] = const_d[0]
+    coef_a[1] \
         = ((const_d[0]**2)+2*const_d[0]*const_d[1]+const_d[2]) / 4
-    coeff_b[0] = -2*const_d[0] + const_d[1]
-    coeff_b[1] = (-3*(const_d[0]**2)-2*const_d[0]*const_d[1] +
-                  2*(const_d[1]**2)-const_d[2]+2*const_d[3]) / 4
+    coef_b[0] = -2*const_d[0] + const_d[1]
+    coef_b[1] = (-3*(const_d[0]**2)-2*const_d[0]*const_d[1] +
+                 2*(const_d[1]**2)-const_d[2]+2*const_d[3]) / 4
 
     lin_theta: np.ndarray = np.linspace(0, math.pi, num_theta)
     delta_mu: np.ndarray = np.cos(lin_theta) - np.full(num_theta, mu_c)
 
-    psi1 = 1 + coeff_a[0]*delta_mu + coeff_a[1]*(delta_mu**2)
+    psi1 = 1 + coef_a[0]*delta_mu + coef_a[1]*(delta_mu**2)
     psi2 = psi1*np.log(delta_mu) \
-        + coeff_b[0]*delta_mu + coeff_b[1]*(delta_mu**2)
+        + coef_b[0]*delta_mu + coef_b[1]*(delta_mu**2)
 
     return psi1, psi2
 #
