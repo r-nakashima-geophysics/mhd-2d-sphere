@@ -867,7 +867,7 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
         dict_eig['vr'] = eig[i_alpha, :] \
             * dict_pickup['varicose'] * dict_pickup['retrograde']
         dict_eig['vp'] = eig[i_alpha, :] \
-            * dict_pickup['varicose'] * dict_pickup['sinuous']
+            * dict_pickup['varicose'] * dict_pickup['prograde']
 
         dict_eig['sr'] = -np.conjugate(dict_eig['sr'])
         dict_eig['vr'] = -np.conjugate(dict_eig['vr'])
