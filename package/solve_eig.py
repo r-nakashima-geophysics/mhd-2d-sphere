@@ -223,7 +223,7 @@ def calc_qty(m_order: int,
         The zonal wavenumber (order)
     e_eta : float
         The magnetic Ekman number
-    eig_vecval: ndarray
+    eig_vecval : ndarray
         Eigenvalues and normalized eigenvectors
 
     Returns
