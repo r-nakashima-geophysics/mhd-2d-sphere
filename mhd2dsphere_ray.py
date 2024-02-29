@@ -19,7 +19,7 @@ Too many input arguments
 
 Notes
 -----
-You may save the parameter file in ./input/MHD2Dsphere_nonmalkus_ray/.
+You may save the parameter file in ./input/MHD2Dsphere_ray/.
 Parameters other than command line arguments are described below.
 
 References
@@ -29,11 +29,11 @@ References
 Examples
 -----
 In the below example, the parameters will be set to the default values.
-    python3 mhd2dsphere_nonmalkus_ray.py
+    python3 mhd2dsphere_ray.py
 In the below example, the parameter file will be
-./input/MHD2Dsphere_nonmalkus_ray/prm.dat. (You need not type
-'./input/MHD2Dsphere_nonmalkus_ray/'.)
-    python3 mhd2dsphere_nonmalkus_ray prm.dat
+./input/MHD2Dsphere_ray/prm.dat. (You need not type
+'./input/MHD2Dsphere_ray/'.)
+    python3 mhd2dsphere_ray prm.dat
 
 """
 
@@ -87,9 +87,9 @@ TIME_END: Final[float] = 30
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_ray'
+    = Path('.') / 'fig' / 'MHD2Dsphere_ray'
 NAME_FIG: Final[str] \
-    = f'MHD2Dsphere_nonmalkus_ray_{NAME_B}_L{LAMBDA}'
+    = f'MHD2Dsphere_ray_{NAME_B}_L{LAMBDA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600
 
@@ -116,7 +116,7 @@ def load_prm(name_file: str) -> list[float]:
     """
 
     path_file: Path = Path('.') / 'input' \
-        / 'MHD2Dsphere_nonmalkus_ray' / name_file
+        / 'MHD2Dsphere_ray' / name_file
     array_prm: np.ndarray = np.loadtxt(path_file, comments='#')
 
     prms: list[float]
@@ -706,7 +706,7 @@ if __name__ == '__main__':
     elif len(sys.argv) == 2:
         FILE_PRM = sys.argv[1]
         path_file_prm = Path('.') / 'input' \
-            / 'MHD2Dsphere_nonmalkus_ray' / FILE_PRM
+            / 'MHD2Dsphere_ray' / FILE_PRM
         if not os.path.exists(path_file_prm):
             logger.error('File not found')
             sys.exit()

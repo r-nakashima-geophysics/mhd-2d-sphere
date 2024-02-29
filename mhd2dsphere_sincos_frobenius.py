@@ -34,7 +34,7 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 
 from package.load_data import load_legendre
-from package.make_eigfunc import choose_eigfunc, make_eigfunc
+from package.make_eigf import choose_eigf, make_eigf
 from package.make_frobenius import calc_frobenius, make_fitting_data
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
@@ -87,7 +87,7 @@ LIN_MU: Final[np.ndarray] = np.cos(LIN_THETA)
 
 
 @exe_yes_continue
-def wrapper_choose_eigfunc(
+def wrapper_choose_eigf(
         bundle: tuple[np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray]) -> None:
@@ -105,7 +105,7 @@ def wrapper_choose_eigfunc(
     vpa_vec: np.ndarray
     eig: complex
     i_chosen: int
-    psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
+    psi_vec, vpa_vec, eig, i_chosen = choose_eigf(bundle, SIZE_MAT)
 
     wrapper_plot_frobenius(psi_vec, vpa_vec, eig, i_chosen)
 
@@ -277,7 +277,7 @@ def plot_frobenius(psi_vec: np.ndarray,
     psi1: np.ndarray = np.array([])
     psi2: np.ndarray = np.array([])
 
-    psi, _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi, _ = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
     psi1, psi2 \
         = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig.real, mu_c)
@@ -422,5 +422,5 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_choose_eigfunc(results)
+    wrapper_choose_eigf(results)
 #

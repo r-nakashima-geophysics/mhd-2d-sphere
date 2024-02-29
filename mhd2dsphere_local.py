@@ -65,8 +65,8 @@ LAMBDA_END: Final[float] = 3
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_local'
-NAME_FIG: Final[str] = f'MHD2Dsphere_nonmalkus_local_{NAME_B}'
+    = Path('.') / 'fig' / 'MHD2Dsphere_local'
+NAME_FIG: Final[str] = f'MHD2Dsphere_local_{NAME_B}'
 NAME_FIG_SUFFIX_1: Final[tuple[str, str]] = ('_kl.png', '_kl_ms.png')
 NAME_FIG_SUFFIX_2: Final[tuple[str, str]] \
     = ('_klambda.png', '_klambda_ms.png')

@@ -24,8 +24,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from package.load_data import load_legendre
-from package.make_eigfunc import (amp_range, choose_eigfunc, make_eigfunc,
-                                  make_eigfunc_grid)
+from package.make_eigf import amp_range, choose_eigf, make_eigf, make_eigf_grid
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
 
@@ -59,8 +58,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_eigfunc'
-NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_eigfunc' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_eigf'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_eigf' \
     + f'_m{M_ORDER}a{ALPHA}E{E_ETA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('_ns.png', '_map.png')
 FIG_DPI: Final[int] = 600
@@ -90,7 +89,7 @@ GRID_LON: Final[np.ndarray] = np.rad2deg(GRID_PHI)
 
 
 @exe_yes_continue
-def wrapper_choose_eigfunc(
+def wrapper_choose_eigf(
         bundle: tuple[np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray]) -> None:
@@ -108,16 +107,16 @@ def wrapper_choose_eigfunc(
     vpa_vec: np.ndarray
     eig: complex
     i_chosen: int
-    psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
+    psi_vec, vpa_vec, eig, i_chosen = choose_eigf(bundle, SIZE_MAT)
 
-    wrapper_plot_eigfunc(psi_vec, vpa_vec, eig, i_chosen)
+    wrapper_plot_eigf(psi_vec, vpa_vec, eig, i_chosen)
 #
 
 
-def wrapper_plot_eigfunc(psi_vec: np.ndarray,
-                         vpa_vec: np.ndarray,
-                         eig: complex,
-                         i_mode: int) -> None:
+def wrapper_plot_eigf(psi_vec: np.ndarray,
+                      vpa_vec: np.ndarray,
+                      eig: complex,
+                      i_mode: int) -> None:
     """A wrapper of functions to plot figures of the eigenfunction of a
     chosen eigenmode
 
@@ -136,13 +135,13 @@ def wrapper_plot_eigfunc(psi_vec: np.ndarray,
 
     psi: np.ndarray
     vpa: np.ndarray
-    psi, vpa = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi, vpa = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
     psi_grid: np.ndarray
     vpa_grid: np.ndarray
     psi_grid, vpa_grid \
-        = make_eigfunc_grid(psi_vec, vpa_vec, M_ORDER,
-                            NUM_PHI, PNM_NORM_SKIP)
+        = make_eigf_grid(psi_vec, vpa_vec, M_ORDER,
+                         NUM_PHI, PNM_NORM_SKIP)
 
     plot_ns(psi, vpa, eig, i_mode)
     plot_map(psi_grid, vpa_grid, eig, i_mode)
@@ -351,5 +350,5 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_choose_eigfunc(results)
+    wrapper_choose_eigf(results)
 #

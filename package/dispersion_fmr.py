@@ -1,5 +1,5 @@
 """Defines the approximate dispersion relation for fast magnetic Rossby
-waves under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
+(MR) waves under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
 """
 
@@ -9,9 +9,9 @@ import numpy as np
 from scipy.integrate import quad
 
 
-def dispersion_rossby(eig: float,
-                      *args) -> float:
-    """The approximate dispersion relation for fast magnetic Rossby
+def dispersion_fmr(eig: float,
+                   *args) -> float:
+    """The approximate dispersion relation for fast magnetic Rossby (MR)
     waves under the non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
     Parameters

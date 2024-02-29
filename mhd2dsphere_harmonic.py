@@ -20,9 +20,9 @@ References
 Examples
 -----
 In the below example, ALPHA will be set to the default value.
-    python3 mhd2dsphere_nonmalkus_harmonic.py
+    python3 mhd2dsphere_harmonic.py
 In the below example, ALPHA will be set to 1.
-    python3 mhd2dsphere_nonmalkus_harmonic.py 1
+    python3 mhd2dsphere_harmonic.py 1
 
 """
 
@@ -81,8 +81,8 @@ LAMBDA_END: Final[float] = M_ORDER * ALPHA * 2
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_nonmalkus_harmonic'
-NAME_FIG: Final[str] = 'MHD2Dsphere_nonmalkus_harmonic' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_harmonic'
+NAME_FIG: Final[str] = 'MHD2Dsphere_harmonic' \
     + f'_{NAME_B}_m{M_ORDER}a{ALPHA}'
 NAME_FIG_SUFFIX: Final[tuple[str, str]] = ('.png', '_ms.png')
 FIG_DPI: Final[int] = 600

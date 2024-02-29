@@ -20,9 +20,9 @@ References
 Examples
 -----
 In the below example, ALPHA will be set to the default value.
-    python3 mhd2dsphere_sincos_alleigfunc.py
+    python3 mhd2dsphere_sincos_alleigf.py
 In the below example, ALPHA will be set to 1.
-    python3 mhd2dsphere_sincos_alleigfunc.py 1
+    python3 mhd2dsphere_sincos_alleigf.py 1
 
 """
 
@@ -38,7 +38,7 @@ import numpy as np
 
 from package.input_arg import input_alpha
 from package.load_data import load_legendre
-from package.make_eigfunc import make_eigfunc
+from package.make_eigf import make_eigf
 from package.processing_results import screening_eig_q
 from package.solve_eig import wrapper_solve_eig
 
@@ -78,8 +78,8 @@ EIG_RE_END: Final[float] = M_ORDER * ALPHA
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] \
-    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_alleigfunc'
-NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_alleigfunc' \
+    = Path('.') / 'fig' / 'MHD2Dsphere_sincos_alleigf'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_alleigf' \
     + f'_m{M_ORDER}a{ALPHA}E{E_ETA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX_1: Final[str] = f'q{CRITERION_Q}'
 NAME_FIG_SUFFIX_2: Final[tuple[str, str]] = ('_R.png', '_I.png')
@@ -95,7 +95,7 @@ SIZE_MAT: Final[int] = 2 * SIZE_SUBMAT
 LIN_THETA: Final[np.ndarray] = np.linspace(0, math.pi, NUM_THETA)
 
 
-def wrapper_plot_alleigfunc(
+def wrapper_plot_alleigf(
         bundle: tuple[np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray]) -> None:
@@ -114,7 +114,7 @@ def wrapper_plot_alleigfunc(
     ax1: np.ndarray
     ax2: np.ndarray
     save_fig2: bool
-    (fig1, fig2, ax1, ax2), save_fig2 = plot_alleigfunc(bundle)
+    (fig1, fig2, ax1, ax2), save_fig2 = plot_alleigf(bundle)
 
     ax_all: tuple[plt.Axes, plt.Axes, plt.Axes, plt.Axes,
                   plt.Axes, plt.Axes, plt.Axes, plt.Axes,] \
@@ -236,9 +236,9 @@ def wrapper_plot_alleigfunc(
 #
 
 
-def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
-                                  np.ndarray, np.ndarray, np.ndarray,
-                                  np.ndarray, np.ndarray]) \
+def plot_alleigf(bundle: tuple[np.ndarray, np.ndarray,
+                               np.ndarray, np.ndarray, np.ndarray,
+                               np.ndarray, np.ndarray]) \
         -> tuple[tuple[plt.Figure, plt.Figure, np.ndarray, np.ndarray],
                  bool]:
     """Plots a figure displaying all the eigenfunctions
@@ -269,7 +269,7 @@ def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
 
     psi_all: np.ndarray
     vpa_all: np.ndarray
-    psi_all, vpa_all = make_alleigfunc(eig, psi_vec, vpa_vec)
+    psi_all, vpa_all = make_alleigf(eig, psi_vec, vpa_vec)
 
     cmap_max: float = cmap_range(psi_all, vpa_all)
     cmap_min: float = 0
@@ -389,9 +389,9 @@ def wrapper_screening_eig_q(
 #
 
 
-def make_alleigfunc(eig: np.ndarray,
-                    psi_vec: np.ndarray,
-                    vpa_vec: np.ndarray) \
+def make_alleigf(eig: np.ndarray,
+                 psi_vec: np.ndarray,
+                 vpa_vec: np.ndarray) \
         -> tuple[np.ndarray, np.ndarray]:
     """Makes all the eigenfunctions from an eigenvector
 
@@ -424,7 +424,7 @@ def make_alleigfunc(eig: np.ndarray,
             continue
         #
 
-        psi_all[i_mode, :], vpa_all[i_mode, :] = make_eigfunc(
+        psi_all[i_mode, :], vpa_all[i_mode, :] = make_eigf(
             psi_vec[:, i_mode], vpa_vec[:, i_mode], M_ORDER, PNM_NORM)
     #
 
@@ -476,7 +476,7 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_plot_alleigfunc(results)
+    wrapper_plot_alleigf(results)
 
     TIME_ELAPSED: float = perf_counter() - TIME_INIT
     print(f'{__name__}: {TIME_ELAPSED:.3f} s')

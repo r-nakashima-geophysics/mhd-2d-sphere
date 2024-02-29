@@ -2,7 +2,7 @@
 non-Malkus field B_phi = B_0 sin(theta) cos(theta)
 
 Plots a figure of the approximate eigenfunction of fast magnetic
-Rossby waves.
+Rossby (MR) waves.
 
 Raises
 -----
@@ -31,10 +31,9 @@ import numpy as np
 from scipy.optimize import fsolve
 from scipy.special import obl_ang1, pro_ang1
 
-from package.dispersion_rossby import dispersion_rossby
+from package.dispersion_fmr import dispersion_fmr
 from package.load_data import load_legendre
-from package.make_eigfunc import (adjust_sign, amp_range, choose_eigfunc,
-                                  make_eigfunc)
+from package.make_eigf import adjust_sign, amp_range, choose_eigf, make_eigf
 from package.solve_eig import wrapper_solve_eig
 from package.yes_no_else import exe_yes_continue
 
@@ -60,8 +59,8 @@ R_C: Final[float] = 100
 
 # The paths and filenames of outputs
 PATH_DIR_FIG: Final[Path] = Path(
-    '.') / 'fig' / 'MHD2Dsphere_sincos_rossbyeigfunc'
-NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_rossbyeigfunc' \
+    '.') / 'fig' / 'MHD2Dsphere_sincos_fmreigf'
+NAME_FIG: Final[str] = 'MHD2Dsphere_sincos_fmreigf' \
     + f'_m{M_ORDER}a{ALPHA}N{N_T}th{NUM_THETA}'
 NAME_FIG_SUFFIX: Final[str] = '.png'
 FIG_DPI: Final[int] = 600
@@ -80,7 +79,7 @@ LIN_THETA: Final[np.ndarray] = np.linspace(0, math.pi, NUM_THETA)
 
 
 @exe_yes_continue
-def wrapper_choose_eigfunc(
+def wrapper_choose_eigf(
         bundle: tuple[np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray, np.ndarray,
                       np.ndarray, np.ndarray]) -> None:
@@ -98,18 +97,18 @@ def wrapper_choose_eigfunc(
     vpa_vec: np.ndarray
     eig: complex
     i_chosen: int
-    psi_vec, vpa_vec, eig, i_chosen = choose_eigfunc(bundle, SIZE_MAT)
+    psi_vec, vpa_vec, eig, i_chosen = choose_eigf(bundle, SIZE_MAT)
 
-    wrapper_plot_rossbyeigfunc(psi_vec, vpa_vec, eig, i_chosen)
+    wrapper_plot_fmreigf(psi_vec, vpa_vec, eig, i_chosen)
 #
 
 
-def wrapper_plot_rossbyeigfunc(psi_vec: np.ndarray,
-                               vpa_vec: np.ndarray,
-                               eig: complex,
-                               i_mode: int) -> None:
+def wrapper_plot_fmreigf(psi_vec: np.ndarray,
+                         vpa_vec: np.ndarray,
+                         eig: complex,
+                         i_mode: int) -> None:
     """A wrapper of functions to plot a figure of the eigenfunction of a
-    fast magnetic Rossby wave.
+    fast magnetic Rossby (MR) wave.
 
     Parameters
     -----
@@ -126,20 +125,20 @@ def wrapper_plot_rossbyeigfunc(psi_vec: np.ndarray,
 
     psi: np.ndarray
     vpa: np.ndarray
-    psi, vpa = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi, vpa = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
-    plot_ns_rossbyeigfunc(psi, vpa, eig, i_mode)
+    plot_ns_fmreigf(psi, vpa, eig, i_mode)
 
     plt.show()
 #
 
 
-def plot_ns_rossbyeigfunc(psi: np.ndarray,
-                          vpa: np.ndarray,
-                          eig: complex,
-                          i_mode: int) -> None:
+def plot_ns_fmreigf(psi: np.ndarray,
+                    vpa: np.ndarray,
+                    eig: complex,
+                    i_mode: int) -> None:
     """Plots a figure of the eigenfunction of a fast magnetic Rossby
-    wave.
+    (MR) wave.
 
     Parameters
     -----
@@ -169,15 +168,15 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
         axis.plot(LIN_THETA, vpa.imag, color='blue', linestyle=':')
     #
 
-    eig_rossby: float
-    eigfunc_rossby: np.ndarray
-    eig_rossby, eigfunc_rossby = calc_rossbyeigfunc(i_mode)
+    eig_fmr: float
+    eigf_fmr: np.ndarray
+    eig_fmr, eigf_fmr = calc_fmreigf(i_mode)
 
     psi_max: float = np.nanmax(np.abs(psi.real))
-    max_eigfunc_rossby: float = np.nanmax(np.abs(eigfunc_rossby))
-    eigfunc_rossby = eigfunc_rossby * (psi_max/max_eigfunc_rossby)
+    max_eigf_fmr: float = np.nanmax(np.abs(eigf_fmr))
+    eigf_fmr = eigf_fmr * (psi_max/max_eigf_fmr)
 
-    axis.plot(LIN_THETA, eigfunc_rossby, color='black',
+    axis.plot(LIN_THETA, eigf_fmr, color='black',
               linestyle=':', linewidth=2.5,
               label=r'$\mathrm{S}_{mn}(c,\mu)/\sqrt{\Lambda}$')
 
@@ -194,7 +193,7 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
     axis.set_title(
         r'$\lambda=$' + f' {eig.real:8.5f}, '
         + r'$\lambda_\mathrm{approx}=$'
-        + f' {eig_rossby.real:8.5f}', color='magenta', fontsize=16)
+        + f' {eig_fmr.real:8.5f}', color='magenta', fontsize=16)
 
     fig.suptitle(
         r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -217,9 +216,9 @@ def plot_ns_rossbyeigfunc(psi: np.ndarray,
 #
 
 
-def calc_rossbyeigfunc(i_mode: int) -> tuple[float, np.ndarray]:
+def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
     """Makes the approximate eigenfunction of fast magnetic Rossby
-    waves.
+    (MR) waves.
 
     Parameters
     -----
@@ -229,16 +228,16 @@ def calc_rossbyeigfunc(i_mode: int) -> tuple[float, np.ndarray]:
     Returns
     -----
     root : float
-        An approximate eigenvalue of fast magnetic Rossby waves
-    rossbyeigfunc : ndarray
-        An approximate eigenfunction of fast magnetic Rossby waves
+        An approximate eigenvalue of fast magnetic Rossby (MR) waves
+    fmreigf : ndarray
+        An approximate eigenfunction of fast magnetic Rossby (MR) waves
 
     """
 
     n_degree: int = i_mode + M_ORDER
 
     root: float
-    root, _, _, _ = fsolve(dispersion_rossby, [-0.01],
+    root, _, _, _ = fsolve(dispersion_fmr, [-0.01],
                            args=(M_ORDER, n_degree, ALPHA, 'sph'))
 
     ma2: float = (M_ORDER**2) * (ALPHA**2)
@@ -258,12 +257,12 @@ def calc_rossbyeigfunc(i_mode: int) -> tuple[float, np.ndarray]:
             M_ORDER, n_degree, sqrt_c2, np.cos(LIN_THETA))
     #
 
-    rossbyeigfunc: np.ndarray = angular / np.sqrt(critical.real)
+    fmreigf: np.ndarray = angular / np.sqrt(critical.real)
 
-    sign: int = adjust_sign(rossbyeigfunc, NUM_THETA)
-    rossbyeigfunc *= sign
+    sign: int = adjust_sign(fmreigf, NUM_THETA)
+    fmreigf *= sign
 
-    return root, rossbyeigfunc
+    return root, fmreigf
 #
 
 
@@ -283,5 +282,5 @@ if __name__ == '__main__':
 
     plt.rcParams['text.usetex'] = True
 
-    wrapper_choose_eigfunc(results)
+    wrapper_choose_eigf(results)
 #

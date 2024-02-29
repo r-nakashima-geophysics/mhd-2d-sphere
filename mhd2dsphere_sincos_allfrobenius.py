@@ -31,7 +31,7 @@ import numpy as np
 
 from package.input_arg import input_alpha
 from package.load_data import load_legendre
-from package.make_eigfunc import make_eigfunc
+from package.make_eigf import make_eigf
 from package.make_frobenius import calc_frobenius, make_fitting_data
 from package.processing_results import sort_sv
 from package.solve_eig import wrapper_solve_eig
@@ -96,7 +96,7 @@ def wrapper_plot_allfrobenius(
 
     fig: plt.Figure
     ax1: np.ndarray
-    ax2: np.ndarray
+    ax2: list
     ymin1: float
     ymax1: float
     ymin2: float
@@ -335,7 +335,7 @@ def calc_jump(psi_vec: np.ndarray,
     psi1: np.ndarray = np.array([])
     psi2: np.ndarray = np.array([])
 
-    psi, _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi, _ = make_eigf(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
     psi1, psi2 = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
 
