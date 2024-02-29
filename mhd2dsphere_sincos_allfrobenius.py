@@ -94,6 +94,7 @@ def wrapper_plot_allfrobenius(
 
     """
 
+    fig: plt.Figure
     ax1: np.ndarray
     ax2: np.ndarray
     ymin1: float
@@ -161,7 +162,7 @@ def wrapper_plot_allfrobenius(
 
     os.makedirs(PATH_DIR_FIG, exist_ok=True)
     path_fig: Path = PATH_DIR_FIG / NAME_FIG
-    fig.savefig(str(path_fig), dpi=FIG_DPI)
+    fig.savefig(path_fig, dpi=FIG_DPI)
 #
 
 
@@ -195,6 +196,7 @@ def plot_allfrobenius(
     sym: np.ndarray
     psi_vec, vpa_vec, eig, _, _, _, sym = bundle_with_vec
 
+    fig: plt.Figure
     ax1: np.ndarray
     fig, ax1 = plt.subplots(1, 2, figsize=(10, 5))
     ax2: list = [ax1[0].twinx(), ax1[1].twinx()]

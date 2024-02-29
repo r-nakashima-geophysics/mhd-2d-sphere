@@ -114,7 +114,7 @@ def wrapper_plot_alleigfunc(
     ax1: np.ndarray
     ax2: np.ndarray
     save_fig2: bool
-    (fig1, ax1, fig2, ax2), save_fig2 = plot_alleigfunc(bundle)
+    (fig1, fig2, ax1, ax2), save_fig2 = plot_alleigfunc(bundle)
 
     ax_all: tuple[plt.Axes, plt.Axes, plt.Axes, plt.Axes,
                   plt.Axes, plt.Axes, plt.Axes, plt.Axes,] \
@@ -229,9 +229,9 @@ def wrapper_plot_alleigfunc(
     path_fig_1: Path = PATH_DIR_FIG / name_fig_full_1
     path_fig_2: Path = PATH_DIR_FIG / name_fig_full_2
 
-    fig1.savefig(str(path_fig_1), dpi=FIG_DPI)
+    fig1.savefig(path_fig_1, dpi=FIG_DPI)
     if save_fig2:
-        fig2.savefig(str(path_fig_2), dpi=FIG_DPI)
+        fig2.savefig(path_fig_2, dpi=FIG_DPI)
     #
 #
 
@@ -239,7 +239,8 @@ def wrapper_plot_alleigfunc(
 def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
                                   np.ndarray, np.ndarray, np.ndarray,
                                   np.ndarray, np.ndarray]) \
-        -> tuple[tuple, bool]:
+        -> tuple[tuple[plt.Figure, plt.Figure, np.ndarray, np.ndarray],
+                 bool]:
     """Plots a figure displaying all the eigenfunctions
 
     Parameters
@@ -340,7 +341,8 @@ def plot_alleigfunc(bundle: tuple[np.ndarray, np.ndarray,
         #
     #
 
-    fig_bundle: tuple = (fig1, ax1, fig2, ax2)
+    fig_bundle: tuple[plt.Figure, plt.Figure, np.ndarray, np.ndarray] \
+        = (fig1, fig2, ax1, ax2)
 
     return fig_bundle, save_fig2
 #
