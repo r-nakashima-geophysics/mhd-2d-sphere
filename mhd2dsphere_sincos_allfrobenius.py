@@ -32,7 +32,7 @@ import numpy as np
 from package.input_arg import input_alpha
 from package.load_data import load_legendre
 from package.make_eigfunc import make_eigfunc
-from package.make_frobenius import calc_frobenius
+from package.make_frobenius import calc_frobenius, make_fitting_data
 from package.processing_results import sort_sv
 from package.solve_eig import wrapper_solve_eig
 
@@ -47,7 +47,7 @@ ALPHA: Final[float] = input_alpha(0.1)
 # The truncation degree
 N_T: Final[int] = 2000
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 NUM_THETA: Final[int] = 7201
 # The number of data points to which we will fit
 NUM_DATA: Final[int] = 200
@@ -142,10 +142,12 @@ def wrapper_plot_allfrobenius(
 
     handle1, label1 = ax1[0].get_legend_handles_labels()
     handle2, label2 = ax2[0].get_legend_handles_labels()
-    leg2_1 = ax2[0].legend(handle1 + handle2, label1 + label2,
-                           loc='best', fontsize=11)
-    leg2_2 = ax2[1].legend(handle1 + handle2, label1 + label2,
-                           loc='best', fontsize=11)
+    leg2_1: plt.Legend \
+        = ax2[0].legend(handle1 + handle2, label1 + label2,
+                        loc='best', fontsize=11)
+    leg2_2: plt.Legend \
+        = ax2[1].legend(handle1 + handle2, label1 + label2,
+                        loc='best', fontsize=11)
     leg2_1.get_frame().set_alpha(1)
     leg2_2.get_frame().set_alpha(1)
 
@@ -170,7 +172,8 @@ def plot_allfrobenius(
         bundle_with_vec: tuple[np.ndarray, np.ndarray,
                                np.ndarray, np.ndarray, np.ndarray,
                                np.ndarray, np.ndarray]) \
-        -> tuple[tuple, list[float], list[float]]:
+        -> tuple[tuple[plt.Figure, np.ndarray, list],
+                 list[float], list[float]]:
     """Plots a figure of the discontinuity in the coefficient of the
     first Frobenius series solution for all the eigenfunctions
 
@@ -273,7 +276,7 @@ def plot_allfrobenius(
     ymax2: float = sorted(np.abs(integral[0]))[i_almost_max]
     ymin2: float = -ymax2
 
-    fig_bundle: tuple = (fig, ax1, ax2)
+    fig_bundle: tuple[plt.Figure, np.ndarray, list] = (fig, ax1, ax2)
 
     return fig_bundle, [ymin1, ymax1], [ymin2, ymax2]
 #
@@ -328,23 +331,13 @@ def calc_jump(psi_vec: np.ndarray,
         return c_1_jump, c_2, integral
     #
 
-    psi: list[np.ndarray] = [np.array([]), ] * 3
-    psi1: list[np.ndarray] = [np.array([]), ] * 3
-    psi2: list[np.ndarray] = [np.array([]), ] * 3
+    psi: np.ndarray = np.array([])
+    psi1: np.ndarray = np.array([])
+    psi2: np.ndarray = np.array([])
 
-    psi[0], _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
+    psi, _ = make_eigfunc(psi_vec, vpa_vec, M_ORDER, PNM_NORM)
 
-    psi1[0], psi2[0] \
-        = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
-
-    # equatorial side
-    psi[1] = psi[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    psi1[1] = psi1[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    psi2[1] = psi2[0][i_theta_c+1:i_theta_c+NUM_DATA+1].real
-    # polar side
-    psi[2] = psi[0][i_theta_c-NUM_DATA:i_theta_c].real
-    psi1[2] = psi1[0][i_theta_c-NUM_DATA:i_theta_c].real
-    psi2[2] = psi2[0][i_theta_c-NUM_DATA:i_theta_c].real
+    psi1, psi2 = calc_frobenius(M_ORDER, ALPHA, NUM_THETA, eig, mu_c)
 
     a1_eq: float
     b1_eq: float
@@ -355,18 +348,22 @@ def calc_jump(psi_vec: np.ndarray,
     a2_pole: float
     b2_pole: float
 
-    y_eq: np.ndarray = psi[1] / psi1[1]
-    x_eq: np.ndarray = psi2[1] / psi1[1]
+    y_eq: np.ndarray \
+        = make_fitting_data(psi, psi1, NUM_DATA, i_theta_c, 'eq')
+    x_eq: np.ndarray \
+        = make_fitting_data(psi2, psi1, NUM_DATA, i_theta_c, 'eq')
     [a1_eq, b1_eq] = np.polyfit(x_eq, y_eq, 1)
-    y_pole: np.ndarray = psi[2] / psi1[2]
-    x_pole: np.ndarray = psi2[2] / psi1[2]
+    y_pole: np.ndarray \
+        = make_fitting_data(psi, psi1, NUM_DATA, i_theta_c, 'pole')
+    x_pole: np.ndarray \
+        = make_fitting_data(psi2, psi1, NUM_DATA, i_theta_c, 'pole')
     [a1_pole, b1_pole] = np.polyfit(x_pole, y_pole, 1)
 
-    y_eq = psi[1] / psi2[1]
-    x_eq = psi1[1] / psi2[1]
+    y_eq = make_fitting_data(psi, psi2, NUM_DATA, i_theta_c, 'eq')
+    x_eq = make_fitting_data(psi1, psi2, NUM_DATA, i_theta_c, 'eq')
     [a2_eq, b2_eq] = np.polyfit(x_eq, y_eq, 1)
-    y_pole = psi[2] / psi2[2]
-    x_pole = psi1[2] / psi2[2]
+    y_pole = make_fitting_data(psi, psi2, NUM_DATA, i_theta_c, 'pole')
+    x_pole = make_fitting_data(psi1, psi2, NUM_DATA, i_theta_c, 'pole')
     [a2_pole, b2_pole] = np.polyfit(x_pole, y_pole, 1)
 
     c_1_eq: float = (b1_eq + a2_eq) / 2
@@ -376,7 +373,7 @@ def calc_jump(psi_vec: np.ndarray,
     c_2 = (a1_pole + a1_eq + b2_pole + b2_eq) / 4
 
     integral = -(c_1_jump/c_2) * (1-(mu_c**2)) \
-        * (M_ORDER**2) * (ALPHA**2) * (2*mu_c) * (psi1[0][i_theta_c]**2)
+        * (M_ORDER**2) * (ALPHA**2) * (2*mu_c) * (psi1[i_theta_c]**2)
 
     return c_1_jump, c_2, integral
 #
