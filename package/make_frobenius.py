@@ -83,3 +83,43 @@ def calc_frobenius(m_order: int,
 
     return psi1, psi2
 #
+
+
+def make_fitting_data(psi1: np.ndarray,
+                      psi2: np.ndarray,
+                      num_data: int,
+                      i_theta_c: int,
+                      eq_or_pole: str) -> np.ndarray:
+    """Makes data for the fittings of the Frobenius solutions
+
+    Parameters
+    -----
+    psi1 : ndarray
+        An eigenfunction of the stream function (psi)
+    psi2 : ndarray
+        An eigenfunction of the stream function (psi)
+    num_data : int
+        The number of data points to which we will fit
+    i_theta_c : int
+        The index of the discrete position of a critical latitude
+    eq_or_pole : str
+        'eq' or 'pole'
+
+    """
+
+    psi1_data: np.ndarray = np.full(num_data, np.nan)
+    psi2_data: np.ndarray = np.full(num_data, np.nan)
+    data: np.ndarray = np.full(num_data, np.nan)
+
+    if eq_or_pole == 'eq':
+        psi1_data = psi1[i_theta_c+1:i_theta_c+num_data+1].real
+        psi2_data = psi2[i_theta_c+1:i_theta_c+num_data+1].real
+    elif eq_or_pole == 'pole':
+        psi1_data = psi1[i_theta_c-num_data:i_theta_c].real
+        psi2_data = psi2[i_theta_c-num_data:i_theta_c].real
+    #
+
+    data = psi1_data / psi2_data
+
+    return data
+#
