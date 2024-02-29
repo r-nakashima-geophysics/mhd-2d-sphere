@@ -153,6 +153,7 @@ def plot_ns_fmreigf(psi: np.ndarray,
 
     """
 
+    fig: plt.Figure
     axis: plt.Axes
     fig, axis = plt.subplots(figsize=(7, 4))
 

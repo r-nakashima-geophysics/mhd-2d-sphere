@@ -100,6 +100,7 @@ def wrapper_plot_fmr(
 
     """
 
+    fig: plt.Figure
     axes: np.ndarray
     fig, axes = plot_fmr(bundle)
 
@@ -159,8 +160,9 @@ def wrapper_plot_fmr(
 
 
 def plot_fmr(
-        bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
-                      np.ndarray, np.ndarray, np.ndarray]) -> tuple:
+    bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
+                  np.ndarray, np.ndarray, np.ndarray]) \
+        -> tuple[plt.Figure, np.ndarray]:
     """Plots a figure of the approximate dispersion relation for fast
     magnetic Rossby (MR) waves
 
@@ -176,6 +178,7 @@ def plot_fmr(
 
     """
 
+    fig: plt.Figure
     axes: np.ndarray
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
@@ -262,7 +265,7 @@ def plot_fmr(
     axes[1].scatter(ones_alpha_skip, root_v, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
 
-    fig_bundle: tuple = (fig, axes)
+    fig_bundle: tuple[plt.Figure, np.ndarray] = (fig, axes)
 
     return fig_bundle
 #
