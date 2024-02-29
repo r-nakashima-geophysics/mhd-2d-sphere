@@ -22,7 +22,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 
 FUNC_B: Callable[[complex], complex]
 TEX_B: str
@@ -35,9 +35,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-FUNC_B, _, _, TEX_B, NAME_B = b_malkus('theta')
-# FUNC_B, _, _, TEX_B, NAME_B = b_sincos('theta')
-# FUNC_B, _, _, TEX_B, NAME_B = b_sin2cos('theta')
+FUNC_B, _, _, TEX_B, NAME_B = func_b.b_malkus('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The range of the colatitude
 THETA_INIT: Final[float] = 30

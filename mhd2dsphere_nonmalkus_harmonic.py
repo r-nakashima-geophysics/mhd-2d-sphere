@@ -35,7 +35,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 from package.input_arg import input_alpha
 
 FUNC_B: Callable[[complex], complex]
@@ -44,6 +44,7 @@ FUNC_D2B: Callable[[complex], complex]
 TEX_B: str
 NAME_B: str
 
+
 # ========== Parameters ==========
 
 # The boolean value to switch whether to use the magnetostrophic
@@ -51,9 +52,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_malkus('theta')
-# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sincos('theta')
-# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = b_sin2cos('theta')
+FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_malkus('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -61,7 +62,7 @@ M_ORDER: Final[int] = 1
 # The Lehnert number
 ALPHA: Final[float] = input_alpha(0.1)
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 THETA_INIT: Final[float] = 0
 THETA_STEP: Final[float] = 0.01
 THETA_END: Final[float] = math.pi

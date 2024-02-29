@@ -51,7 +51,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import fsolve
 
-from package.func_b import b_malkus, b_sin2cos, b_sincos
+from package import func_b
 
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
@@ -68,9 +68,9 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
-# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_malkus('theta')
-FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sincos('theta')
-# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = b_sin2cos('theta')
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_malkus('theta')
+FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sincos('theta')
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
 
 # The scaled angular frequency
 LAMBDA: Final[float] = 1
