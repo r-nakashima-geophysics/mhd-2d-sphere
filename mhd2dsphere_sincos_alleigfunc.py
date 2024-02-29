@@ -60,7 +60,7 @@ E_ETA: Final[float] = 0
 # The truncation degree
 N_T: Final[int] = 2000
 
-# The resolution in the theta direction
+# The number of the grid in the theta direction
 NUM_THETA: Final[int] = 3601
 
 # A criterion for convergence
