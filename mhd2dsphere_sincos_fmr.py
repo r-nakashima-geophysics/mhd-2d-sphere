@@ -34,7 +34,7 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.optimize import root
 
 from package import processing_results as proc
 from package.dispersion_fmr import dispersion_fmr
@@ -226,9 +226,9 @@ def plot_fmr(
     start: float = float()
     n_degree: int
 
-    root: float
-    root_s: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
-    root_v: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
+    sol: float
+    sol_s: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
+    sol_v: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
 
     for i_alpha in range(num_alpha_skip):
         alpha = lin_alpha_skip[i_alpha]
@@ -244,25 +244,25 @@ def plot_fmr(
                 start = -(1+10**(-5))*M_ORDER*alpha
             #
 
-            root, _, _, _ = fsolve(
-                dispersion_fmr, [start],
-                args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
+            sol = root(dispersion_fmr, start,
+                       args=(M_ORDER, n_degree, alpha, SWITCH_EQ),
+                       method='hybr').x[0].real
 
-            if ((M_ORDER*alpha)**2)/(root.real**2) < 0.99:
+            if ((M_ORDER*alpha)**2)/(sol**2) < 0.99:
                 if i_n % 2 == 0:
-                    root_s[i_n, i_alpha] = -1 * root.real
-                    root_v[i_n, i_alpha] = math.nan
+                    sol_s[i_n, i_alpha] = -1 * sol
+                    sol_v[i_n, i_alpha] = math.nan
                 elif i_n % 2 == 1:
-                    root_s[i_n, i_alpha] = math.nan
-                    root_v[i_n, i_alpha] = -1 * root.real
+                    sol_s[i_n, i_alpha] = math.nan
+                    sol_v[i_n, i_alpha] = -1 * sol
                 #
             #
         #
     #
 
-    axes[0].scatter(ones_alpha_skip, root_s, s=10, c='red',
+    axes[0].scatter(ones_alpha_skip, sol_s, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
-    axes[1].scatter(ones_alpha_skip, root_v, s=10, c='red',
+    axes[1].scatter(ones_alpha_skip, sol_v, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
 
     fig_bundle: tuple[plt.Figure, np.ndarray] = (fig, axes)

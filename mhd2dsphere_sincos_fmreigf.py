@@ -28,7 +28,7 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.optimize import root
 from scipy.special import obl_ang1, pro_ang1
 
 from package.dispersion_fmr import dispersion_fmr
@@ -49,7 +49,7 @@ ALPHA: Final[float] = 0.1
 N_T: Final[int] = 2000
 
 # The number of the grid in the theta direction
-NUM_THETA: Final[int] = 3601
+NUM_THETA: Final[int] = 361
 
 # A criterion for convergence
 # degree
@@ -228,7 +228,7 @@ def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
 
     Returns
     -----
-    root : float
+    eig : float
         An approximate eigenvalue of fast magnetic Rossby (MR) waves
     fmreigf : ndarray
         An approximate eigenfunction of fast magnetic Rossby (MR) waves
@@ -237,14 +237,14 @@ def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
 
     n_degree: int = i_mode + M_ORDER
 
-    root: float
-    root, _, _, _ = fsolve(dispersion_fmr, [-0.01],
-                           args=(M_ORDER, n_degree, ALPHA, 'sph'))
+    eig: float = root(
+        dispersion_fmr, -0.01,
+        args=(M_ORDER, n_degree, ALPHA, 'sph'), method='hybr').x[0].real
 
     ma2: float = (M_ORDER**2) * (ALPHA**2)
-    c2_spheroidal: float = (ma2/(root**2)) * (7+M_ORDER/root)
+    c2_spheroidal: float = (ma2/(eig**2)) * (7+M_ORDER/eig)
 
-    critical: np.ndarray = (root**2) - ma2*(np.cos(LIN_THETA)**2)
+    critical: np.ndarray = (eig**2) - ma2*(np.cos(LIN_THETA)**2)
 
     sqrt_c2: float
     angular: np.ndarray = np.array([])
@@ -263,7 +263,7 @@ def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
     sign: int = adjust_sign(fmreigf, NUM_THETA)
     fmreigf *= sign
 
-    return root, fmreigf
+    return eig, fmreigf
 #
 
 
