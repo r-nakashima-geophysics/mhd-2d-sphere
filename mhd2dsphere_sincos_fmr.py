@@ -34,12 +34,12 @@ from typing import Final
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.optimize import root
 
-from package import processing_results as proc
 from package.dispersion_fmr import dispersion_fmr
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
+from package.processing_results import pickup_eig
 
 # ========== Parameters ==========
 
@@ -184,35 +184,30 @@ def plot_fmr(
 
     lin_alpha: np.ndarray
     eig: np.ndarray
+    mke: np.ndarray
     sym: np.ndarray
-    lin_alpha, eig, _, _, _, sym = bundle
+    lin_alpha, eig, mke, _, _, sym = bundle
 
     num_alpha: int = len(lin_alpha)
 
     alpha: float
     ones_alpha: np.ndarray
 
-    sinuous: np.ndarray
-    varicose: np.ndarray
-    retrograde: np.ndarray
-    eig_sr: np.ndarray
-    eig_vr: np.ndarray
+    dict_eig: dict[str, np.ndarray]
 
     for i_alpha in range(num_alpha):
         alpha = 10**lin_alpha[i_alpha]
 
         ones_alpha = np.full(SIZE_MAT, alpha)
-        sinuous, varicose = proc.sort_sv(sym[i_alpha, :])
-        retrograde = proc.sort_pr(eig[i_alpha, :])[1]
 
-        eig_sr = eig[i_alpha, :] * sinuous * retrograde
-        eig_vr = eig[i_alpha, :] * varicose * retrograde
+        dict_eig = pickup_eig(
+            eig[i_alpha, :], mke[i_alpha, :], sym[i_alpha, :])
 
-        eig_sr = -np.conjugate(eig_sr)
-        eig_vr = -np.conjugate(eig_vr)
+        dict_eig['sr'] = -np.conjugate(dict_eig['sr'])
+        dict_eig['vr'] = -np.conjugate(dict_eig['vr'])
 
-        axes[0].scatter(ones_alpha, eig_sr.real, s=0.5, c='gray')
-        axes[1].scatter(ones_alpha, eig_vr.real, s=0.5, c='gray')
+        axes[0].scatter(ones_alpha, dict_eig['sr'].real, s=0.5, c='gray')
+        axes[1].scatter(ones_alpha, dict_eig['vr'].real, s=0.5, c='gray')
     #
 
     alpha_tmp: np.ndarray = np.zeros(num_alpha)
@@ -226,9 +221,9 @@ def plot_fmr(
     start: float = float()
     n_degree: int
 
-    root: float
-    root_s: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
-    root_v: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
+    sol: float
+    sol_s: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
+    sol_v: np.ndarray = np.full((NUM_N, num_alpha_skip), math.nan)
 
     for i_alpha in range(num_alpha_skip):
         alpha = lin_alpha_skip[i_alpha]
@@ -244,25 +239,25 @@ def plot_fmr(
                 start = -(1+10**(-5))*M_ORDER*alpha
             #
 
-            root, _, _, _ = fsolve(
-                dispersion_fmr, [start],
-                args=(M_ORDER, n_degree, alpha, SWITCH_EQ))
+            sol = root(dispersion_fmr, start,
+                       args=(M_ORDER, n_degree, alpha, SWITCH_EQ),
+                       method='hybr').x[0].real
 
-            if ((M_ORDER*alpha)**2)/(root.real**2) < 0.99:
+            if ((M_ORDER*alpha)**2)/(sol**2) < 0.99:
                 if i_n % 2 == 0:
-                    root_s[i_n, i_alpha] = -1 * root.real
-                    root_v[i_n, i_alpha] = math.nan
+                    sol_s[i_n, i_alpha] = -1 * sol
+                    sol_v[i_n, i_alpha] = math.nan
                 elif i_n % 2 == 1:
-                    root_s[i_n, i_alpha] = math.nan
-                    root_v[i_n, i_alpha] = -1 * root.real
+                    sol_s[i_n, i_alpha] = math.nan
+                    sol_v[i_n, i_alpha] = -1 * sol
                 #
             #
         #
     #
 
-    axes[0].scatter(ones_alpha_skip, root_s, s=10, c='red',
+    axes[0].scatter(ones_alpha_skip, sol_s, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
-    axes[1].scatter(ones_alpha_skip, root_v, s=10, c='red',
+    axes[1].scatter(ones_alpha_skip, sol_v, s=10, c='red',
                     label=r'$\lambda_\mathrm{approx}$')
 
     fig_bundle: tuple[plt.Figure, np.ndarray] = (fig, axes)

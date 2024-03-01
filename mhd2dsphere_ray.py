@@ -49,7 +49,7 @@ import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import solve_ivp
-from scipy.optimize import fsolve
+from scipy.optimize import root
 
 from package import func_b
 
@@ -77,7 +77,7 @@ LAMBDA: Final[float] = 1
 
 # Initial values of the time integration calculating the ray trajectory
 THETA_INITIAL: Final[float] = 45
-K_INITIAL: Final[float] = 1  # The initial value of fsolve
+K_INITIAL: Final[float] = 1  # The initial value of scipy.optimize.root
 L_INITIAL: Final[float] = 1
 
 # The range of the scaled time
@@ -394,11 +394,10 @@ def integrate_ray(prms: list[float]) \
     theta_rad_init: float = math.radians(theta_deg_init)
     k_const_init: float = k_init * math.sin(theta_rad_init)
 
-    sol_k: np.ndarray
-    sol_k = fsolve(
-        dispersion, k_const_init, args=(theta_rad_init, l_init))[0]
+    k_const: float = root(
+        dispersion, k_const_init,
+        args=(theta_rad_init, l_init), method='hybr').x[0]
 
-    k_const: float = float(sol_k)
     k_wavenum_init: float = k_const / math.sin(theta_rad_init)
 
     t_span: tuple[float, float] = (TIME_INIT, t_end)
@@ -681,7 +680,7 @@ def critical_lat(k_const: float) -> set[float]:
     for init_deg in range(int(THETA_INIT), int(THETA_END), 1):
 
         init_rad = math.radians(init_deg)
-        theta_c_rad = fsolve(critical, init_rad)[0]
+        theta_c_rad = root(critical, init_rad, method='hybr').x[0]
         theta_c_deg = math.degrees(theta_c_rad)
 
         if THETA_INIT < theta_c_deg < THETA_END:

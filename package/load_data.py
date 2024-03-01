@@ -66,6 +66,8 @@ def wrapper_load_results(switch_plot: tuple[bool, bool],
 
         bundle_all = (lin_alpha, bundle[0], bundle[1],
                       bundle[2], bundle[3], bundle[4])
+    else:
+        bundle_all = (np.ndarray([]), ) * 6
     #
 
     if switch_plot[1]:
