@@ -99,6 +99,77 @@ def pickup_param(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
 #
 
 
+def pickup_eig(eig_alpha: np.ndarray,
+               mke_alpha: np.ndarray,
+               sym_alpha: np.ndarray) -> dict[str, np.ndarray]:
+    """Picks up eigenvalues of various modes
+
+    Parameters
+    -----
+    eig_alpha : ndarray
+        Eigenvalues for a given alpha
+    mke_alpha : ndarray
+        The mean kinetic energy for a given alpha
+    sym_alpha : ndarray
+        The symmetry of eigenmodes for a given alpha
+
+    Returns
+    -----
+    dict_eig : dict of str and ndarray
+        The dictionary to pick up eigenvalues ofvarious modes
+
+    """
+
+    sinuous: np.ndarray
+    varicose: np.ndarray
+    sinuous, varicose = sort_sv(sym_alpha)
+
+    prograde: np.ndarray
+    retrograde: np.ndarray
+    prograde, retrograde = sort_pr(eig_alpha)
+
+    unstable: np.ndarray = pickup_unstable(eig_alpha)
+
+    alfvenic, non_alfvenic = sort_alfvenic(mke_alpha)
+
+    dict_eig: dict[str, np.ndarray] = {
+        's': eig_alpha * sinuous,
+        'v': eig_alpha * varicose,
+
+        's_u': eig_alpha * sinuous * unstable,
+        'v_u': eig_alpha * varicose * unstable,
+
+        's_a': eig_alpha * sinuous * alfvenic,
+        'v_a': eig_alpha * varicose * alfvenic,
+
+        's_na': eig_alpha * sinuous * non_alfvenic,
+        'v_na': eig_alpha * varicose * non_alfvenic,
+
+        'sr': eig_alpha * sinuous * retrograde,
+        'sp': eig_alpha * sinuous * prograde,
+        'vr': eig_alpha * varicose * retrograde,
+        'vp': eig_alpha * varicose * prograde,
+
+        'sr_u': eig_alpha * sinuous * retrograde * unstable,
+        'sp_u': eig_alpha * sinuous * prograde * unstable,
+        'vr_u': eig_alpha * varicose * retrograde * unstable,
+        'vp_u': eig_alpha * varicose * prograde * unstable,
+
+        'sr_a': eig_alpha * sinuous * retrograde * alfvenic,
+        'sp_a': eig_alpha * sinuous * prograde * alfvenic,
+        'vr_a': eig_alpha * varicose * retrograde * alfvenic,
+        'vp_a': eig_alpha * varicose * prograde * alfvenic,
+
+        'sr_na': eig_alpha * sinuous * retrograde * non_alfvenic,
+        'sp_na': eig_alpha * sinuous * prograde * non_alfvenic,
+        'vr_na': eig_alpha * varicose * retrograde * non_alfvenic,
+        'vp_na': eig_alpha * varicose * prograde * non_alfvenic,
+    }
+
+    return dict_eig
+#
+
+
 def sort_sv(sym_alpha: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """Sorts into sinuous and varicose modes
 
