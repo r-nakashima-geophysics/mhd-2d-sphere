@@ -52,9 +52,10 @@ from typing import Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package import processing_results as proc
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
+from package.processing_results import (pickup_eig, pickup_param,
+                                        screening_eig_q)
 
 # ========== Parameters ==========
 
@@ -354,24 +355,7 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     alpha: float
     ones_alpha: np.ndarray
 
-    dict_pickup: dict[str, np.ndarray] = {
-        'sinuous': np.array([]),
-        'varicose': np.array([]),
-        'unstable': np.array([]),
-        'alfvenic': np.array([]),
-        'non_alfvenic': np.array([]),
-    }
-
-    dict_eig: dict[str, np.ndarray] = {
-        's': np.array([]),
-        'v': np.array([]),
-        's_u': np.array([]),
-        'v_u': np.array([]),
-        's_a': np.array([]),
-        'v_a': np.array([]),
-        's_na': np.array([]),
-        'v_na': np.array([]),
-    }
+    dict_eig: dict[str, np.ndarray]
 
     scatter_color: np.ndarray
 
@@ -380,14 +364,8 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
 
         ones_alpha = np.full(SIZE_MAT, alpha)
 
-        dict_pickup['sinuous'], dict_pickup['varicose'] \
-            = proc.sort_sv(sym[i_alpha, :])
-        dict_eig['s'] = eig[i_alpha, :] * dict_pickup['sinuous']
-        dict_eig['v'] = eig[i_alpha, :] * dict_pickup['varicose']
-
-        dict_pickup['unstable'] = proc.pickup_unstable(eig[i_alpha, :])
-        dict_eig['s_u'] = dict_eig['s'] * dict_pickup['unstable']
-        dict_eig['v_u'] = dict_eig['v'] * dict_pickup['unstable']
+        dict_eig = pickup_eig(
+            eig[i_alpha, :], mke[i_alpha, :], sym[i_alpha, :])
 
         if SWITCH_COLOR == 'blk':
 
@@ -430,17 +408,6 @@ def plot_eig(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
             #
 
             if E_ETA == 0:  # ene
-
-                dict_pickup['alfvenic'], dict_pickup['non_alfvenic'] \
-                    = proc.sort_alfvenic(mke[i_alpha, :])
-                dict_eig['s_a'] \
-                    = dict_eig['s'] * dict_pickup['alfvenic']
-                dict_eig['v_a'] \
-                    = dict_eig['v'] * dict_pickup['alfvenic']
-                dict_eig['s_na'] \
-                    = dict_eig['s'] * dict_pickup['non_alfvenic']
-                dict_eig['v_na'] \
-                    = dict_eig['v'] * dict_pickup['non_alfvenic']
 
                 ax1[0].scatter(
                     ones_alpha, dict_eig['s_a'].real, s=0.05,
@@ -820,34 +787,7 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
     alpha: float
     ones_alpha: np.ndarray
 
-    dict_pickup: dict[str, np.ndarray] = {
-        'sinuous': np.array([]),
-        'varicose': np.array([]),
-        'retrograde': np.array([]),
-        'prograde': np.array([]),
-        'unstable': np.array([]),
-        'alfvenic': np.array([]),
-        'non_alfvenic': np.array([]),
-    }
-
-    dict_eig: dict[str, np.ndarray] = {
-        'sr': np.array([]),
-        'sp': np.array([]),
-        'vr': np.array([]),
-        'vp': np.array([]),
-        'sr_u': np.array([]),
-        'sp_u': np.array([]),
-        'vr_u': np.array([]),
-        'vp_u': np.array([]),
-        'sr_a': np.array([]),
-        'sp_a': np.array([]),
-        'vr_a': np.array([]),
-        'vp_a': np.array([]),
-        'sr_na': np.array([]),
-        'sp_na': np.array([]),
-        'vr_na': np.array([]),
-        'vp_na': np.array([]),
-    }
+    dict_eig: dict[str, np.ndarray]
 
     scatter_color: np.ndarray
 
@@ -856,27 +796,17 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
 
         ones_alpha = np.full(SIZE_MAT, alpha)
 
-        dict_pickup['sinuous'], dict_pickup['varicose'] \
-            = proc.sort_sv(sym[i_alpha, :])
-        dict_pickup['prograde'], dict_pickup['retrograde'] \
-            = proc.sort_pr(eig[i_alpha, :])
-        dict_eig['sr'] = eig[i_alpha, :] \
-            * dict_pickup['sinuous'] * dict_pickup['retrograde']
-        dict_eig['sp'] = eig[i_alpha, :] \
-            * dict_pickup['sinuous'] * dict_pickup['prograde']
-        dict_eig['vr'] = eig[i_alpha, :] \
-            * dict_pickup['varicose'] * dict_pickup['retrograde']
-        dict_eig['vp'] = eig[i_alpha, :] \
-            * dict_pickup['varicose'] * dict_pickup['prograde']
+        dict_eig = pickup_eig(
+            eig[i_alpha, :], mke[i_alpha, :], sym[i_alpha, :])
 
         dict_eig['sr'] = -np.conjugate(dict_eig['sr'])
         dict_eig['vr'] = -np.conjugate(dict_eig['vr'])
-
-        dict_pickup['unstable'] = proc.pickup_unstable(eig[i_alpha, :])
-        dict_eig['sr_u'] = dict_eig['sr'] * dict_pickup['unstable']
-        dict_eig['sp_u'] = dict_eig['sp'] * dict_pickup['unstable']
-        dict_eig['vr_u'] = dict_eig['vr'] * dict_pickup['unstable']
-        dict_eig['vp_u'] = dict_eig['vp'] * dict_pickup['unstable']
+        dict_eig['sr_u'] = -np.conjugate(dict_eig['sr_u'])
+        dict_eig['vr_u'] = -np.conjugate(dict_eig['vr_u'])
+        dict_eig['sr_a'] = -np.conjugate(dict_eig['sr_a'])
+        dict_eig['vr_a'] = -np.conjugate(dict_eig['vr_a'])
+        dict_eig['sr_na'] = -np.conjugate(dict_eig['sr_na'])
+        dict_eig['vr_na'] = -np.conjugate(dict_eig['vr_na'])
 
         if SWITCH_COLOR == 'blk':
 
@@ -941,25 +871,6 @@ def plot_eig_log(bundle: tuple[np.ndarray, np.ndarray, np.ndarray,
             #
 
             if E_ETA == 0:  # ene
-                dict_pickup['alfvenic'], dict_pickup['non_alfvenic'] \
-                    = proc.sort_alfvenic(mke[i_alpha, :])
-                dict_eig['sr_a'] \
-                    = dict_eig['sr'] * dict_pickup['alfvenic']
-                dict_eig['sp_a'] \
-                    = dict_eig['sp'] * dict_pickup['alfvenic']
-                dict_eig['vr_a'] \
-                    = dict_eig['vr'] * dict_pickup['alfvenic']
-                dict_eig['vp_a'] \
-                    = dict_eig['vp'] * dict_pickup['alfvenic']
-                dict_eig['sr_na'] \
-                    = dict_eig['sr'] * dict_pickup['non_alfvenic']
-                dict_eig['sp_na'] \
-                    = dict_eig['sp'] * dict_pickup['non_alfvenic']
-                dict_eig['vr_na'] \
-                    = dict_eig['vr'] * dict_pickup['non_alfvenic']
-                dict_eig['vp_na'] \
-                    = dict_eig['vp'] * dict_pickup['non_alfvenic']
-
                 ax1[0, 0].scatter(
                     ones_alpha, dict_eig['sr_a'].real, s=0.05,
                     c=scatter_color, cmap='jet',
@@ -1106,7 +1017,7 @@ if __name__ == '__main__':
     if SWITCH_PLOT[0]:
 
         if (E_ETA != 0) and (CRITERION_Q > 0):
-            results = proc.screening_eig_q(CRITERION_Q, results)
+            results = screening_eig_q(CRITERION_Q, results)
         #
 
         ALPHA_INIT: float
@@ -1114,14 +1025,14 @@ if __name__ == '__main__':
         NUM_ALPHA: int
         OHM_MAX: float
         ALPHA_INIT, ALPHA_END, NUM_ALPHA, OHM_MAX \
-            = proc.pickup_param(results)
+            = pickup_param(results)
 
         wrapper_plot_eig(results)
     #
     if SWITCH_PLOT[1]:
 
         if (E_ETA != 0) and (CRITERION_Q > 0):
-            results_log = proc.screening_eig_q(CRITERION_Q, results_log)
+            results_log = screening_eig_q(CRITERION_Q, results_log)
         #
 
         ALPHA_LOG_INIT: float
@@ -1129,7 +1040,7 @@ if __name__ == '__main__':
         NUM_ALPHA_LOG: int
         OHM_LOG_MAX: float
         ALPHA_LOG_INIT, ALPHA_LOG_END, NUM_ALPHA_LOG, OHM_LOG_MAX \
-            = proc.pickup_param(results_log)
+            = pickup_param(results_log)
 
         wrapper_plot_eig_log(results_log)
     #

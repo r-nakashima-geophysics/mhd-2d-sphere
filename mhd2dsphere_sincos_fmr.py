@@ -36,10 +36,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.optimize import root
 
-from package import processing_results as proc
 from package.dispersion_fmr import dispersion_fmr
 from package.input_arg import input_m
 from package.load_data import wrapper_load_results
+from package.processing_results import pickup_eig
 
 # ========== Parameters ==========
 
@@ -184,35 +184,30 @@ def plot_fmr(
 
     lin_alpha: np.ndarray
     eig: np.ndarray
+    mke: np.ndarray
     sym: np.ndarray
-    lin_alpha, eig, _, _, _, sym = bundle
+    lin_alpha, eig, mke, _, _, sym = bundle
 
     num_alpha: int = len(lin_alpha)
 
     alpha: float
     ones_alpha: np.ndarray
 
-    sinuous: np.ndarray
-    varicose: np.ndarray
-    retrograde: np.ndarray
-    eig_sr: np.ndarray
-    eig_vr: np.ndarray
+    dict_eig: dict[str, np.ndarray]
 
     for i_alpha in range(num_alpha):
         alpha = 10**lin_alpha[i_alpha]
 
         ones_alpha = np.full(SIZE_MAT, alpha)
-        sinuous, varicose = proc.sort_sv(sym[i_alpha, :])
-        retrograde = proc.sort_pr(eig[i_alpha, :])[1]
 
-        eig_sr = eig[i_alpha, :] * sinuous * retrograde
-        eig_vr = eig[i_alpha, :] * varicose * retrograde
+        dict_eig = pickup_eig(
+            eig[i_alpha, :], mke[i_alpha, :], sym[i_alpha, :])
 
-        eig_sr = -np.conjugate(eig_sr)
-        eig_vr = -np.conjugate(eig_vr)
+        dict_eig['sr'] = -np.conjugate(dict_eig['sr'])
+        dict_eig['vr'] = -np.conjugate(dict_eig['vr'])
 
-        axes[0].scatter(ones_alpha, eig_sr.real, s=0.5, c='gray')
-        axes[1].scatter(ones_alpha, eig_vr.real, s=0.5, c='gray')
+        axes[0].scatter(ones_alpha, dict_eig['sr'].real, s=0.5, c='gray')
+        axes[1].scatter(ones_alpha, dict_eig['vr'].real, s=0.5, c='gray')
     #
 
     alpha_tmp: np.ndarray = np.zeros(num_alpha)
