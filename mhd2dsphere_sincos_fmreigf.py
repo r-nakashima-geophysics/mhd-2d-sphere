@@ -171,15 +171,22 @@ def plot_ns_fmreigf(psi: np.ndarray,
 
     eig_fmr: float
     eigf_fmr: np.ndarray
-    eig_fmr, eigf_fmr = calc_fmreigf(i_mode)
+    c2_spheroidal: float
+    eig_fmr, eigf_fmr, c2_spheroidal = calc_fmreigf(i_mode)
 
     psi_max: float = np.nanmax(np.abs(psi.real))
     max_eigf_fmr: float = np.nanmax(np.abs(eigf_fmr))
     eigf_fmr = eigf_fmr * (psi_max/max_eigf_fmr)
 
-    axis.plot(LIN_THETA, eigf_fmr, color='black',
-              linestyle=':', linewidth=2.5,
-              label=r'$\mathrm{S}_{mn}(c,\mu)/\sqrt{\Lambda}$')
+    if c2_spheroidal >= 0:
+        axis.plot(LIN_THETA, eigf_fmr, color='black',
+                  linestyle=':', linewidth=2.5,
+                  label=r'$\mathrm{S}_{mn}(c,\mu)/\sqrt{\Lambda}$')
+    else:
+        axis.plot(LIN_THETA, eigf_fmr, color='black',
+                  linestyle=':', linewidth=2.5,
+                  label=r'$\mathrm{S}_{mn}(-\mathrm{i}c,\mu)/\sqrt{\Lambda}$')
+    #
 
     max_amp, min_amp = amp_range(psi, vpa)
 
@@ -194,7 +201,8 @@ def plot_ns_fmreigf(psi: np.ndarray,
     axis.set_title(
         r'$\lambda=$' + f' {eig.real:8.5f}, '
         + r'$\lambda_\mathrm{approx}=$'
-        + f' {eig_fmr.real:8.5f}', color='magenta', fontsize=16)
+        + f' {eig_fmr.real:8.5f}, ' + r'$c^2=$'
+        + f' {c2_spheroidal:8.5f}', color='magenta', fontsize=16)
 
     fig.suptitle(
         r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -217,7 +225,7 @@ def plot_ns_fmreigf(psi: np.ndarray,
 #
 
 
-def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
+def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray, float]:
     """Makes the approximate eigenfunction of fast magnetic Rossby
     (MR) waves.
 
@@ -232,6 +240,8 @@ def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
         An approximate eigenvalue of fast magnetic Rossby (MR) waves
     fmreigf : ndarray
         An approximate eigenfunction of fast magnetic Rossby (MR) waves
+    c2_spheroidal : float
+        c^2 of the angular spheroidal wave function
 
     """
 
@@ -263,7 +273,7 @@ def calc_fmreigf(i_mode: int) -> tuple[float, np.ndarray]:
     sign: int = adjust_sign(fmreigf, NUM_THETA)
     fmreigf *= sign
 
-    return eig, fmreigf
+    return eig, fmreigf, c2_spheroidal.real
 #
 
 
