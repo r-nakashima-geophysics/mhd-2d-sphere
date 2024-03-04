@@ -51,7 +51,7 @@ import numpy as np
 from scipy.integrate import solve_ivp
 from scipy.optimize import root
 
-from package import func_b
+from package import func_b, func_u
 
 logging.basicConfig(level=logging.INFO)
 logger: logging.Logger = logging.getLogger(__name__)
@@ -68,9 +68,13 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
+# FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_hydro('theta')
 # FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_malkus('theta')
 FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sincos('theta')
 # FUNC_B, FUNC_DB, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
+
+# The function U
+FUNC_U, FUNC_DU, _, TEX_U, NAME_U = func_u.u_rigid('theta')
 
 # The scaled angular frequency
 LAMBDA: Final[float] = 1
@@ -216,7 +220,7 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     #
 
     fig.suptitle(
-        r'Ray trajectory [$B_{0\phi}=B_0' + TEX_B + r'$] : '
+        r'Ray trajectory [$B_{0\phi}=' + TEX_B + r'$] : '
         + r'$k\sin\theta=$' + f' {k_const:8.5f}, '
         + r'$|\alpha|^{-1/2}\lambda=$' + f' {LAMBDA}',
         color='magenta', fontsize=16)

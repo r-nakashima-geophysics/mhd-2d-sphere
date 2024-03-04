@@ -35,7 +35,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package import func_b
+from package import func_b, func_u
 from package.input_arg import input_alpha
 
 FUNC_B: Callable[[complex], complex]
@@ -52,9 +52,13 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
+# FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_hydro('theta')
 FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_malkus('theta')
 # FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sincos('theta')
 # FUNC_B, FUNC_DB, FUNC_D2B, TEX_B, NAME_B = func_b.b_sin2cos('theta')
+
+# The function U
+FUNC_U, FUNC_DU, FUNC_D2U, TEX_U, NAME_U = func_u.u_rigid('theta')
 
 # The zonal wavenumber (order)
 M_ORDER: Final[int] = 1
@@ -153,7 +157,7 @@ def plot_l2() -> None:
     axis.minorticks_on()
 
     fig.suptitle(
-        r'[$B_{0\phi}=B_0' + TEX_B + r'$] : '
+        r'[$B_{0\phi}=' + TEX_B + r'$] : '
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
         color='magenta', fontsize=16)
 

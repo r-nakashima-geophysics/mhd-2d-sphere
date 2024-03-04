@@ -22,7 +22,7 @@ from typing import Callable, Final
 import matplotlib.pyplot as plt
 import numpy as np
 
-from package import func_b
+from package import func_b, func_u
 
 FUNC_B: Callable[[complex], complex]
 TEX_B: str
@@ -35,9 +35,13 @@ NAME_B: str
 SWITCH_MS: Final[bool] = False
 
 # The function B
+# FUNC_B, _, _, TEX_B, NAME_B = func_b.b_hydro('theta')
 FUNC_B, _, _, TEX_B, NAME_B = func_b.b_malkus('theta')
 # FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sincos('theta')
 # FUNC_B, _, _, TEX_B, NAME_B = func_b.b_sin2cos('theta')
+
+# The function U
+FUNC_U, _, _, TEX_U, NAME_U = func_u.u_rigid('theta')
 
 # The range of the colatitude
 THETA_INIT: Final[float] = 30
@@ -151,7 +155,7 @@ def plot_kl() -> None:
     #
 
     fig.suptitle(
-        r'Local dispersion relation [$B_{0\phi}=B_0' + TEX_B + r'$]',
+        r'Local dispersion relation [$B_{0\phi}=' + TEX_B + r'$]',
         color='magenta', fontsize=18)
 
     fig.tight_layout()
@@ -222,7 +226,7 @@ def plot_klambda() -> None:
     #
 
     fig.suptitle(
-        r'Local dispersion relation [$B_{0\phi}=B_0' + TEX_B + r'$]',
+        r'Local dispersion relation [$B_{0\phi}=' + TEX_B + r'$]',
         color='magenta', fontsize=18)
 
     fig.tight_layout()
