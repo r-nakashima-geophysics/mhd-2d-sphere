@@ -7,6 +7,78 @@ import cmath
 from typing import Callable
 
 
+def b_hydro(switch_theta: str = 'mu') \
+    -> tuple[Callable[[complex], complex], Callable[[complex], complex],
+             Callable[[complex], complex], str, str]:
+    """The hydrodynamic case (B=0)
+
+    Parameters
+    -----
+    switch_theta : str, default 'mu'
+        The argument to switch whether you use either mu or theta
+
+    Returns
+    -----
+    hydro : callable
+        A function to calculate the value of B
+    hydro_d : callable
+        A function to calculate the value of the first derivative of B
+    hydro_d2 : callable
+        A function to calculate the value of the second derivative of B
+    tex : str
+        TeX text
+    name : str
+        Name
+
+    """
+
+    def hydro_mu(mu_complex: complex) -> complex:
+        _ = mu_complex
+        return 0
+    #
+
+    def hydro_d_mu(mu_complex: complex) -> complex:
+        _ = mu_complex
+        return 0
+    #
+
+    def hydro_d2_mu(mu_complex: complex) -> complex:
+        _ = mu_complex
+        return 0
+    #
+
+    hydro: Callable[[complex], complex] = hydro_mu
+    hydro_d: Callable[[complex], complex] = hydro_d_mu
+    hydro_d2: Callable[[complex], complex] = hydro_d2_mu
+
+    if switch_theta == 'theta':
+        def hydro_theta(theta_complex: complex) -> complex:
+            _ = theta_complex
+            return 0
+        #
+
+        def hydro_d_theta(theta_complex: complex) -> complex:
+            _ = theta_complex
+            return 0
+        #
+
+        def hydro_d2_theta(theta_complex: complex) -> complex:
+            _ = theta_complex
+            return 0
+        #
+
+        hydro = hydro_theta
+        hydro_d = hydro_d_theta
+        hydro_d2 = hydro_d2_theta
+    #
+
+    tex: str = r'0'
+    name: str = 'hydro'
+
+    return hydro, hydro_d, hydro_d2, tex, name
+#
+
+
 def b_malkus(switch_theta: str = 'mu') \
     -> tuple[Callable[[complex], complex], Callable[[complex], complex],
              Callable[[complex], complex], str, str]:
@@ -72,7 +144,7 @@ def b_malkus(switch_theta: str = 'mu') \
         malkus_d2 = malkus_d2_theta
     #
 
-    tex: str = r'\sin\theta'
+    tex: str = r'B_0\sin\theta'
     name: str = 'malkus'
 
     return malkus, malkus_d, malkus_d2, tex, name
@@ -140,7 +212,7 @@ def b_sincos(switch_theta: str = 'mu') \
         sincos_d2 = sincos_d2_theta
     #
 
-    tex: str = r'\sin\theta\cos\theta'
+    tex: str = r'B_0\sin\theta\cos\theta'
     name: str = 'sincos'
 
     return sincos, sincos_d, sincos_d2, tex, name
@@ -207,7 +279,7 @@ def b_sin2cos(switch_theta: str = 'mu') \
         sin2cos_d2 = sin2cos_d2_theta
     #
 
-    tex: str = r'\sin^2\theta\cos\theta'
+    tex: str = r'B_0\sin^2\theta\cos\theta'
     name: str = 'sin2cos'
 
     return sin2cos, sin2cos_d, sin2cos_d2, tex, name
