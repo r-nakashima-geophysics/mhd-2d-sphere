@@ -138,13 +138,13 @@ def plot_dependdegree(
             r'Eigenvalues [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$'
             + f' {ALPHA}\n',
-            color='magenta', fontsize=14)
+            fontsize=14)
     else:
         axis.set_title(
             r'Eigenvalues [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}, '
             + r'$E_\eta=$' + f' {E_ETA}\n',
-            color='magenta', fontsize=12)
+            fontsize=12)
     #
 
     leg: plt.Legend = axis.legend(loc='best', fontsize=14)

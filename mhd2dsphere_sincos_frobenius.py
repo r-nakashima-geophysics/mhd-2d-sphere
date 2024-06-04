@@ -198,13 +198,13 @@ def wrapper_plot_frobenius(psi_vec: np.ndarray,
         r'$\lambda=$' + f' {eig.real:8.5f}, '
         + r'$\theta_\mathrm{c}=$'
         + f' {math.degrees(theta_c.real):4.2f} '
-        + r'$\mathrm{[deg]}$', color='magenta', fontsize=16)
+        + r'$\mathrm{[deg]}$', fontsize=16)
 
     fig.suptitle(
         r'Frobenius series solutions vs Numerical solution '
         + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-        color='magenta', fontsize=16)
+        fontsize=16)
 
     leg: list[plt.Legend] = [axes[0].legend(loc='best', fontsize=13),
                              axes[1].legend(loc='best', fontsize=13),

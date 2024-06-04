@@ -318,7 +318,7 @@ def plot_eig(eig: np.ndarray) -> None:
     axis.set_ylabel(r'$\lambda=\omega/2\Omega_0$', fontsize=16)
     axis.set_title(
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta$] : $m=$'
-        + f' {M_ORDER}\n', color='magenta', fontsize=16)
+        + f' {M_ORDER}\n', fontsize=16)
 
     leg: plt.Legend
     handle: list
@@ -405,7 +405,7 @@ def plot_ene(ene: np.ndarray) -> None:
         r'$\mathrm{MKE}/(\mathrm{MKE}+\mathrm{MME})$', fontsize=16)
     axis.set_title(
         r'Energy partitioning [$B_{0\phi}=B_0\sin\theta$] : $m=$'
-        + f' {M_ORDER}\n', color='magenta', fontsize=16)
+        + f' {M_ORDER}\n', fontsize=16)
 
     leg: plt.Legend
     handle: list
@@ -499,9 +499,9 @@ def plot_eig_log(eig_log: np.ndarray) -> None:
         fontsize=16)
     axes[0].set_ylabel(r'$|\lambda|=|\omega/2\Omega_0|$', fontsize=16)
     axes[0].set_title(
-        r'Retrograde ($\lambda<0$)', color='magenta', fontsize=16)
+        r'Retrograde ($\lambda<0$)', fontsize=16)
     axes[1].set_title(
-        r'Prograde ($\lambda>0$)', color='magenta', fontsize=16)
+        r'Prograde ($\lambda>0$)', fontsize=16)
 
     handle: list[list] = [[None, ], ] * 2
     label: list[list] = [[None, ], ] * 2
@@ -523,7 +523,7 @@ def plot_eig_log(eig_log: np.ndarray) -> None:
 
     fig.suptitle(
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta$] : $m=$'
-        + f' {M_ORDER}', color='magenta', fontsize=16)
+        + f' {M_ORDER}', fontsize=16)
 
     fig.tight_layout()
 

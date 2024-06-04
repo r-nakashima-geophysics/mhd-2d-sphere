@@ -158,8 +158,7 @@ def plot_l2() -> None:
 
     fig.suptitle(
         r'[$B_{0\phi}=' + TEX_B + r'$] : '
-        + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-        color='magenta', fontsize=16)
+        + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}', fontsize=16)
 
     fig.tight_layout()
 

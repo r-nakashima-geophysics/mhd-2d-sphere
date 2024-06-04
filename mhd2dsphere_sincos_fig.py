@@ -184,10 +184,10 @@ def wrapper_plot_eig(
             fontsize=16)
     #
 
-    ax1[0].set_title('Sinuous', color='magenta', fontsize=16)
-    ax1[1].set_title('Varicose', color='magenta', fontsize=16)
-    ax2[0].set_title('Sinuous', color='magenta', fontsize=16)
-    ax2[1].set_title('Varicose', color='magenta', fontsize=16)
+    ax1[0].set_title('Sinuous', fontsize=16)
+    ax1[1].set_title('Varicose', fontsize=16)
+    ax2[0].set_title('Sinuous', fontsize=16)
+    ax2[1].set_title('Varicose', fontsize=16)
 
     for axis in (ax1[0], ax1[1], ax2[0], ax2[1]):
         axis.tick_params(labelsize=14)
@@ -198,22 +198,22 @@ def wrapper_plot_eig(
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
-            + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
+            + r'$m=$' + f' {M_ORDER}',  fontsize=16)
         fig2.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
-            + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
+            + r'$m=$' + f' {M_ORDER}',  fontsize=16)
     else:
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$E_\eta=$' + f' {E_ETA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
         fig2.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$E_\eta=$' + f' {E_ETA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     fig1.tight_layout()
@@ -552,28 +552,28 @@ def wrapper_plot_eig_log(
 
         ax1[0, 0].set_title(
             r'Sinuous, Retrograde ($\mathrm{Re}(\lambda)<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[0, 1].set_title(
             r'Sinuous, Prograde ($\mathrm{Re}(\lambda)>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[1, 0].set_title(
             r'Varicose, Retrograde ($\mathrm{Re}(\lambda)<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[1, 1].set_title(
             r'Varicose, Prograde ($\mathrm{Re}(\lambda)>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax2[0, 0].set_title(
             r'Sinuous, Retrograde ($\mathrm{Re}(\lambda)<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax2[0, 1].set_title(
             r'Sinuous, Prograde ($\mathrm{Re}(\lambda)>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax2[1, 0].set_title(
             r'Varicose, Retrograde ($\mathrm{Re}(\lambda)<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax2[1, 1].set_title(
             r'Varicose, Prograde ($\mathrm{Re}(\lambda)>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
     else:
         ax1[0, 0].set_ylabel(
             r'$|\lambda|=|\omega/2\Omega_0|$',
@@ -584,16 +584,16 @@ def wrapper_plot_eig_log(
 
         ax1[0, 0].set_title(
             r'Sinuous, Retrograde ($\lambda<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[0, 1].set_title(
             r'Sinuous, Prograde ($\lambda>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[1, 0].set_title(
             r'Varicose, Retrograde ($\lambda<0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
         ax1[1, 1].set_title(
             r'Varicose, Prograde ($\lambda>0$)',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     for axis in ax_all:
@@ -604,22 +604,22 @@ def wrapper_plot_eig_log(
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
-            + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
+            + r'$m=$' + f' {M_ORDER}',  fontsize=16)
         fig2.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
-            + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
+            + r'$m=$' + f' {M_ORDER}',  fontsize=16)
     else:
         fig1.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$E_\eta=$' + f' {E_ETA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
         fig2.suptitle(
             r'Dispersion relation '
             + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$E_\eta=$' + f' {E_ETA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     fig1.tight_layout()

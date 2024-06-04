@@ -202,12 +202,12 @@ def plot_ns_fmreigf(psi: np.ndarray,
         r'$\lambda=$' + f' {eig.real:8.5f}, '
         + r'$\lambda_\mathrm{approx}=$'
         + f' {eig_fmr.real:8.5f}, ' + r'$c^2=$'
-        + f' {c2_spheroidal:8.5f}', color='magenta', fontsize=16)
+        + f' {c2_spheroidal:8.5f}', fontsize=16)
 
     fig.suptitle(
         r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-        color='magenta', fontsize=16)
+        fontsize=16)
 
     leg: plt.Legend = axis.legend(loc='best', fontsize=12)
     leg.get_frame().set_alpha(1)

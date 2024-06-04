@@ -162,50 +162,50 @@ def wrapper_plot_alleigf(
 
     if save_fig2:
         ax1[0, 0].set_title(r'Sinuous $|\mathrm{Re}(\tilde{\psi})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[0, 1].set_title(r'Sinuous $|\mathrm{Re}(\tilde{a})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[1, 0].set_title(r'Varicose $|\mathrm{Re}(\tilde{\psi})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[1, 1].set_title(r'Varicose $|\mathrm{Re}(\tilde{a})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax2[0, 0].set_title(r'Sinuous $|\mathrm{Im}(\tilde{\psi})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax2[0, 1].set_title(r'Sinuous $|\mathrm{Im}(\tilde{a})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax2[1, 0].set_title(r'Varicose $|\mathrm{Im}(\tilde{\psi})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax2[1, 1].set_title(r'Varicose $|\mathrm{Im}(\tilde{a})|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
     else:
         ax1[0, 0].set_title(r'Sinuous $|\tilde{\psi}|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[0, 1].set_title(r'Sinuous $|\tilde{a}|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[1, 0].set_title(r'Varicose $|\tilde{\psi}|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
         ax1[1, 1].set_title(r'Varicose $|\tilde{a}|$',
-                            color='magenta', fontsize=16)
+                            fontsize=16)
     #
 
     if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig1.suptitle(
             r'Eigenfunctions [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
         fig2.suptitle(
             r'Eigenfunctions [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     else:
         fig1.suptitle(
             r'Eigenfunctions [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}, '
-            + r'$E_\eta=$' + f' {E_ETA}', color='magenta', fontsize=16)
+            + r'$E_\eta=$' + f' {E_ETA}', fontsize=16)
         fig2.suptitle(
             r'Eigenfunctions [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}, '
-            + r'$E_\eta=$' + f' {E_ETA}', color='magenta', fontsize=16)
+            + r'$E_\eta=$' + f' {E_ETA}', fontsize=16)
     #
 
     fig1.tight_layout()

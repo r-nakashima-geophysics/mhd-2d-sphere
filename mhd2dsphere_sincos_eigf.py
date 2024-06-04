@@ -202,24 +202,24 @@ def plot_ns(psi: np.ndarray,
     if eig.imag == 0:
         axis.set_title(
             r'$\lambda=$' + f' {eig.real:8.5f}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     else:
         axis.set_title(
             r'$\lambda=$' + f' {eig.real:8.5f} ' + r'$+$'
             + f'{eig.imag:8.5f} ' + r'$\mathrm{i}$',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     if (not SWITCH_DISP_ETA) and (E_ETA == 0):
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-              color='magenta', fontsize=16)
+            fontsize=16)
     else:
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}, '
-            + r'$E_\eta=$' + f' {E_ETA}', color='magenta', fontsize=16)
+            + r'$E_\eta=$' + f' {E_ETA}', fontsize=16)
     #
 
     leg: plt.Legend = axis.legend(loc='best', fontsize=13)
@@ -309,14 +309,14 @@ def plot_map(psi_grid: np.ndarray,
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}\n\n'
             + r'$\lambda=$' + f' {eig.real:8.5f}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     elif eig.imag == 0:
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
             + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}, '
             + r'$E_\eta=$' + f' {E_ETA}\n\n'
             + r'$\lambda=$' + f' {eig.real:8.5f}',
-            color='magenta', fontsize=16)
+            fontsize=16)
     else:
         fig.suptitle(
             r'Eigenfunction [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
@@ -324,7 +324,7 @@ def plot_map(psi_grid: np.ndarray,
             + r'$E_\eta=$' + f' {E_ETA}\n\n'
             + r'$\lambda=$' + f' {eig.real:8.5f} ' + r'$+$'
             + f'{eig.imag:8.5f} ' + r'$\mathrm{i}$',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     fig.tight_layout()

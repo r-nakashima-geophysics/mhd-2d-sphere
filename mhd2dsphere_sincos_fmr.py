@@ -132,14 +132,14 @@ def wrapper_plot_fmr(
 
     axes[0].set_title(
         r'Sinuous, Retrograde ($\lambda<0$)',
-        color='magenta', fontsize=16)
+        fontsize=16)
     axes[1].set_title(
         r'Varicose, Retrograde ($\lambda<0$)',
-        color='magenta', fontsize=16)
+        fontsize=16)
 
     fig.suptitle(
         r'Dispersion relation [$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
-        + r'$m=$' + f' {M_ORDER}', color='magenta', fontsize=16)
+        + r'$m=$' + f' {M_ORDER}', fontsize=16)
 
     leg1: plt.Legend = axes[0].legend(loc='lower right', fontsize=14)
     leg2: plt.Legend = axes[1].legend(loc='lower right', fontsize=14)

@@ -131,14 +131,14 @@ def wrapper_plot_allfrobenius(
     ax2[0].set_ylabel(r'$I_\mathrm{num}$', fontsize=16)
     ax2[1].set_ylabel(r'$I_\mathrm{num}$', fontsize=16)
 
-    ax1[0].set_title('Sinuous', color='magenta', fontsize=16)
-    ax1[1].set_title('Varicose', color='magenta', fontsize=16)
+    ax1[0].set_title('Sinuous', fontsize=16)
+    ax1[1].set_title('Varicose', fontsize=16)
 
     fig.suptitle(
         'Coefficients of the Frobenius solutions '
         + r'[$B_{0\phi}=B_0\sin\theta\cos\theta$] : '
         + r'$m=$' + f' {M_ORDER}, ' + r'$|\alpha|=$' + f' {ALPHA}',
-        color='magenta', fontsize=16)
+        fontsize=16)
 
     handle1, label1 = ax1[0].get_legend_handles_labels()
     handle2, label2 = ax2[0].get_legend_handles_labels()

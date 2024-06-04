@@ -211,19 +211,19 @@ def wrapper_plot_ray(prms: list[float]) -> None:
             r'$(k_\mathrm{init},l_\mathrm{init})=$'
             + f' ({k_wavenum_init:8.5f}, {l_init}), '
             + r'$\theta_\mathrm{c}=$' + f' {sort_lat_c} [deg]',
-            color='magenta', fontsize=16)
+            fontsize=16)
     else:
         axis.set_title(
             r'$(k_\mathrm{init},l_\mathrm{init})=$'
             + f' ({k_wavenum_init:8.5f}, {l_init})',
-            color='magenta', fontsize=16)
+            fontsize=16)
     #
 
     fig.suptitle(
         r'Ray trajectory [$B_{0\phi}=' + TEX_B + r'$] : '
         + r'$k\sin\theta=$' + f' {k_const:8.5f}, '
         + r'$|\alpha|^{-1/2}\lambda=$' + f' {LAMBDA}',
-        color='magenta', fontsize=16)
+        fontsize=16)
 
     fig.tight_layout()
     fig.subplots_adjust(top=1.05)
