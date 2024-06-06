@@ -222,7 +222,7 @@ def plot_ns(psi: np.ndarray,
             + r'$E_\eta=$' + f' {E_ETA}', fontsize=16)
     #
 
-    leg: plt.Legend = axis.legend(loc='best', fontsize=13)
+    leg: plt.Legend = axis.legend(loc='best', fontsize=11)
     leg.get_frame().set_alpha(1)
 
     axis.tick_params(labelsize=14)

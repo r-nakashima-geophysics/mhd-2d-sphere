@@ -416,7 +416,7 @@ def plot_ene(ene: np.ndarray) -> None:
     label = [label[i_label] for i_label in order_leg]
     leg = axis.legend(
         handles=handle, labels=label,
-        loc='upper right', fontsize=12)
+        loc='upper right', fontsize=12, bbox_to_anchor=(1.1, 1))
     leg.get_frame().set_alpha(1)
 
     axis.tick_params(labelsize=13)

@@ -229,7 +229,7 @@ def amp_range(psi: np.ndarray,
 
     """
 
-    factor: float = 1.1
+    factor: float = 1.5
 
     psi_real_max: float = np.nanmax(np.abs(psi.real))
     vpa_real_max: float = np.nanmax(np.abs(vpa.real))

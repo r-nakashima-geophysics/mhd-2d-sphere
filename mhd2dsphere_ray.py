@@ -187,7 +187,7 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     axin[0].set_xlabel(r'$k$', fontsize=16)
     axin[0].set_ylabel(r'$l$', fontsize=16)
     axin[1].set_xlabel(
-        r'$\mathrm{sgn}(\Omega_0)T=$'
+        r'$\mathrm{sgn}(\Omega_0)T=\,$'
         + r'$(|B_0|/R_0\sqrt{\rho_0\mu_\mathrm{m}})t$', fontsize=16)
     axin[1].set_ylabel(
         r'$\mathrm{sgn}(\Omega_0)\phi\,\mathrm{[deg]}$', fontsize=16)
@@ -197,6 +197,7 @@ def wrapper_plot_ray(prms: list[float]) -> None:
     axin[1].set_yticks([-180, -90, 0, 90, 180])
 
     axin[0].tick_params(labelsize=14)
+    # axin[0].tick_params(labelsize=12, axis="x", labelrotation=45)
     axin[1].tick_params(labelsize=14)
     axin[0].minorticks_on()
     axin[1].minorticks_on()
